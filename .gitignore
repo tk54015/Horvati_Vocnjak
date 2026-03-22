@@ -1,0 +1,13 @@
+# Stari subfolder, nije dio glavnog app-a
+tree-inventory/
+
+# KML/KMZ source fajlovi, nisu potrebni za web
+*.kml
+*.kmz
+
+# Prazni/privremeni fajlovi
+sfsdfsd
+
+# Windows
+Thumbs.db
+desktop.ini

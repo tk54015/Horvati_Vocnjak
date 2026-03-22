@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventar Stabala</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="map"></div>
+    <div class="map-controls">
+      <button id="zoom-in">+</button>
+      <button id="zoom-out">-</button>
+    </div>
+    <!-- icon-picker privremeno sakriven
+    <div id="icon-picker">
+      <span>Odaberi:</span>
+      <img src="icons/apple.png" class="icon-option" data-icon="icons/apple.png" title="Jabuka">
+      <img src="icons/pear.png" class="icon-option" data-icon="icons/pear.png" title="Kruška">
+      <img src="icons/peach.png" class="icon-option" data-icon="icons/peach.png" title="Breskva">
+      <img src="icons/download.png" class="icon-option" data-icon="icons/download.png" title="Ostalo">
+    </div>
+    -->
+    <div id="tree-type-picker">
+      <label for="tree-type">Vrsta stabla:</label>
+      <select id="tree-type">
+        <option value="jabuka">Jabuka</option>
+        <option value="kruska">Kruška</option>
+        <option value="sljiva">Šljiva</option>
+        <option value="smokva">Smokva</option>
+        <option value="breskva">Breskva</option>
+        <option value="glog">Glog</option>
+        <option value="drenak">Drenak</option>
+        <option value="kupina">Kupina</option>
+        <option value="ribizl">Ribizl</option>
+        <option value="vinova_loza">Vinova loza</option>
+      </select>
+      <button id="export-json" type="button">Preuzmi JSON</button>
+      <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
+      <small>Sve novo ostaje spremljeno nakon refresha.</small>
+    </div>
+    <div id="tree-list">
+      <b>Dodana stabla:</b>
+      <ul id="tree-list-items"></ul>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

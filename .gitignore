@@ -1,9 +1,10 @@
-# Stari subfolder, nije dio glavnog app-a
+# Stari subfolder, više se ne koristi
 tree-inventory/
 
 # KML/KMZ source fajlovi, nisu potrebni za web
 *.kml
 *.kmz
+kml_source/
 
 # Prazni/privremeni fajlovi
 sfsdfsd

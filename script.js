@@ -8,7 +8,7 @@ var map = L.map('map', {
     zoomControl: false
 });
 
-// custom wheel zoom around cursor
+// Custom wheel zoom around cursor
 map.getContainer().addEventListener('wheel', function (e) {
     e.preventDefault();
     var change = e.deltaY > 0 ? -1 : 1;
@@ -21,62 +21,22 @@ map.getContainer().addEventListener('wheel', function (e) {
     }
 });
 
-// Dodaj image overlay - zamijeni s vlastitom slikom
-var imageUrl = 'garden.svg'; // Putanja do tvoje slike vrta
-var imageBounds = [[0, 0], [714, 1000]]; // Prilagodi granicama slike
+var imageUrl = 'garden.svg';
+var imageBounds = [[0, 0], [714, 1000]];
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
 map.fitBounds(imageBounds);
-map.setZoom(0); // lagano zoom out da se sve vidi, ali ne previše
+map.setZoom(0);
 map.setView([357, 500], 0);
 
-var STORAGE_KEY = 'horvati_inventory_user_items_v1';
+var USER_STORAGE_KEY = 'horvati_inventory_user_items_v1';
+var NOTE_STORAGE_KEY = 'horvati_inventory_note_overrides_v1';
+
 var baseItems = [];
 var userItems = [];
+var noteOverrides = {};
 var userMarkersById = {};
-
-function addTreeToList(item, removable) {
-    var list = document.getElementById('tree-list-items');
-    if (!list) return;
-
-    var li = document.createElement('li');
-    var name = item.name || item.treeType;
-    var treeType = item.treeType || 'Stablo';
-    li.innerHTML = '<span><b>' + name + '</b> [' + treeType + '] - ' +
-        Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2) + '</span>';
-
-    if (removable && item.id) {
-        li.setAttribute('data-user-id', item.id);
-        var removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-tree';
-        removeBtn.setAttribute('data-user-id', item.id);
-        removeBtn.title = 'Ukloni unos';
-        removeBtn.textContent = 'x';
-        li.appendChild(removeBtn);
-    }
-
-    list.appendChild(li);
-}
-
-function saveUserItems() {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(userItems));
-    } catch (error) {
-        console.error('Ne mogu spremiti u localStorage:', error);
-    }
-}
-
-function loadUserItems() {
-    try {
-        var raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return [];
-        var parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-        console.error('Ne mogu učitati localStorage podatke:', error);
-        return [];
-    }
-}
+var allItemsById = {};
+var dragEnabled = false;
 
 function slugify(text) {
     return String(text || '')
@@ -84,6 +44,55 @@ function slugify(text) {
         .replace(/\s+/g, '_')
         .replace(/[^a-z0-9_]/g, '')
         .replace(/^_+|_+$/g, '') || 'oznaka';
+}
+
+function makeFallbackId(item, index) {
+    return slugify(item.name) + '_' + Number(item.lat).toFixed(2) + '_' + Number(item.lng).toFixed(2) + '_' + index;
+}
+
+function formatPopup(item) {
+    var noteHtml = item.notes ? '<br>Napomena: ' + item.notes : '';
+    return '<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(item.lat).toFixed(2) + ', Lng: ' + Number(item.lng).toFixed(2) + noteHtml + '<br><small>Klik na marker za napomenu</small>';
+}
+
+function saveUserItems() {
+    try {
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userItems));
+    } catch (error) {
+        console.error('Ne mogu spremiti userItems:', error);
+    }
+}
+
+function loadUserItems() {
+    try {
+        var raw = localStorage.getItem(USER_STORAGE_KEY);
+        if (!raw) return [];
+        var parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.error('Ne mogu učitati userItems:', error);
+        return [];
+    }
+}
+
+function saveNoteOverrides() {
+    try {
+        localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(noteOverrides));
+    } catch (error) {
+        console.error('Ne mogu spremiti napomene:', error);
+    }
+}
+
+function loadNoteOverrides() {
+    try {
+        var raw = localStorage.getItem(NOTE_STORAGE_KEY);
+        if (!raw) return {};
+        var parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+        console.error('Ne mogu učitati napomene:', error);
+        return {};
+    }
 }
 
 function toExportItem(item, index) {
@@ -129,20 +138,66 @@ function downloadJson() {
     URL.revokeObjectURL(url);
 }
 
-function updateListItemCoords(userId, lat, lng) {
-    var li = document.querySelector('#tree-list-items li[data-user-id="' + userId + '"]');
-    if (!li) return;
-    var span = li.querySelector('span');
-    if (!span) return;
-    var parts = span.innerHTML.split('] - ');
-    if (parts.length >= 2) {
-        span.innerHTML = parts[0] + '] - ' + Number(lat).toFixed(2) + ', ' + Number(lng).toFixed(2);
+function renderChangeList() {
+    var list = document.getElementById('tree-list-items');
+    if (!list) return;
+    list.innerHTML = '';
+
+    userItems.forEach(function (item) {
+        var li = document.createElement('li');
+        li.setAttribute('data-user-id', item.id);
+
+        var notePart = item.notes ? ' | napomena: ' + item.notes : '';
+        li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - ' +
+            Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2) + notePart + '</span>';
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-tree';
+        removeBtn.setAttribute('data-user-id', item.id);
+        removeBtn.title = 'Ukloni unos';
+        removeBtn.textContent = 'x';
+        li.appendChild(removeBtn);
+        list.appendChild(li);
+    });
+
+    Object.keys(noteOverrides).forEach(function (itemId) {
+        var note = noteOverrides[itemId];
+        if (!note) return;
+        var item = allItemsById[itemId];
+        if (!item) return;
+
+        var li = document.createElement('li');
+        li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - napomena: ' + note + '</span>';
+        list.appendChild(li);
+    });
+}
+
+function applyNote(item, noteText, isUserItem) {
+    item.notes = noteText;
+
+    if (isUserItem) {
+        var found = userItems.find(function (i) { return i.id === item.id; });
+        if (found) {
+            found.notes = noteText;
+        }
+        saveUserItems();
+    } else {
+        if (noteText) {
+            noteOverrides[item.id] = noteText;
+        } else {
+            delete noteOverrides[item.id];
+        }
+        saveNoteOverrides();
     }
+
+    renderChangeList();
 }
 
 function createMarker(item, options) {
     var opts = options || {};
     var markerOptions = {};
+
     if (item.iconUrl) {
         markerOptions.icon = L.icon({
             iconUrl: item.iconUrl,
@@ -152,27 +207,41 @@ function createMarker(item, options) {
         });
     }
 
-    if (opts.removable) {
-        markerOptions.draggable = false;
+    if (opts.isUserItem) {
+        markerOptions.draggable = dragEnabled;
     }
 
     var marker = L.marker([item.lat, item.lng], markerOptions).addTo(map);
-    marker.bindPopup('<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(item.lat).toFixed(2) + ', Lng: ' + Number(item.lng).toFixed(2));
-    addTreeToList(item, !!opts.removable);
+    marker.bindPopup(formatPopup(item));
 
-    if (opts.removable && item.id) {
+    marker.on('click', function () {
+        var current = item.notes || '';
+        var newNote = prompt('Napomena za: ' + item.name, current);
+        if (newNote === null) return;
+
+        var cleaned = newNote.trim();
+        applyNote(item, cleaned, !!opts.isUserItem);
+        marker.setPopupContent(formatPopup(item));
+        marker.openPopup();
+    });
+
+    if (opts.isUserItem && item.id) {
         userMarkersById[item.id] = marker;
 
         marker.on('dragend', function () {
             var newLatLng = marker.getLatLng();
+            item.lat = newLatLng.lat;
+            item.lng = newLatLng.lng;
+
             var found = userItems.find(function (i) { return i.id === item.id; });
             if (found) {
                 found.lat = newLatLng.lat;
                 found.lng = newLatLng.lng;
-                saveUserItems();
             }
-            marker.setPopupContent('<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(newLatLng.lat).toFixed(2) + ', Lng: ' + Number(newLatLng.lng).toFixed(2));
-            updateListItemCoords(item.id, newLatLng.lat, newLatLng.lng);
+
+            saveUserItems();
+            marker.setPopupContent(formatPopup(item));
+            renderChangeList();
         });
     }
 
@@ -189,23 +258,25 @@ function removeUserItem(userId) {
     userItems = userItems.filter(function (item) {
         return item.id !== userId;
     });
-    saveUserItems();
 
-    var listItem = document.querySelector('#tree-list-items li[data-user-id="' + userId + '"]');
-    if (listItem) {
-        listItem.remove();
-    }
+    delete allItemsById[userId];
+    saveUserItems();
+    renderChangeList();
 }
 
 function normalizeItems(data) {
     if (data && Array.isArray(data.items)) {
-        return data.items.map(function (item) {
+        return data.items.map(function (item, index) {
             return {
-                id: item.id || null,
+                id: item.id || makeFallbackId({
+                    name: item.naziv || 'Bez_naziva',
+                    lat: item.lat,
+                    lng: item.lng
+                }, index),
                 name: item.naziv || item.id || 'Bez naziva',
                 treeType: item.vrsta || item.kategorija || 'Stablo',
-                lat: item.lat,
-                lng: item.lng,
+                lat: Number(item.lat),
+                lng: Number(item.lng),
                 notes: item.napomena || '',
                 iconUrl: item.ikonica || null
             };
@@ -213,13 +284,13 @@ function normalizeItems(data) {
     }
 
     if (data && Array.isArray(data.trees)) {
-        return data.trees.map(function (tree) {
+        return data.trees.map(function (tree, index) {
             return {
-                id: null,
+                id: tree.id || makeFallbackId({ name: tree.name || 'stablo', lat: tree.lat, lng: tree.lng }, index),
                 name: tree.name || 'Bez naziva',
                 treeType: 'stablo',
-                lat: tree.lat,
-                lng: tree.lng,
+                lat: Number(tree.lat),
+                lng: Number(tree.lng),
                 notes: tree.notes || '',
                 iconUrl: tree.image || null
             };
@@ -229,7 +300,23 @@ function normalizeItems(data) {
     return [];
 }
 
+function applyStoredNotesToBaseItems() {
+    baseItems.forEach(function (item) {
+        if (noteOverrides[item.id]) {
+            item.notes = noteOverrides[item.id];
+        }
+    });
+}
+
+function registerAllItemsMap() {
+    allItemsById = {};
+    baseItems.forEach(function (item) { allItemsById[item.id] = item; });
+    userItems.forEach(function (item) { allItemsById[item.id] = item; });
+}
+
 function loadInventory() {
+    noteOverrides = loadNoteOverrides();
+
     fetch('data/stabla.json')
         .then(function (response) {
             if (!response.ok) throw new Error('Nema data/stabla.json');
@@ -237,55 +324,68 @@ function loadInventory() {
         })
         .then(function (data) {
             baseItems = normalizeItems(data);
-            baseItems.forEach(function (item) { createMarker(item, { removable: false }); });
-            userItems = loadUserItems();
-            userItems.forEach(function (item) {
-                if (!item.id) {
-                    item.id = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
-                }
-                createMarker(item, { removable: true });
+            applyStoredNotesToBaseItems();
+            baseItems.forEach(function (item) {
+                createMarker(item, { isUserItem: false });
             });
+
+            userItems = loadUserItems();
+            userItems.forEach(function (item, index) {
+                if (!item.id) {
+                    item.id = 'user_' + Date.now() + '_' + index;
+                }
+                createMarker(item, { isUserItem: true });
+            });
+
+            registerAllItemsMap();
             saveUserItems();
+            renderChangeList();
         })
         .catch(function () {
             fetch('data/trees.json')
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     baseItems = normalizeItems(data);
-                    baseItems.forEach(function (item) { createMarker(item, { removable: false }); });
-                    userItems = loadUserItems();
-                    userItems.forEach(function (item) {
-                        if (!item.id) {
-                            item.id = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
-                        }
-                        createMarker(item, { removable: true });
+                    applyStoredNotesToBaseItems();
+                    baseItems.forEach(function (item) {
+                        createMarker(item, { isUserItem: false });
                     });
+
+                    userItems = loadUserItems();
+                    userItems.forEach(function (item, index) {
+                        if (!item.id) {
+                            item.id = 'user_' + Date.now() + '_' + index;
+                        }
+                        createMarker(item, { isUserItem: true });
+                    });
+
+                    registerAllItemsMap();
                     saveUserItems();
+                    renderChangeList();
                 })
                 .catch(function (error) {
                     console.error('Greška pri učitavanju podataka:', error);
                     userItems = loadUserItems();
-                    userItems.forEach(function (item) {
+                    userItems.forEach(function (item, index) {
                         if (!item.id) {
-                            item.id = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+                            item.id = 'user_' + Date.now() + '_' + index;
                         }
-                        createMarker(item, { removable: true });
+                        createMarker(item, { isUserItem: true });
                     });
+
+                    registerAllItemsMap();
                     saveUserItems();
+                    renderChangeList();
                 });
         });
 }
 
 loadInventory();
 
-// Kompletne kontrole
-// Rotacija maknuta, ostaje samo zoom
-
 document.getElementById('zoom-in').addEventListener('click', function () { map.zoomIn(); });
 document.getElementById('zoom-out').addEventListener('click', function () { map.zoomOut(); });
 
-// Tipkovni prečaci
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === '+' || e.key === '=' || e.code === 'Equal') {
         map.zoomIn();
     } else if (e.key === '-' || e.key === '_' || e.code === 'Minus') {
@@ -305,36 +405,22 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Icon picker
-var selectedIcon = 'icons/apple.png';
-document.querySelectorAll('.icon-option').forEach(function(img) {
-    if (img.dataset.icon === selectedIcon) img.classList.add('selected');
-    img.addEventListener('click', function() {
-        document.querySelectorAll('.icon-option').forEach(function(i) { i.classList.remove('selected'); });
-        img.classList.add('selected');
-        selectedIcon = img.dataset.icon;
-    });
-});
-
 var exportBtn = document.getElementById('export-json');
 if (exportBtn) {
     exportBtn.addEventListener('click', downloadJson);
 }
-
-var dragEnabled = false;
 
 var toggleDragBtn = document.getElementById('toggle-drag');
 if (toggleDragBtn) {
     toggleDragBtn.addEventListener('click', function () {
         dragEnabled = !dragEnabled;
         Object.keys(userMarkersById).forEach(function (id) {
-            var m = userMarkersById[id];
-            if (dragEnabled) {
-                m.dragging.enable();
-            } else {
-                m.dragging.disable();
-            }
+            var marker = userMarkersById[id];
+            if (!marker.dragging) return;
+            if (dragEnabled) marker.dragging.enable();
+            else marker.dragging.disable();
         });
+
         toggleDragBtn.textContent = dragEnabled ? '✏️ Uređivanje uključeno' : '🔒 Markeri zaključani';
         toggleDragBtn.classList.toggle('drag-active', dragEnabled);
         toggleDragBtn.classList.toggle('drag-locked', !dragEnabled);
@@ -354,10 +440,9 @@ if (treeListEl) {
     });
 }
 
-// On map click, prikaži koordinate i dodaj marker
-map.on('click', function(e) {
+// Klik na mapu: dodaj novo stablo
+map.on('click', function (e) {
     var coords = e.latlng;
-
     var treeTypeEl = document.getElementById('tree-type');
     var treeType = treeTypeEl ? treeTypeEl.options[treeTypeEl.selectedIndex].text : 'Stablo';
 
@@ -375,7 +460,10 @@ map.on('click', function(e) {
     };
 
     userItems.push(newItem);
+    allItemsById[newItem.id] = newItem;
     saveUserItems();
-    var marker = createMarker(newItem, { removable: true });
+
+    var marker = createMarker(newItem, { isUserItem: true });
     marker.openPopup();
+    renderChangeList();
 });

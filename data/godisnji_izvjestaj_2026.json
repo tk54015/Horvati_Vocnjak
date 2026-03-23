@@ -1,0 +1,68 @@
+{
+  "godina": 2026,
+  "meta": {
+    "imanje": "Horvati vocnjak",
+    "valuta": "EUR",
+    "napomena": "Godisnji izvjestaj za usporedbu prinosa i troskova"
+  },
+  "ukupno": {
+    "broj_stabala": 0,
+    "broj_loze": 0,
+    "prinos_kg": 0,
+    "trosak_gnojivo_eur": 0,
+    "trosak_prskanje_eur": 0,
+    "trosak_ostalo_eur": 0,
+    "trosak_ukupno_eur": 0,
+    "prihod_ukupno_eur": 0,
+    "dobit_eur": 0
+  },
+  "po_vrsti": [
+    {
+      "vrsta": "jabuka",
+      "broj": 0,
+      "prinos_kg": 0,
+      "trosak_ukupno_eur": 0
+    },
+    {
+      "vrsta": "kruska",
+      "broj": 0,
+      "prinos_kg": 0,
+      "trosak_ukupno_eur": 0
+    },
+    {
+      "vrsta": "breskva",
+      "broj": 0,
+      "prinos_kg": 0,
+      "trosak_ukupno_eur": 0
+    },
+    {
+      "vrsta": "sljiva",
+      "broj": 0,
+      "prinos_kg": 0,
+      "trosak_ukupno_eur": 0
+    },
+    {
+      "vrsta": "vinova_loza",
+      "broj": 0,
+      "prinos_kg": 0,
+      "trosak_ukupno_eur": 0
+    }
+  ],
+  "stabla": [
+    {
+      "id": "stablo001",
+      "vrsta": "jabuka",
+      "sorta": "",
+      "rod_status": "srednje",
+      "prinos_kg": 0,
+      "orezano": false,
+      "gnojeno": false,
+      "spricano": false,
+      "trosak_gnojivo_eur": 0,
+      "trosak_prskanje_eur": 0,
+      "trosak_ostalo_eur": 0,
+      "trosak_ukupno_eur": 0,
+      "napomena": ""
+    }
+  ]
+}

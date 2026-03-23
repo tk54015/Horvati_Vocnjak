@@ -1,8 +1,619 @@
-{
-  "meta": {
-    "naziv": "Horvati vocnjak",
-    "verzija": 1,
-    "opis": "Jedinstveni popis za stabla i vinovu lozu"
-  },
-  "items": []
+﻿{
+    "meta":  {
+                 "naziv":  "Horvati vocnjak",
+                 "verzija":  1,
+                 "opis":  "Jedinstveni popis za stabla i vinovu lozu"
+             },
+    "items":  [
+                  {
+                      "id":  "st001",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "nesto1",
+                      "lat":  151.28,
+                      "lng":  892.07,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st002",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "glog2",
+                      "lat":  125.49,
+                      "lng":  843.5,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st003",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "glog3",
+                      "lat":  117.26,
+                      "lng":  821.06,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st004",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "dunja",
+                      "lat":  105,
+                      "lng":  799,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st005",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "dunjaž",
+                      "lat":  95.99,
+                      "lng":  775,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st006",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Glog",
+                      "naziv":  "nesto",
+                      "lat":  109.75,
+                      "lng":  746.04,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st007",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "kakim",
+                      "lat":  148.28,
+                      "lng":  716.04,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st008",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "nesto",
+                      "lat":  143.78,
+                      "lng":  708.54,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st009",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "br1",
+                      "lat":  236.01,
+                      "lng":  761.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st010",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb1",
+                      "lat":  257.51,
+                      "lng":  725.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st011",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kupina",
+                      "naziv":  "kp1",
+                      "lat":  248.01,
+                      "lng":  741.49,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st012",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb3",
+                      "lat":  268,
+                      "lng":  702.5,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st013",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "br",
+                      "lat":  282.39,
+                      "lng":  685.54,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st014",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  293.9,
+                      "lng":  668.03,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st015",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "br2",
+                      "lat":  305,
+                      "lng":  635.5,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st016",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Šljiva",
+                      "naziv":  "kk",
+                      "lat":  330.51,
+                      "lng":  582.49,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st017",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Šljiva",
+                      "naziv":  "sljiv",
+                      "lat":  305.4,
+                      "lng":  598.52,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st018",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Šljiva",
+                      "naziv":  "sljiva",
+                      "lat":  346.94,
+                      "lng":  519.01,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st019",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "breskva",
+                      "lat":  286.89,
+                      "lng":  413.49,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st020",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  262.37,
+                      "lng":  318.48,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st021",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  238.35,
+                      "lng":  356.98,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st022",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  203.83,
+                      "lng":  299.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st023",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kruška",
+                      "naziv":  "kr",
+                      "lat":  216.84,
+                      "lng":  401.49,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st024",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kruška",
+                      "naziv":  "kr",
+                      "lat":  203.68,
+                      "lng":  423.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st025",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  187.67,
+                      "lng":  341.98,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st026",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  189.67,
+                      "lng":  450.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st027",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Šljiva",
+                      "naziv":  "tresnja",
+                      "lat":  158.65,
+                      "lng":  505,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st028",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  157.64,
+                      "lng":  398.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st029",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "neki rip jadnicak",
+                      "lat":  137.63,
+                      "lng":  430.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st030",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  120.62,
+                      "lng":  463,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st031",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  138.63,
+                      "lng":  543.01,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st032",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  84.59,
+                      "lng":  514.01,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st033",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "nesto",
+                      "lat":  109.61,
+                      "lng":  584.02,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st034",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  59.57,
+                      "lng":  554.01,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st035",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "brs4",
+                      "lat":  42.55,
+                      "lng":  587.02,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st036",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "nesto",
+                      "lat":  28.54,
+                      "lng":  605.02,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st037",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "bresjva",
+                      "lat":  22.54,
+                      "lng":  634.02,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st038",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "breskva",
+                      "lat":  32.55,
+                      "lng":  655.03,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st039",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "breskva",
+                      "lat":  38.55,
+                      "lng":  676.03,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st040",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "breskva",
+                      "lat":  44.14,
+                      "lng":  670.51,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st041",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "nesto",
+                      "lat":  63.41,
+                      "lng":  676.26,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st042",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Breskva",
+                      "naziv":  "tresnja",
+                      "lat":  276.96,
+                      "lng":  289.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st043",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  244.01,
+                      "lng":  229,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st044",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Smokva",
+                      "naziv":  "smokva",
+                      "lat":  300.43,
+                      "lng":  254.47,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st045",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Smokva",
+                      "naziv":  "smokva",
+                      "lat":  317.44,
+                      "lng":  223.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st046",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  277.02,
+                      "lng":  167.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st047",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jbk",
+                      "lat":  319.03,
+                      "lng":  94.99,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st048",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jbk",
+                      "lat":  356.89,
+                      "lng":  33.89,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st049",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kruška",
+                      "naziv":  "kr",
+                      "lat":  405.96,
+                      "lng":  30.95,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st050",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jb",
+                      "lat":  362.93,
+                      "lng":  127.96,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st051",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "tresnja",
+                      "lat":  411.46,
+                      "lng":  92.46,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st052",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "tresnja",
+                      "lat":  387.44,
+                      "lng":  159.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st053",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jbk",
+                      "lat":  410.96,
+                      "lng":  213.48,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st054",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "nesto",
+                      "lat":  430.48,
+                      "lng":  175.47,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st055",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "nesto",
+                      "lat":  443.49,
+                      "lng":  204.47,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st056",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Smokva",
+                      "naziv":  "smk",
+                      "lat":  468.51,
+                      "lng":  194.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st057",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Smokva",
+                      "naziv":  "nesto",
+                      "lat":  476.51,
+                      "lng":  74.95,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st058",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Smokva",
+                      "naziv":  "nesto",
+                      "lat":  483.52,
+                      "lng":  109.96,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st059",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Jabuka",
+                      "naziv":  "jbk",
+                      "lat":  483.02,
+                      "lng":  150.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st060",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kupina",
+                      "naziv":  "kpn",
+                      "lat":  471.51,
+                      "lng":  176.97,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "st061",
+                      "kategorija":  "stablo",
+                      "vrsta":  "Kupina",
+                      "naziv":  "kpn",
+                      "lat":  490.02,
+                      "lng":  162.24,
+                      "napomena":  "",
+                      "ikonica":  null
+                  }
+              ]
 }

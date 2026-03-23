@@ -1,0 +1,5 @@
+id_stabla,naziv,vrsta,sorta,sezona,orezano,gnojeno,spricano,trosak_gnojivo_eur,trosak_prskanje_eur,trosak_ostalo_eur,trosak_ukupno_eur,rod_status,rod_procjena_kg,napomena
+stablo001,,jabuka,,2026,ne,ne,ne,0,0,0,0,nije_uopce,0,
+stablo002,,breskva,,2026,ne,ne,ne,0,0,0,0,malo,0,
+stablo003,,kruska,,2026,ne,ne,ne,0,0,0,0,srednje,0,
+stablo004,,sljiva,,2026,ne,ne,ne,0,0,0,0,jako,0,

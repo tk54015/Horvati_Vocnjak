@@ -1,0 +1,48 @@
+Backup unosa (nije još dodano u stabla.json)
+Datum: 2026-03-23
+
+nesto1 [Glog] - 151.28, 892.07
+x
+glog2 [Glog] - 125.49, 843.50
+x
+glog3 [Glog] - 117.26, 821.06
+x
+dunja [Glog] - 105.00, 799.00
+x
+dunjaž [Glog] - 95.99, 775.00
+x
+nesto [Glog] - 109.75, 746.04
+x
+kakim [Jabuka] - 148.28, 716.04
+x
+nesto [Jabuka] - 143.78, 708.54
+x
+br1 [Breskva] - 236.01, 761.99
+x
+jb1 [Jabuka] - 257.51, 725.99
+x
+kp1 [Kupina] - 248.01, 741.49
+x
+jb3 [Jabuka] - 268.00, 702.50
+x
+br [Breskva] - 282.39, 685.54
+x
+jb [Jabuka] - 293.90, 668.03
+x
+br2 [Breskva] - 305.00, 635.50
+x
+kk [Šljiva] - 330.51, 582.49
+x
+sljiv [Šljiva] - 305.40, 598.52
+x
+sljiva [Šljiva] - 346.94, 519.01
+x
+breskva [Breskva] - 286.89, 413.49
+x
+jb [Jabuka] - 262.37, 318.48
+x
+jb [Jabuka] - 238.35, 356.98
+x
+jb [Jabuka] - 203.83, 299.97
+x
+kr [Kruška] - 216.84, 401.49

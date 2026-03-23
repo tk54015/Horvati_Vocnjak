@@ -38,7 +38,7 @@
                   {
                       "id":  "st004",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
+                      "vrsta":  "Dunja",
                       "naziv":  "dunja",
                       "lat":  105,
                       "lng":  799,
@@ -48,7 +48,7 @@
                   {
                       "id":  "st005",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
+                      "vrsta":  "Dunja",
                       "naziv":  "dunjaž",
                       "lat":  95.99,
                       "lng":  775,
@@ -268,7 +268,7 @@
                   {
                       "id":  "st027",
                       "kategorija":  "stablo",
-                      "vrsta":  "Šljiva",
+                      "vrsta":  "Trešnja",
                       "naziv":  "tresnja",
                       "lat":  158.65,
                       "lng":  505,
@@ -418,7 +418,7 @@
                   {
                       "id":  "st042",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
+                      "vrsta":  "Trešnja",
                       "naziv":  "tresnja",
                       "lat":  276.96,
                       "lng":  289.99,
@@ -508,7 +508,7 @@
                   {
                       "id":  "st051",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
+                      "vrsta":  "Trešnja",
                       "naziv":  "tresnja",
                       "lat":  411.46,
                       "lng":  92.46,
@@ -518,7 +518,7 @@
                   {
                       "id":  "st052",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
+                      "vrsta":  "Trešnja",
                       "naziv":  "tresnja",
                       "lat":  387.44,
                       "lng":  159.97,

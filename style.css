@@ -113,13 +113,18 @@ body {
     border-color: #a06510;
 }
 
+#toggle-changes.active {
+    background: #2f5f96;
+    border-color: #244b77;
+}
+
 #tree-type-picker small {
     color: #555;
     font-size: 11px;
 }
 
 #plant-panel {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
     z-index: 1000;
@@ -197,10 +202,10 @@ body {
     background: #3367a4;
 }
 
-#json-modal {
-    position: absolute;
+#changes-modal {
+    position: fixed;
     inset: 0;
-    z-index: 1500;
+    z-index: 1600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -209,8 +214,8 @@ body {
     box-sizing: border-box;
 }
 
-.json-modal-card {
-    width: min(920px, 100%);
+.changes-modal-card {
+    width: min(760px, 100%);
     max-height: min(80vh, 760px);
     background: #fff;
     border: 1px solid #b5b5b5;
@@ -220,7 +225,7 @@ body {
     flex-direction: column;
 }
 
-.json-modal-header {
+.changes-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -229,7 +234,7 @@ body {
     gap: 8px;
 }
 
-#close-json-modal {
+#close-changes-modal {
     border: 1px solid #666;
     background: #888;
     color: #fff;
@@ -238,19 +243,50 @@ body {
     padding: 5px 8px;
 }
 
-#close-json-modal:hover {
+#close-changes-modal:hover {
     background: #777;
 }
 
-#json-preview-content {
+#tree-list-items {
     margin: 0;
-    padding: 12px;
+    padding: 10px 12px;
+    list-style: none;
     overflow: auto;
-    white-space: pre;
-    font-family: Consolas, 'Courier New', monospace;
-    font-size: 12px;
-    line-height: 1.35;
-    color: #222;
+}
+
+#tree-list-items li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+#tree-list-items li span {
+    flex: 1;
+}
+
+.remove-tree,
+.remove-detail {
+    border: 1px solid #b84a4a;
+    background: #d65c5c;
+    color: #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    line-height: 14px;
+    padding: 0;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.remove-tree:hover,
+.remove-detail:hover {
+    background: #bb4646;
 }
 
 #coordinates {

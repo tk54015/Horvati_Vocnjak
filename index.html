@@ -37,7 +37,7 @@
         <option value="vinova_loza">Vinova loza</option>
       </select>
       <button id="export-json" type="button">Preuzmi JSON</button>
-      <button id="preview-json" type="button">Prikazi JSON u sredini</button>
+      <button id="toggle-changes" type="button">Prikazi izmjene podataka</button>
       <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
       <small>Sve novo ostaje spremljeno nakon refresha.</small>
     </div>
@@ -73,13 +73,13 @@
       </div>
     </div>
 
-    <div id="json-modal" class="hidden" role="dialog" aria-modal="true" aria-label="JSON pregled">
-      <div class="json-modal-card">
-        <div class="json-modal-header">
-          <b>Pregled JSON podataka</b>
-          <button id="close-json-modal" type="button">Zatvori</button>
+    <div id="changes-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Izmjene podataka">
+      <div class="changes-modal-card">
+        <div class="changes-modal-header">
+          <b>Izmjene podataka</b>
+          <button id="close-changes-modal" type="button">Zatvori</button>
         </div>
-        <pre id="json-preview-content"></pre>
+        <ul id="tree-list-items"></ul>
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

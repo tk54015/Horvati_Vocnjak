@@ -39,6 +39,7 @@ var plantDetails = {};
 var userMarkersById = {};
 var allItemsById = {};
 var allMarkersById = {};
+var baseOriginalNotesById = {};
 var dragEnabled = false;
 var selectedPlant = null;
 
@@ -213,7 +214,77 @@ function downloadJson() {
 }
 
 function renderChangeList() {
-    // Privremeno ugašeno: desni panel koristi se za detalje jedne biljke.
+    var list = document.getElementById('tree-list-items');
+    if (!list) return;
+
+    var rows = [];
+
+    userItems.forEach(function (item) {
+        rows.push(
+            '<li><span>NOVO: ' + item.id + ' | ' + item.name + ' (' + item.treeType + ')</span>' +
+            '<button class="remove-tree" data-id="' + item.id + '" title="Obriši novo stablo">x</button></li>'
+        );
+    });
+
+    Object.keys(noteOverrides).forEach(function (itemId) {
+        var isUser = userItems.some(function (u) { return u.id === itemId; });
+        if (isUser) return;
+        var item = allItemsById[itemId];
+        if (!item) return;
+        rows.push(
+            '<li><span>PROMJENA NAPOMENE: ' + item.id + ' | ' + item.name + '</span>' +
+            '<button class="remove-detail" data-id="' + item.id + '" title="Makni promjenu napomene">x</button></li>'
+        );
+    });
+
+    Object.keys(plantDetails).forEach(function (itemId) {
+        var isUser = userItems.some(function (u) { return u.id === itemId; });
+        if (isUser) return;
+        if (noteOverrides[itemId]) return;
+
+        var detail = plantDetails[itemId] || {};
+        var hasChange = !!(detail.orezano && detail.orezano !== 'nepoznato') ||
+            !!(detail.gnojeno && detail.gnojeno !== 'nepoznato') ||
+            !!(detail.spricano) ||
+            !!(detail.napomena);
+        if (!hasChange) return;
+
+        var item = allItemsById[itemId];
+        if (!item) return;
+        rows.push(
+            '<li><span>PROMJENA STATUSA: ' + item.id + ' | ' + item.name + '</span>' +
+            '<button class="remove-detail" data-id="' + item.id + '" title="Makni promjenu statusa">x</button></li>'
+        );
+    });
+
+    if (rows.length === 0) {
+        rows.push('<li><span>Nema spremljenih izmjena.</span></li>');
+    }
+
+    list.innerHTML = rows.join('');
+}
+
+function clearBaseItemChanges(itemId) {
+    delete noteOverrides[itemId];
+    saveNoteOverrides();
+
+    delete plantDetails[itemId];
+    savePlantDetails();
+
+    var item = allItemsById[itemId];
+    if (item) {
+        item.notes = baseOriginalNotesById[itemId] || '';
+    }
+
+    if (selectedPlant && selectedPlant.itemId === itemId) {
+        selectedPlant = null;
+        var emptyEl = document.getElementById('plant-empty');
+        var formEl = document.getElementById('plant-form');
+        if (emptyEl) emptyEl.classList.remove('hidden');
+        if (formEl) formEl.classList.add('hidden');
+    }
+
+    renderChangeList();
 }
 
 function normalizeText(value) {
@@ -427,7 +498,9 @@ function normalizeItems(data) {
 }
 
 function applyStoredNotesToBaseItems() {
+    baseOriginalNotesById = {};
     baseItems.forEach(function (item) {
+        baseOriginalNotesById[item.id] = item.notes || '';
         var detail = getPlantDetails(item.id);
         if (detail.napomena) item.notes = detail.napomena;
         else if (noteOverrides[item.id]) item.notes = noteOverrides[item.id];
@@ -533,40 +606,62 @@ if (savePlantBtn) {
     savePlantBtn.addEventListener('click', saveSelectedPlantPanel);
 }
 
-var previewJsonBtn = document.getElementById('preview-json');
-var jsonModal = document.getElementById('json-modal');
-var closeJsonModalBtn = document.getElementById('close-json-modal');
-var jsonPreviewContent = document.getElementById('json-preview-content');
+var toggleChangesBtn = document.getElementById('toggle-changes');
+var changesModal = document.getElementById('changes-modal');
+var closeChangesModalBtn = document.getElementById('close-changes-modal');
 
-function openJsonModal() {
-    if (!jsonModal || !jsonPreviewContent) return;
-    var payload = buildExportPayload();
-    jsonPreviewContent.textContent = JSON.stringify(payload, null, 2);
-    jsonModal.classList.remove('hidden');
+function openChangesModal() {
+    if (!changesModal) return;
+    renderChangeList();
+    changesModal.classList.remove('hidden');
+    if (toggleChangesBtn) toggleChangesBtn.classList.add('active');
 }
 
-function closeJsonModal() {
-    if (!jsonModal) return;
-    jsonModal.classList.add('hidden');
+function closeChangesModal() {
+    if (!changesModal) return;
+    changesModal.classList.add('hidden');
+    if (toggleChangesBtn) toggleChangesBtn.classList.remove('active');
 }
 
-if (previewJsonBtn) {
-    previewJsonBtn.addEventListener('click', openJsonModal);
+if (toggleChangesBtn && changesModal) {
+    toggleChangesBtn.addEventListener('click', function () {
+        if (changesModal.classList.contains('hidden')) openChangesModal();
+        else closeChangesModal();
+    });
 }
 
-if (closeJsonModalBtn) {
-    closeJsonModalBtn.addEventListener('click', closeJsonModal);
+if (closeChangesModalBtn) {
+    closeChangesModalBtn.addEventListener('click', closeChangesModal);
 }
 
-if (jsonModal) {
-    jsonModal.addEventListener('click', function (event) {
-        if (event.target === jsonModal) closeJsonModal();
+if (changesModal) {
+    changesModal.addEventListener('click', function (event) {
+        if (event.target === changesModal) closeChangesModal();
+    });
+}
+
+var changeListEl = document.getElementById('tree-list-items');
+if (changeListEl) {
+    changeListEl.addEventListener('click', function (event) {
+        var target = event.target;
+        if (!target || !target.classList) return;
+        var id = target.getAttribute('data-id');
+        if (!id) return;
+
+        if (target.classList.contains('remove-tree')) {
+            removeUserItem(id);
+            return;
+        }
+
+        if (target.classList.contains('remove-detail')) {
+            clearBaseItemChanges(id);
+        }
     });
 }
 
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-        closeJsonModal();
+        closeChangesModal();
         return;
     }
 
@@ -610,8 +705,6 @@ if (toggleDragBtn) {
         toggleDragBtn.classList.toggle('drag-locked', !dragEnabled);
     });
 }
-
-// Desna lista izmjena je privremeno maknuta.
 
 // Klik na mapu: dodaj novo stablo
 map.on('click', function (e) {

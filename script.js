@@ -408,6 +408,14 @@ function applyNote(item, noteText, isUserItem) {
 }
 
 function openPlantPanel(item, isUserItem) {
+    if (plantPanelEl && plantPanelEl.classList.contains('minimized')) {
+        plantPanelEl.classList.remove('minimized');
+        if (togglePlantPanelBtn) {
+            togglePlantPanelBtn.textContent = 'x';
+            togglePlantPanelBtn.title = 'Minimiziraj panel';
+        }
+    }
+
     selectedPlant = {
         itemId: item.id,
         isUserItem: !!isUserItem

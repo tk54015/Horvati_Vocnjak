@@ -139,6 +139,35 @@ body {
     max-width: 320px;
 }
 
+.plant-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+#toggle-plant-panel {
+    border: 1px solid #666;
+    background: #888;
+    color: #fff;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+    line-height: 18px;
+    padding: 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#toggle-plant-panel:hover {
+    background: #777;
+}
+
+#plant-panel.minimized #plant-empty,
+#plant-panel.minimized #plant-form {
+    display: none !important;
+}
+
 #plant-empty {
     margin-top: 8px;
     color: #666;

@@ -31,15 +31,18 @@ map.setView([357, 500], 0);
 var USER_STORAGE_KEY = 'horvati_inventory_user_items_v1';
 var NOTE_STORAGE_KEY = 'horvati_inventory_note_overrides_v1';
 var DETAILS_STORAGE_KEY = 'horvati_inventory_plant_details_v1';
+var POSITION_STORAGE_KEY = 'horvati_inventory_position_overrides_v1';
 
 var baseItems = [];
 var userItems = [];
 var noteOverrides = {};
 var plantDetails = {};
+var positionOverrides = {};
 var userMarkersById = {};
 var allItemsById = {};
 var allMarkersById = {};
 var baseOriginalNotesById = {};
+var baseOriginalPositionsById = {};
 var dragEnabled = false;
 var selectedPlant = null;
 
@@ -170,6 +173,26 @@ function loadPlantDetails() {
     }
 }
 
+function savePositionOverrides() {
+    try {
+        localStorage.setItem(POSITION_STORAGE_KEY, JSON.stringify(positionOverrides));
+    } catch (error) {
+        console.error('Ne mogu spremiti promjene lokacije:', error);
+    }
+}
+
+function loadPositionOverrides() {
+    try {
+        var raw = localStorage.getItem(POSITION_STORAGE_KEY);
+        if (!raw) return {};
+        var parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+        console.error('Ne mogu učitati promjene lokacije:', error);
+        return {};
+    }
+}
+
 function getPlantDetails(itemId) {
     return plantDetails[itemId] || {
         orezano: 'nepoznato',
@@ -253,7 +276,19 @@ function renderChangeList() {
         if (!item) return;
         rows.push(
             '<li><span>PROMJENA STATUSA: ' + item.id + ' | ' + item.name + '</span>' +
-            '<button class="remove-detail" data-id="' + item.id + '" title="Makni promjenu statusa">x</button></li>'
+            '<button class="remove-detail" data-id="' + item.id + '" data-kind="status" title="Makni promjenu statusa">x</button></li>'
+        );
+    });
+
+    Object.keys(positionOverrides).forEach(function (itemId) {
+        var isUser = userItems.some(function (u) { return u.id === itemId; });
+        if (isUser) return;
+
+        var item = allItemsById[itemId];
+        if (!item) return;
+        rows.push(
+            '<li><span>PROMJENA LOKACIJE: ' + item.id + ' | ' + item.name + ' -> ' + Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2) + '</span>' +
+            '<button class="remove-detail" data-id="' + item.id + '" data-kind="position" title="Makni promjenu lokacije">x</button></li>'
         );
     });
 
@@ -282,6 +317,27 @@ function clearBaseItemChanges(itemId) {
         var formEl = document.getElementById('plant-form');
         if (emptyEl) emptyEl.classList.remove('hidden');
         if (formEl) formEl.classList.add('hidden');
+    }
+
+    renderChangeList();
+}
+
+function clearBaseItemPosition(itemId) {
+    delete positionOverrides[itemId];
+    savePositionOverrides();
+
+    var original = baseOriginalPositionsById[itemId];
+    var item = allItemsById[itemId];
+    if (original && item) {
+        item.lat = original.lat;
+        item.lng = original.lng;
+
+        var marker = allMarkersById[itemId];
+        if (marker) marker.setLatLng([original.lat, original.lng]);
+
+        if (selectedPlant && selectedPlant.itemId === itemId) {
+            document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
+        }
     }
 
     renderChangeList();
@@ -409,9 +465,7 @@ function createMarker(item, options) {
         });
     }
 
-    if (opts.isUserItem) {
-        markerOptions.draggable = dragEnabled;
-    }
+    markerOptions.draggable = dragEnabled;
 
     var marker = L.marker([item.lat, item.lng], markerOptions).addTo(map);
     if (item.id) {
@@ -424,22 +478,34 @@ function createMarker(item, options) {
 
     if (opts.isUserItem && item.id) {
         userMarkersById[item.id] = marker;
+    }
 
-        marker.on('dragend', function () {
-            var newLatLng = marker.getLatLng();
-            item.lat = newLatLng.lat;
-            item.lng = newLatLng.lng;
+    marker.on('dragend', function () {
+        var newLatLng = marker.getLatLng();
+        item.lat = newLatLng.lat;
+        item.lng = newLatLng.lng;
 
+        if (selectedPlant && selectedPlant.itemId === item.id) {
+            document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
+        }
+
+        if (opts.isUserItem) {
             var found = userItems.find(function (i) { return i.id === item.id; });
             if (found) {
                 found.lat = newLatLng.lat;
                 found.lng = newLatLng.lng;
             }
-
             saveUserItems();
-            renderChangeList();
-        });
-    }
+        } else if (item.id) {
+            positionOverrides[item.id] = {
+                lat: Number(newLatLng.lat),
+                lng: Number(newLatLng.lng)
+            };
+            savePositionOverrides();
+        }
+
+        renderChangeList();
+    });
 
     return marker;
 }
@@ -507,6 +573,22 @@ function applyStoredNotesToBaseItems() {
     });
 }
 
+function applyStoredPositionsToBaseItems() {
+    baseOriginalPositionsById = {};
+    baseItems.forEach(function (item) {
+        baseOriginalPositionsById[item.id] = {
+            lat: Number(item.lat),
+            lng: Number(item.lng)
+        };
+
+        var moved = positionOverrides[item.id];
+        if (moved && typeof moved.lat === 'number' && typeof moved.lng === 'number') {
+            item.lat = Number(moved.lat);
+            item.lng = Number(moved.lng);
+        }
+    });
+}
+
 function registerAllItemsMap() {
     allItemsById = {};
     baseItems.forEach(function (item) { allItemsById[item.id] = item; });
@@ -516,6 +598,7 @@ function registerAllItemsMap() {
 function loadInventory() {
     noteOverrides = loadNoteOverrides();
     plantDetails = loadPlantDetails();
+    positionOverrides = loadPositionOverrides();
 
     fetch('data/stabla.json')
         .then(function (response) {
@@ -524,6 +607,7 @@ function loadInventory() {
         })
         .then(function (data) {
             baseItems = normalizeItems(data);
+            applyStoredPositionsToBaseItems();
             applyStoredNotesToBaseItems();
 
             userItems = loadUserItems();
@@ -549,6 +633,7 @@ function loadInventory() {
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     baseItems = normalizeItems(data);
+                    applyStoredPositionsToBaseItems();
                     applyStoredNotesToBaseItems();
 
                     userItems = loadUserItems();
@@ -606,6 +691,17 @@ if (savePlantBtn) {
     savePlantBtn.addEventListener('click', saveSelectedPlantPanel);
 }
 
+var plantPanelEl = document.getElementById('plant-panel');
+var togglePlantPanelBtn = document.getElementById('toggle-plant-panel');
+
+if (plantPanelEl && togglePlantPanelBtn) {
+    togglePlantPanelBtn.addEventListener('click', function () {
+        var minimized = plantPanelEl.classList.toggle('minimized');
+        togglePlantPanelBtn.textContent = minimized ? '+' : 'x';
+        togglePlantPanelBtn.title = minimized ? 'Prikaži panel' : 'Minimiziraj panel';
+    });
+}
+
 var toggleChangesBtn = document.getElementById('toggle-changes');
 var changesModal = document.getElementById('changes-modal');
 var closeChangesModalBtn = document.getElementById('close-changes-modal');
@@ -654,7 +750,12 @@ if (changeListEl) {
         }
 
         if (target.classList.contains('remove-detail')) {
-            clearBaseItemChanges(id);
+            var kind = target.getAttribute('data-kind') || '';
+            if (kind === 'position') {
+                clearBaseItemPosition(id);
+            } else {
+                clearBaseItemChanges(id);
+            }
         }
     });
 }
@@ -693,8 +794,8 @@ var toggleDragBtn = document.getElementById('toggle-drag');
 if (toggleDragBtn) {
     toggleDragBtn.addEventListener('click', function () {
         dragEnabled = !dragEnabled;
-        Object.keys(userMarkersById).forEach(function (id) {
-            var marker = userMarkersById[id];
+        Object.keys(allMarkersById).forEach(function (id) {
+            var marker = allMarkersById[id];
             if (!marker.dragging) return;
             if (dragEnabled) marker.dragging.enable();
             else marker.dragging.disable();

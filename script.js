@@ -146,6 +146,7 @@ function renderChangeList() {
     userItems.forEach(function (item) {
         var li = document.createElement('li');
         li.setAttribute('data-user-id', item.id);
+        li.setAttribute('data-item-id', item.id);
 
         var notePart = item.notes ? ' | napomena: ' + item.notes : '';
         li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - ' +
@@ -168,9 +169,53 @@ function renderChangeList() {
         if (!item) return;
 
         var li = document.createElement('li');
+        li.setAttribute('data-item-id', itemId);
         li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - napomena: ' + note + '</span>';
         list.appendChild(li);
     });
+}
+
+function normalizeText(value) {
+    return String(value || '').trim().toLowerCase();
+}
+
+function isDuplicateOfBase(userItem) {
+    var uName = normalizeText(userItem.name);
+    var uType = normalizeText(userItem.treeType);
+    var uLat = Number(userItem.lat).toFixed(2);
+    var uLng = Number(userItem.lng).toFixed(2);
+
+    return baseItems.some(function (baseItem) {
+        return normalizeText(baseItem.name) === uName &&
+            normalizeText(baseItem.treeType) === uType &&
+            Number(baseItem.lat).toFixed(2) === uLat &&
+            Number(baseItem.lng).toFixed(2) === uLng;
+    });
+}
+
+function cleanupLegacyUserDuplicates() {
+    if (!Array.isArray(userItems) || userItems.length === 0 || baseItems.length === 0) return;
+    var before = userItems.length;
+    userItems = userItems.filter(function (item) {
+        return !isDuplicateOfBase(item);
+    });
+
+    if (userItems.length !== before) {
+        saveUserItems();
+    }
+}
+
+function editNoteFromListItem(itemId) {
+    var item = allItemsById[itemId];
+    if (!item) return;
+
+    var current = item.notes || '';
+    var newNote = prompt('Napomena za: ' + item.name, current);
+    if (newNote === null) return;
+
+    var cleaned = newNote.trim();
+    var isUserItem = userItems.some(function (i) { return i.id === itemId; });
+    applyNote(item, cleaned, isUserItem);
 }
 
 function applyNote(item, noteText, isUserItem) {
@@ -325,11 +370,14 @@ function loadInventory() {
         .then(function (data) {
             baseItems = normalizeItems(data);
             applyStoredNotesToBaseItems();
+
+            userItems = loadUserItems();
+            cleanupLegacyUserDuplicates();
+
             baseItems.forEach(function (item) {
                 createMarker(item, { isUserItem: false });
             });
 
-            userItems = loadUserItems();
             userItems.forEach(function (item, index) {
                 if (!item.id) {
                     item.id = 'user_' + Date.now() + '_' + index;
@@ -347,11 +395,14 @@ function loadInventory() {
                 .then(function (data) {
                     baseItems = normalizeItems(data);
                     applyStoredNotesToBaseItems();
+
+                    userItems = loadUserItems();
+                    cleanupLegacyUserDuplicates();
+
                     baseItems.forEach(function (item) {
                         createMarker(item, { isUserItem: false });
                     });
 
-                    userItems = loadUserItems();
                     userItems.forEach(function (item, index) {
                         if (!item.id) {
                             item.id = 'user_' + Date.now() + '_' + index;
@@ -430,13 +481,21 @@ if (toggleDragBtn) {
 var treeListEl = document.getElementById('tree-list-items');
 if (treeListEl) {
     treeListEl.addEventListener('click', function (event) {
-        if (!event.target.classList.contains('remove-tree')) return;
-        event.preventDefault();
-        event.stopPropagation();
+        if (event.target.classList.contains('remove-tree')) {
+            event.preventDefault();
+            event.stopPropagation();
 
-        var userId = event.target.getAttribute('data-user-id');
-        if (!userId) return;
-        removeUserItem(userId);
+            var userId = event.target.getAttribute('data-user-id');
+            if (!userId) return;
+            removeUserItem(userId);
+            return;
+        }
+
+        var row = event.target.closest('li[data-item-id]');
+        if (!row) return;
+        var itemId = row.getAttribute('data-item-id');
+        if (!itemId) return;
+        editNoteFromListItem(itemId);
     });
 }
 

@@ -30,13 +30,17 @@ map.setView([357, 500], 0);
 
 var USER_STORAGE_KEY = 'horvati_inventory_user_items_v1';
 var NOTE_STORAGE_KEY = 'horvati_inventory_note_overrides_v1';
+var DETAILS_STORAGE_KEY = 'horvati_inventory_plant_details_v1';
 
 var baseItems = [];
 var userItems = [];
 var noteOverrides = {};
+var plantDetails = {};
 var userMarkersById = {};
 var allItemsById = {};
+var allMarkersById = {};
 var dragEnabled = false;
+var selectedPlant = null;
 
 function slugify(text) {
     return String(text || '')
@@ -93,8 +97,13 @@ function makeFallbackId(item, index) {
 }
 
 function formatPopup(item) {
+    var details = getPlantDetails(item.id);
+    var orezano = details.orezano || 'nepoznato';
+    var gnojeno = details.gnojeno || 'nepoznato';
+    var spricano = details.spricano ? '<br>Spricano: ' + details.spricano : '';
     var noteHtml = item.notes ? '<br>Napomena: ' + item.notes : '';
-    return '<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(item.lat).toFixed(2) + ', Lng: ' + Number(item.lng).toFixed(2) + noteHtml + '<br><small>Klik na marker za napomenu</small>';
+    return '<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(item.lat).toFixed(2) + ', Lng: ' + Number(item.lng).toFixed(2) +
+        '<br>Orezano: ' + orezano + '<br>Gnojeno: ' + gnojeno + spricano + noteHtml + '<br><small>Podaci se uređuju desno</small>';
 }
 
 function saveUserItems() {
@@ -135,6 +144,35 @@ function loadNoteOverrides() {
         console.error('Ne mogu učitati napomene:', error);
         return {};
     }
+}
+
+function savePlantDetails() {
+    try {
+        localStorage.setItem(DETAILS_STORAGE_KEY, JSON.stringify(plantDetails));
+    } catch (error) {
+        console.error('Ne mogu spremiti detalje biljke:', error);
+    }
+}
+
+function loadPlantDetails() {
+    try {
+        var raw = localStorage.getItem(DETAILS_STORAGE_KEY);
+        if (!raw) return {};
+        var parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+        console.error('Ne mogu učitati detalje biljke:', error);
+        return {};
+    }
+}
+
+function getPlantDetails(itemId) {
+    return plantDetails[itemId] || {
+        orezano: 'nepoznato',
+        gnojeno: 'nepoznato',
+        spricano: '',
+        napomena: ''
+    };
 }
 
 function toExportItem(item, index) {
@@ -181,40 +219,7 @@ function downloadJson() {
 }
 
 function renderChangeList() {
-    var list = document.getElementById('tree-list-items');
-    if (!list) return;
-    list.innerHTML = '';
-
-    userItems.forEach(function (item) {
-        var li = document.createElement('li');
-        li.setAttribute('data-user-id', item.id);
-        li.setAttribute('data-item-id', item.id);
-
-        var notePart = item.notes ? ' | napomena: ' + item.notes : '';
-        li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - ' +
-            Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2) + notePart + '</span>';
-
-        var removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-tree';
-        removeBtn.setAttribute('data-user-id', item.id);
-        removeBtn.title = 'Ukloni unos';
-        removeBtn.textContent = 'x';
-        li.appendChild(removeBtn);
-        list.appendChild(li);
-    });
-
-    Object.keys(noteOverrides).forEach(function (itemId) {
-        var note = noteOverrides[itemId];
-        if (!note) return;
-        var item = allItemsById[itemId];
-        if (!item) return;
-
-        var li = document.createElement('li');
-        li.setAttribute('data-item-id', itemId);
-        li.innerHTML = '<span><b>' + item.name + '</b> [' + item.treeType + '] - napomena: ' + note + '</span>';
-        list.appendChild(li);
-    });
+    // Privremeno ugašeno: desni panel koristi se za detalje jedne biljke.
 }
 
 function normalizeText(value) {
@@ -281,6 +286,55 @@ function applyNote(item, noteText, isUserItem) {
     renderChangeList();
 }
 
+function openPlantPanel(item, isUserItem) {
+    selectedPlant = {
+        itemId: item.id,
+        isUserItem: !!isUserItem
+    };
+
+    var emptyEl = document.getElementById('plant-empty');
+    var formEl = document.getElementById('plant-form');
+    if (emptyEl) emptyEl.classList.add('hidden');
+    if (formEl) formEl.classList.remove('hidden');
+
+    document.getElementById('plant-id').textContent = item.id || '-';
+    document.getElementById('plant-type').textContent = item.treeType || '-';
+    document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
+
+    var details = getPlantDetails(item.id);
+    document.getElementById('status-orezano').value = details.orezano || 'nepoznato';
+    document.getElementById('status-gnojeno').value = details.gnojeno || 'nepoznato';
+    document.getElementById('status-spricano').value = details.spricano || '';
+
+    var noteInput = document.getElementById('status-napomena');
+    noteInput.value = details.napomena || item.notes || '';
+    noteInput.setAttribute('readonly', 'readonly');
+}
+
+function saveSelectedPlantPanel() {
+    if (!selectedPlant) return;
+    var item = allItemsById[selectedPlant.itemId];
+    if (!item) return;
+
+    var details = {
+        orezano: document.getElementById('status-orezano').value,
+        gnojeno: document.getElementById('status-gnojeno').value,
+        spricano: document.getElementById('status-spricano').value.trim(),
+        napomena: document.getElementById('status-napomena').value.trim()
+    };
+
+    plantDetails[item.id] = details;
+    savePlantDetails();
+
+    item.notes = details.napomena;
+    applyNote(item, details.napomena, selectedPlant.isUserItem);
+
+    var marker = allMarkersById[item.id];
+    if (marker) {
+        marker.setPopupContent(formatPopup(item));
+    }
+}
+
 function createMarker(item, options) {
     var opts = options || {};
     var markerOptions = {};
@@ -301,15 +355,12 @@ function createMarker(item, options) {
 
     var marker = L.marker([item.lat, item.lng], markerOptions).addTo(map);
     marker.bindPopup(formatPopup(item));
+    if (item.id) {
+        allMarkersById[item.id] = marker;
+    }
 
     marker.on('click', function () {
-        var current = item.notes || '';
-        var newNote = prompt('Napomena za: ' + item.name, current);
-        if (newNote === null) return;
-
-        var cleaned = newNote.trim();
-        applyNote(item, cleaned, !!opts.isUserItem);
-        marker.setPopupContent(formatPopup(item));
+        openPlantPanel(item, !!opts.isUserItem);
         marker.openPopup();
     });
 
@@ -341,6 +392,7 @@ function removeUserItem(userId) {
     if (marker) {
         map.removeLayer(marker);
         delete userMarkersById[userId];
+        delete allMarkersById[userId];
     }
 
     userItems = userItems.filter(function (item) {
@@ -390,9 +442,9 @@ function normalizeItems(data) {
 
 function applyStoredNotesToBaseItems() {
     baseItems.forEach(function (item) {
-        if (noteOverrides[item.id]) {
-            item.notes = noteOverrides[item.id];
-        }
+        var detail = getPlantDetails(item.id);
+        if (detail.napomena) item.notes = detail.napomena;
+        else if (noteOverrides[item.id]) item.notes = noteOverrides[item.id];
     });
 }
 
@@ -404,6 +456,7 @@ function registerAllItemsMap() {
 
 function loadInventory() {
     noteOverrides = loadNoteOverrides();
+    plantDetails = loadPlantDetails();
 
     fetch('data/stabla.json')
         .then(function (response) {
@@ -479,6 +532,21 @@ loadInventory();
 document.getElementById('zoom-in').addEventListener('click', function () { map.zoomIn(); });
 document.getElementById('zoom-out').addEventListener('click', function () { map.zoomOut(); });
 
+var noteInputEl = document.getElementById('status-napomena');
+if (noteInputEl) {
+    noteInputEl.addEventListener('focus', function () {
+        noteInputEl.removeAttribute('readonly');
+    });
+    noteInputEl.addEventListener('click', function () {
+        noteInputEl.removeAttribute('readonly');
+    });
+}
+
+var savePlantBtn = document.getElementById('save-plant-status');
+if (savePlantBtn) {
+    savePlantBtn.addEventListener('click', saveSelectedPlantPanel);
+}
+
 document.addEventListener('keydown', function (e) {
     if (e.key === '+' || e.key === '=' || e.code === 'Equal') {
         map.zoomIn();
@@ -521,26 +589,7 @@ if (toggleDragBtn) {
     });
 }
 
-var treeListEl = document.getElementById('tree-list-items');
-if (treeListEl) {
-    treeListEl.addEventListener('click', function (event) {
-        if (event.target.classList.contains('remove-tree')) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            var userId = event.target.getAttribute('data-user-id');
-            if (!userId) return;
-            removeUserItem(userId);
-            return;
-        }
-
-        var row = event.target.closest('li[data-item-id]');
-        if (!row) return;
-        var itemId = row.getAttribute('data-item-id');
-        if (!itemId) return;
-        editNoteFromListItem(itemId);
-    });
-}
+// Desna lista izmjena je privremeno maknuta.
 
 // Klik na mapu: dodaj novo stablo
 map.on('click', function (e) {

@@ -40,9 +40,36 @@
       <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
       <small>Sve novo ostaje spremljeno nakon refresha.</small>
     </div>
-    <div id="tree-list">
-      <b>Izmjene (novo + napomene):</b>
-      <ul id="tree-list-items"></ul>
+    <div id="plant-panel">
+      <b>Podaci o biljci</b>
+      <div id="plant-empty">Klikni marker za otvaranje podataka.</div>
+      <div id="plant-form" class="hidden">
+        <div class="plant-meta"><span>ID:</span><strong id="plant-id">-</strong></div>
+        <div class="plant-meta"><span>Vrsta:</span><strong id="plant-type">-</strong></div>
+        <div class="plant-meta"><span>Koordinate:</span><strong id="plant-coords">-</strong></div>
+
+        <label for="status-orezano">Orezano</label>
+        <select id="status-orezano">
+          <option value="nepoznato">Nepoznato</option>
+          <option value="da">Da</option>
+          <option value="ne">Ne</option>
+        </select>
+
+        <label for="status-gnojeno">Gnojeno</label>
+        <select id="status-gnojeno">
+          <option value="nepoznato">Nepoznato</option>
+          <option value="da">Da</option>
+          <option value="ne">Ne</option>
+        </select>
+
+        <label for="status-spricano">Spricano (komentari)</label>
+        <textarea id="status-spricano" rows="4" placeholder="Primjer: da, modro ulje 4.3.2025"></textarea>
+
+        <label for="status-napomena">Napomena</label>
+        <input id="status-napomena" type="text" readonly placeholder="Klikni ovdje za unos napomene" />
+
+        <button id="save-plant-status" type="button">Spremi podatke biljke</button>
+      </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>

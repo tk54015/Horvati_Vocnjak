@@ -46,6 +46,40 @@ function slugify(text) {
         .replace(/^_+|_+$/g, '') || 'oznaka';
 }
 
+function normalizeType(typeText) {
+    var t = String(typeText || '').toLowerCase();
+    if (t.indexOf('jabuk') !== -1) return 'jabuka';
+    if (t.indexOf('kru') !== -1) return 'kruska';
+    if (t.indexOf('bresk') !== -1) return 'breskva';
+    if (t.indexOf('smok') !== -1) return 'smokva';
+    if (t.indexOf('kupin') !== -1) return 'kupina';
+    if (t.indexOf('glog') !== -1) return 'glog';
+    if (t.indexOf('dunj') !== -1) return 'dunja';
+    if (t.indexOf('tres') !== -1 || t.indexOf('tre') !== -1) return 'tresnja';
+    if (t.indexOf('sljiv') !== -1 || t.indexOf('slji') !== -1) return 'sljiva';
+    return slugify(typeText || 'stablo');
+}
+
+function iconByType(typeText) {
+    var t = normalizeType(typeText);
+    if (t === 'jabuka') return 'icons/apple.png';
+    if (t === 'kruska') return 'icons/pear.png';
+    if (t === 'breskva') return 'icons/peach.png';
+    return 'icons/download.png';
+}
+
+function nextGlobalIdNumber() {
+    var maxNumber = 0;
+    var all = baseItems.concat(userItems);
+    all.forEach(function (item) {
+        var match = String(item.id || '').match(/(\d+)$/);
+        if (!match) return;
+        var n = Number(match[1]);
+        if (n > maxNumber) maxNumber = n;
+    });
+    return maxNumber + 1;
+}
+
 function makeFallbackId(item, index) {
     return slugify(item.name) + '_' + Number(item.lat).toFixed(2) + '_' + Number(item.lng).toFixed(2) + '_' + index;
 }
@@ -243,9 +277,10 @@ function createMarker(item, options) {
     var opts = options || {};
     var markerOptions = {};
 
-    if (item.iconUrl) {
+    var resolvedIcon = item.iconUrl || iconByType(item.treeType);
+    if (resolvedIcon) {
         markerOptions.icon = L.icon({
-            iconUrl: item.iconUrl,
+            iconUrl: resolvedIcon,
             iconSize: [40, 40],
             iconAnchor: [20, 40],
             popupAnchor: [0, -40]
@@ -503,19 +538,21 @@ if (treeListEl) {
 map.on('click', function (e) {
     var coords = e.latlng;
     var treeTypeEl = document.getElementById('tree-type');
-    var treeType = treeTypeEl ? treeTypeEl.options[treeTypeEl.selectedIndex].text : 'Stablo';
+    var treeTypeRaw = treeTypeEl ? treeTypeEl.options[treeTypeEl.selectedIndex].text : 'Stablo';
+    var treeType = normalizeType(treeTypeRaw);
+    var nextId = nextGlobalIdNumber();
 
-    var name = prompt('Ime/oznaka stabla? (vrsta: ' + treeType + ')');
+    var name = prompt('Ime/oznaka stabla? (vrsta: ' + treeType + ')', treeType);
     if (name === null) return;
 
     var newItem = {
-        id: 'user_' + Date.now() + '_' + Math.floor(Math.random() * 100000),
+        id: treeType + String(nextId).padStart(3, '0'),
         name: (name || treeType),
         treeType: treeType,
         lat: coords.lat,
         lng: coords.lng,
         notes: '',
-        iconUrl: null
+        iconUrl: iconByType(treeType)
     };
 
     userItems.push(newItem);

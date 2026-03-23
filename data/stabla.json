@@ -6,614 +6,614 @@
              },
     "items":  [
                   {
-                      "id":  "st001",
+                      "id":  "glog001",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
-                      "naziv":  "nesto1",
+                      "vrsta":  "glog",
+                      "naziv":  "glog",
                       "lat":  151.28,
                       "lng":  892.07,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st002",
+                      "id":  "glog002",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
-                      "naziv":  "glog2",
+                      "vrsta":  "glog",
+                      "naziv":  "glog",
                       "lat":  125.49,
                       "lng":  843.5,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st003",
+                      "id":  "glog003",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
-                      "naziv":  "glog3",
+                      "vrsta":  "glog",
+                      "naziv":  "glog",
                       "lat":  117.26,
                       "lng":  821.06,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st004",
+                      "id":  "dunja004",
                       "kategorija":  "stablo",
-                      "vrsta":  "Dunja",
+                      "vrsta":  "dunja",
                       "naziv":  "dunja",
                       "lat":  105,
                       "lng":  799,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st005",
+                      "id":  "dunja005",
                       "kategorija":  "stablo",
-                      "vrsta":  "Dunja",
-                      "naziv":  "dunjaž",
+                      "vrsta":  "dunja",
+                      "naziv":  "dunja",
                       "lat":  95.99,
                       "lng":  775,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st006",
+                      "id":  "glog006",
                       "kategorija":  "stablo",
-                      "vrsta":  "Glog",
-                      "naziv":  "nesto",
+                      "vrsta":  "glog",
+                      "naziv":  "glog",
                       "lat":  109.75,
                       "lng":  746.04,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st007",
+                      "id":  "jabuka007",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "kakim",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  148.28,
                       "lng":  716.04,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st008",
+                      "id":  "jabuka008",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "nesto",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  143.78,
                       "lng":  708.54,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st009",
+                      "id":  "breskva009",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "br1",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  236.01,
                       "lng":  761.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st010",
+                      "id":  "jabuka010",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb1",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  257.51,
                       "lng":  725.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st011",
+                      "id":  "kupina011",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kupina",
-                      "naziv":  "kp1",
+                      "vrsta":  "kupina",
+                      "naziv":  "kupina",
                       "lat":  248.01,
                       "lng":  741.49,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st012",
+                      "id":  "jabuka012",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb3",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  268,
                       "lng":  702.5,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st013",
+                      "id":  "breskva013",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "br",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  282.39,
                       "lng":  685.54,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st014",
+                      "id":  "jabuka014",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  293.9,
                       "lng":  668.03,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st015",
+                      "id":  "breskva015",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "br2",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  305,
                       "lng":  635.5,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st016",
+                      "id":  "stablo016",
                       "kategorija":  "stablo",
-                      "vrsta":  "Šljiva",
-                      "naziv":  "kk",
+                      "vrsta":  "stablo",
+                      "naziv":  "stablo",
                       "lat":  330.51,
                       "lng":  582.49,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st017",
+                      "id":  "stablo017",
                       "kategorija":  "stablo",
-                      "vrsta":  "Šljiva",
-                      "naziv":  "sljiv",
+                      "vrsta":  "stablo",
+                      "naziv":  "stablo",
                       "lat":  305.4,
                       "lng":  598.52,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st018",
+                      "id":  "stablo018",
                       "kategorija":  "stablo",
-                      "vrsta":  "Šljiva",
-                      "naziv":  "sljiva",
+                      "vrsta":  "stablo",
+                      "naziv":  "stablo",
                       "lat":  346.94,
                       "lng":  519.01,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st019",
+                      "id":  "breskva019",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
+                      "vrsta":  "breskva",
                       "naziv":  "breskva",
                       "lat":  286.89,
                       "lng":  413.49,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st020",
+                      "id":  "jabuka020",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  262.37,
                       "lng":  318.48,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st021",
+                      "id":  "jabuka021",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  238.35,
                       "lng":  356.98,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st022",
+                      "id":  "jabuka022",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  203.83,
                       "lng":  299.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st023",
+                      "id":  "kruska023",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kruška",
-                      "naziv":  "kr",
+                      "vrsta":  "kruska",
+                      "naziv":  "kruska",
                       "lat":  216.84,
                       "lng":  401.49,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/pear.png"
                   },
                   {
-                      "id":  "st024",
+                      "id":  "kruska024",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kruška",
-                      "naziv":  "kr",
+                      "vrsta":  "kruska",
+                      "naziv":  "kruska",
                       "lat":  203.68,
                       "lng":  423.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/pear.png"
                   },
                   {
-                      "id":  "st025",
+                      "id":  "jabuka025",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  187.67,
                       "lng":  341.98,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st026",
+                      "id":  "jabuka026",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  189.67,
                       "lng":  450.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st027",
+                      "id":  "tresnja027",
                       "kategorija":  "stablo",
-                      "vrsta":  "Trešnja",
+                      "vrsta":  "tresnja",
                       "naziv":  "tresnja",
                       "lat":  158.65,
                       "lng":  505,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st028",
+                      "id":  "jabuka028",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  157.64,
                       "lng":  398.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st029",
+                      "id":  "jabuka029",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "neki rip jadnicak",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  137.63,
                       "lng":  430.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st030",
+                      "id":  "jabuka030",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  120.62,
                       "lng":  463,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st031",
+                      "id":  "jabuka031",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  138.63,
                       "lng":  543.01,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st032",
+                      "id":  "jabuka032",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  84.59,
                       "lng":  514.01,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st033",
+                      "id":  "jabuka033",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "nesto",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  109.61,
                       "lng":  584.02,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st034",
+                      "id":  "jabuka034",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  59.57,
                       "lng":  554.01,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st035",
+                      "id":  "breskva035",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "brs4",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  42.55,
                       "lng":  587.02,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st036",
+                      "id":  "breskva036",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "nesto",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  28.54,
                       "lng":  605.02,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st037",
+                      "id":  "breskva037",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
-                      "naziv":  "bresjva",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
                       "lat":  22.54,
                       "lng":  634.02,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st038",
+                      "id":  "breskva038",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
+                      "vrsta":  "breskva",
                       "naziv":  "breskva",
                       "lat":  32.55,
                       "lng":  655.03,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st039",
+                      "id":  "breskva039",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
+                      "vrsta":  "breskva",
                       "naziv":  "breskva",
                       "lat":  38.55,
                       "lng":  676.03,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st040",
+                      "id":  "breskva040",
                       "kategorija":  "stablo",
-                      "vrsta":  "Breskva",
+                      "vrsta":  "breskva",
                       "naziv":  "breskva",
                       "lat":  44.14,
                       "lng":  670.51,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "st041",
+                      "id":  "jabuka041",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "nesto",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  63.41,
                       "lng":  676.26,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st042",
+                      "id":  "tresnja042",
                       "kategorija":  "stablo",
-                      "vrsta":  "Trešnja",
+                      "vrsta":  "tresnja",
                       "naziv":  "tresnja",
                       "lat":  276.96,
                       "lng":  289.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st043",
+                      "id":  "jabuka043",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
+                      "vrsta":  "jabuka",
                       "naziv":  "jabuka",
                       "lat":  244.01,
                       "lng":  229,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st044",
+                      "id":  "smokva044",
                       "kategorija":  "stablo",
-                      "vrsta":  "Smokva",
+                      "vrsta":  "smokva",
                       "naziv":  "smokva",
                       "lat":  300.43,
                       "lng":  254.47,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st045",
+                      "id":  "smokva045",
                       "kategorija":  "stablo",
-                      "vrsta":  "Smokva",
+                      "vrsta":  "smokva",
                       "naziv":  "smokva",
                       "lat":  317.44,
                       "lng":  223.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st046",
+                      "id":  "jabuka046",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
+                      "vrsta":  "jabuka",
                       "naziv":  "jabuka",
                       "lat":  277.02,
                       "lng":  167.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st047",
+                      "id":  "jabuka047",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jbk",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  319.03,
                       "lng":  94.99,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st048",
+                      "id":  "jabuka048",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jbk",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  356.89,
                       "lng":  33.89,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st049",
+                      "id":  "kruska049",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kruška",
-                      "naziv":  "kr",
+                      "vrsta":  "kruska",
+                      "naziv":  "kruska",
                       "lat":  405.96,
                       "lng":  30.95,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/pear.png"
                   },
                   {
-                      "id":  "st050",
+                      "id":  "jabuka050",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jb",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  362.93,
                       "lng":  127.96,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st051",
+                      "id":  "tresnja051",
                       "kategorija":  "stablo",
-                      "vrsta":  "Trešnja",
+                      "vrsta":  "tresnja",
                       "naziv":  "tresnja",
                       "lat":  411.46,
                       "lng":  92.46,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st052",
+                      "id":  "tresnja052",
                       "kategorija":  "stablo",
-                      "vrsta":  "Trešnja",
+                      "vrsta":  "tresnja",
                       "naziv":  "tresnja",
                       "lat":  387.44,
                       "lng":  159.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st053",
+                      "id":  "jabuka053",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jbk",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  410.96,
                       "lng":  213.48,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st054",
+                      "id":  "jabuka054",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "nesto",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  430.48,
                       "lng":  175.47,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st055",
+                      "id":  "jabuka055",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "nesto",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  443.49,
                       "lng":  204.47,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st056",
+                      "id":  "smokva056",
                       "kategorija":  "stablo",
-                      "vrsta":  "Smokva",
-                      "naziv":  "smk",
+                      "vrsta":  "smokva",
+                      "naziv":  "smokva",
                       "lat":  468.51,
                       "lng":  194.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st057",
+                      "id":  "smokva057",
                       "kategorija":  "stablo",
-                      "vrsta":  "Smokva",
-                      "naziv":  "nesto",
+                      "vrsta":  "smokva",
+                      "naziv":  "smokva",
                       "lat":  476.51,
                       "lng":  74.95,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st058",
+                      "id":  "smokva058",
                       "kategorija":  "stablo",
-                      "vrsta":  "Smokva",
-                      "naziv":  "nesto",
+                      "vrsta":  "smokva",
+                      "naziv":  "smokva",
                       "lat":  483.52,
                       "lng":  109.96,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st059",
+                      "id":  "jabuka059",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "jbk",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  483.02,
                       "lng":  150.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "st060",
+                      "id":  "kupina060",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kupina",
-                      "naziv":  "kpn",
+                      "vrsta":  "kupina",
+                      "naziv":  "kupina",
                       "lat":  471.51,
                       "lng":  176.97,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   },
                   {
-                      "id":  "st061",
+                      "id":  "kupina061",
                       "kategorija":  "stablo",
-                      "vrsta":  "Kupina",
-                      "naziv":  "kpn",
+                      "vrsta":  "kupina",
+                      "naziv":  "kupina",
                       "lat":  490.02,
                       "lng":  162.24,
                       "napomena":  "",
-                      "ikonica":  null
+                      "ikonica":  "icons/download.png"
                   }
               ]
 }

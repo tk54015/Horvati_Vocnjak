@@ -55,6 +55,8 @@ function normalizeType(typeText) {
     if (t.indexOf('kupin') !== -1) return 'kupina';
     if (t.indexOf('glog') !== -1) return 'glog';
     if (t.indexOf('dunj') !== -1) return 'dunja';
+    if (t.indexOf('plum') !== -1) return 'sljiva';
+    if (t.indexOf('cherry') !== -1) return 'tresnja';
     if (t.indexOf('tres') !== -1 || t.indexOf('tre') !== -1) return 'tresnja';
     if (t.indexOf('sljiv') !== -1 || t.indexOf('slji') !== -1) return 'sljiva';
     return slugify(typeText || 'stablo');
@@ -65,7 +67,13 @@ function iconByType(typeText) {
     if (t === 'jabuka') return 'icons/apple.png';
     if (t === 'kruska') return 'icons/pear.png';
     if (t === 'breskva') return 'icons/peach.png';
-    return 'icons/download.png';
+    if (t === 'kupina') return 'icons/blackberry.png';
+    if (t === 'smokva') return 'icons/fig.png';
+    if (t === 'sljiva') return 'icons/plum.png';
+    if (t === 'tresnja') return 'icons/cherry.png';
+    if (t === 'dunja') return 'icons/dunja.png';
+    if (t === 'glog') return 'icons/glog.png';
+    return null;
 }
 
 function nextGlobalIdNumber() {

@@ -13,7 +13,7 @@
                       "lat":  151.28,
                       "lng":  892.07,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/glog.png"
                   },
                   {
                       "id":  "glog002",
@@ -23,7 +23,7 @@
                       "lat":  125.49,
                       "lng":  843.5,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/glog.png"
                   },
                   {
                       "id":  "glog003",
@@ -33,7 +33,7 @@
                       "lat":  117.26,
                       "lng":  821.06,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/glog.png"
                   },
                   {
                       "id":  "dunja004",
@@ -43,7 +43,7 @@
                       "lat":  105,
                       "lng":  799,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/dunja.png"
                   },
                   {
                       "id":  "dunja005",
@@ -53,7 +53,7 @@
                       "lat":  95.99,
                       "lng":  775,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/dunja.png"
                   },
                   {
                       "id":  "glog006",
@@ -63,7 +63,7 @@
                       "lat":  109.75,
                       "lng":  746.04,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/glog.png"
                   },
                   {
                       "id":  "jabuka007",
@@ -113,7 +113,7 @@
                       "lat":  248.01,
                       "lng":  741.49,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/blackberry.png"
                   },
                   {
                       "id":  "jabuka012",
@@ -158,32 +158,32 @@
                   {
                       "id":  "stablo016",
                       "kategorija":  "stablo",
-                      "vrsta":  "stablo",
-                      "naziv":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "sljiva",
                       "lat":  330.51,
                       "lng":  582.49,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/plum.png"
                   },
                   {
                       "id":  "stablo017",
                       "kategorija":  "stablo",
-                      "vrsta":  "stablo",
-                      "naziv":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "sljiva",
                       "lat":  305.4,
                       "lng":  598.52,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/plum.png"
                   },
                   {
                       "id":  "stablo018",
                       "kategorija":  "stablo",
-                      "vrsta":  "stablo",
-                      "naziv":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "sljiva",
                       "lat":  346.94,
                       "lng":  519.01,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/plum.png"
                   },
                   {
                       "id":  "breskva019",
@@ -273,7 +273,7 @@
                       "lat":  158.65,
                       "lng":  505,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/cherry.png"
                   },
                   {
                       "id":  "jabuka028",
@@ -423,7 +423,7 @@
                       "lat":  276.96,
                       "lng":  289.99,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/cherry.png"
                   },
                   {
                       "id":  "jabuka043",
@@ -443,7 +443,7 @@
                       "lat":  300.43,
                       "lng":  254.47,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/fig.png"
                   },
                   {
                       "id":  "smokva045",
@@ -453,7 +453,7 @@
                       "lat":  317.44,
                       "lng":  223.97,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/fig.png"
                   },
                   {
                       "id":  "jabuka046",
@@ -513,7 +513,7 @@
                       "lat":  411.46,
                       "lng":  92.46,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/cherry.png"
                   },
                   {
                       "id":  "tresnja052",
@@ -523,7 +523,7 @@
                       "lat":  387.44,
                       "lng":  159.97,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/cherry.png"
                   },
                   {
                       "id":  "jabuka053",
@@ -563,7 +563,7 @@
                       "lat":  468.51,
                       "lng":  194.97,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/fig.png"
                   },
                   {
                       "id":  "smokva057",
@@ -573,7 +573,7 @@
                       "lat":  476.51,
                       "lng":  74.95,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/fig.png"
                   },
                   {
                       "id":  "smokva058",
@@ -583,7 +583,7 @@
                       "lat":  483.52,
                       "lng":  109.96,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/fig.png"
                   },
                   {
                       "id":  "jabuka059",
@@ -603,7 +603,7 @@
                       "lat":  471.51,
                       "lng":  176.97,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/blackberry.png"
                   },
                   {
                       "id":  "kupina061",
@@ -613,7 +613,7 @@
                       "lat":  490.02,
                       "lng":  162.24,
                       "napomena":  "",
-                      "ikonica":  "icons/download.png"
+                      "ikonica":  "icons/blackberry.png"
                   }
               ]
 }

@@ -96,14 +96,17 @@ function makeFallbackId(item, index) {
     return slugify(item.name) + '_' + Number(item.lat).toFixed(2) + '_' + Number(item.lng).toFixed(2) + '_' + index;
 }
 
-function formatPopup(item) {
-    var details = getPlantDetails(item.id);
-    var orezano = details.orezano || 'nepoznato';
-    var gnojeno = details.gnojeno || 'nepoznato';
-    var spricano = details.spricano ? '<br>Spricano: ' + details.spricano : '';
-    var noteHtml = item.notes ? '<br>Napomena: ' + item.notes : '';
-    return '<b>' + item.name + '</b><br>' + item.treeType + '<br>Lat: ' + Number(item.lat).toFixed(2) + ', Lng: ' + Number(item.lng).toFixed(2) +
-        '<br>Orezano: ' + orezano + '<br>Gnojeno: ' + gnojeno + spricano + noteHtml + '<br><small>Podaci se uređuju desno</small>';
+function buildExportPayload() {
+    var merged = baseItems.concat(userItems);
+    return {
+        meta: {
+            naziv: 'Horvati vocnjak',
+            verzija: 1,
+            opis: 'Izvoz oznaka iz aplikacije',
+            generatedAt: new Date().toISOString()
+        },
+        items: merged.map(toExportItem)
+    };
 }
 
 function saveUserItems() {
@@ -194,16 +197,7 @@ function toExportItem(item, index) {
 }
 
 function downloadJson() {
-    var merged = baseItems.concat(userItems);
-    var payload = {
-        meta: {
-            naziv: 'Horvati vocnjak',
-            verzija: 1,
-            opis: 'Izvoz oznaka iz aplikacije',
-            generatedAt: new Date().toISOString()
-        },
-        items: merged.map(toExportItem)
-    };
+    var payload = buildExportPayload();
 
     var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
@@ -328,11 +322,6 @@ function saveSelectedPlantPanel() {
 
     item.notes = details.napomena;
     applyNote(item, details.napomena, selectedPlant.isUserItem);
-
-    var marker = allMarkersById[item.id];
-    if (marker) {
-        marker.setPopupContent(formatPopup(item));
-    }
 }
 
 function createMarker(item, options) {
@@ -354,14 +343,12 @@ function createMarker(item, options) {
     }
 
     var marker = L.marker([item.lat, item.lng], markerOptions).addTo(map);
-    marker.bindPopup(formatPopup(item));
     if (item.id) {
         allMarkersById[item.id] = marker;
     }
 
     marker.on('click', function () {
         openPlantPanel(item, !!opts.isUserItem);
-        marker.openPopup();
     });
 
     if (opts.isUserItem && item.id) {
@@ -379,7 +366,6 @@ function createMarker(item, options) {
             }
 
             saveUserItems();
-            marker.setPopupContent(formatPopup(item));
             renderChangeList();
         });
     }
@@ -547,7 +533,43 @@ if (savePlantBtn) {
     savePlantBtn.addEventListener('click', saveSelectedPlantPanel);
 }
 
+var previewJsonBtn = document.getElementById('preview-json');
+var jsonModal = document.getElementById('json-modal');
+var closeJsonModalBtn = document.getElementById('close-json-modal');
+var jsonPreviewContent = document.getElementById('json-preview-content');
+
+function openJsonModal() {
+    if (!jsonModal || !jsonPreviewContent) return;
+    var payload = buildExportPayload();
+    jsonPreviewContent.textContent = JSON.stringify(payload, null, 2);
+    jsonModal.classList.remove('hidden');
+}
+
+function closeJsonModal() {
+    if (!jsonModal) return;
+    jsonModal.classList.add('hidden');
+}
+
+if (previewJsonBtn) {
+    previewJsonBtn.addEventListener('click', openJsonModal);
+}
+
+if (closeJsonModalBtn) {
+    closeJsonModalBtn.addEventListener('click', closeJsonModal);
+}
+
+if (jsonModal) {
+    jsonModal.addEventListener('click', function (event) {
+        if (event.target === jsonModal) closeJsonModal();
+    });
+}
+
 document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeJsonModal();
+        return;
+    }
+
     if (e.key === '+' || e.key === '=' || e.code === 'Equal') {
         map.zoomIn();
     } else if (e.key === '-' || e.key === '_' || e.code === 'Minus') {
@@ -616,7 +638,6 @@ map.on('click', function (e) {
     allItemsById[newItem.id] = newItem;
     saveUserItems();
 
-    var marker = createMarker(newItem, { isUserItem: true });
-    marker.openPopup();
+    createMarker(newItem, { isUserItem: true });
     renderChangeList();
 });

@@ -43,8 +43,14 @@ var allItemsById = {};
 var allMarkersById = {};
 var baseOriginalNotesById = {};
 var baseOriginalPositionsById = {};
+var baseVisibleVineIds = {};
 var dragEnabled = false;
 var selectedPlant = null;
+
+var VINE_DISPLAY_STEP = 5;
+var FULL_ICON_SIZE = 30;
+var VINE_DOT_SIZE = 4;
+var VINE_DOT_HIT_MULTIPLIER = 4;
 
 function slugify(text) {
     return String(text || '')
@@ -99,6 +105,37 @@ function nextGlobalIdNumber() {
 
 function makeFallbackId(item, index) {
     return slugify(item.name) + '_' + Number(item.lat).toFixed(2) + '_' + Number(item.lng).toFixed(2) + '_' + index;
+}
+
+function buildMarkerIcon(item, isUserItem) {
+    var normalizedType = normalizeType(item.treeType);
+    var isVine = normalizedType === 'vinova_loza';
+    var isMinorBaseVine = !isUserItem && isVine && !baseVisibleVineIds[item.id];
+
+    if (isMinorBaseVine) {
+        var dotSize = VINE_DOT_SIZE;
+        var dotHit = dotSize * VINE_DOT_HIT_MULTIPLIER;
+        var pad = Math.round((dotHit - dotSize) / 2);
+        return L.divIcon({
+            className: 'vine-dot-wrapper',
+            html: '<span style="display:block;position:relative;width:' + dotHit + 'px;height:' + dotHit + 'px;border-radius:50%;background:rgba(255,255,0,0.35);">' +
+                '<span style="position:absolute;left:' + pad + 'px;top:' + pad + 'px;width:' + dotSize + 'px;height:' + dotSize + 'px;border-radius:50%;background:#111;"></span>' +
+                '</span>',
+            iconSize: [dotHit, dotHit],
+            iconAnchor: [Math.round(dotHit / 2), Math.round(dotHit / 2)]
+        });
+    }
+
+    var resolvedIcon = item.iconUrl || iconByType(item.treeType);
+    if (!resolvedIcon) return null;
+
+    var iconSize = FULL_ICON_SIZE;
+    return L.icon({
+        iconUrl: resolvedIcon,
+        iconSize: [iconSize, iconSize],
+        iconAnchor: [Math.round(iconSize / 2), iconSize],
+        popupAnchor: [0, -iconSize]
+    });
 }
 
 function buildExportPayload() {
@@ -464,15 +501,8 @@ function createMarker(item, options) {
     var opts = options || {};
     var markerOptions = {};
 
-    var resolvedIcon = item.iconUrl || iconByType(item.treeType);
-    if (resolvedIcon) {
-        markerOptions.icon = L.icon({
-            iconUrl: resolvedIcon,
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40]
-        });
-    }
+    var dynamicIcon = buildMarkerIcon(item, !!opts.isUserItem);
+    if (dynamicIcon) markerOptions.icon = dynamicIcon;
 
     markerOptions.draggable = dragEnabled;
 
@@ -572,6 +602,34 @@ function normalizeItems(data) {
     return [];
 }
 
+function computeVisibleBaseVineIds(items) {
+    baseVisibleVineIds = {};
+
+    var vines = items
+        .filter(function (item) {
+            return normalizeType(item.treeType) === 'vinova_loza';
+        })
+        .map(function (item) {
+            var match = String(item.id || '').match(/(\d+)$/);
+            var n = match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+            return { id: item.id, n: n };
+        })
+        .sort(function (a, b) {
+            return a.n - b.n;
+        });
+
+    vines.forEach(function (vine, index) {
+        if (index % VINE_DISPLAY_STEP === 0) {
+            baseVisibleVineIds[vine.id] = true;
+        }
+    });
+}
+
+function shouldRenderBaseItem(item) {
+    if (normalizeType(item.treeType) !== 'vinova_loza') return true;
+    return !!baseVisibleVineIds[item.id];
+}
+
 function applyStoredNotesToBaseItems() {
     baseOriginalNotesById = {};
     baseItems.forEach(function (item) {
@@ -616,6 +674,7 @@ function loadInventory() {
         })
         .then(function (data) {
             baseItems = normalizeItems(data);
+            computeVisibleBaseVineIds(baseItems);
             applyStoredPositionsToBaseItems();
             applyStoredNotesToBaseItems();
 
@@ -642,6 +701,7 @@ function loadInventory() {
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
                     baseItems = normalizeItems(data);
+                    computeVisibleBaseVineIds(baseItems);
                     applyStoredPositionsToBaseItems();
                     applyStoredNotesToBaseItems();
 

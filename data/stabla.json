@@ -2,7 +2,8 @@
     "meta":  {
                  "naziv":  "Horvati vocnjak",
                  "verzija":  1,
-                 "opis":  "Jedinstveni popis za stabla i vinovu lozu"
+                 "opis":  "Izvoz oznaka iz aplikacije",
+                 "generatedAt":  "2026-03-24T13:23:14.418Z"
              },
     "items":  [
                   {
@@ -440,8 +441,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "smokva",
                       "naziv":  "smokva",
-                      "lat":  300.43,
-                      "lng":  254.47,
+                      "lat":  295.99648035588217,
+                      "lng":  249.99926730986044,
                       "napomena":  "",
                       "ikonica":  "icons/fig.png"
                   },
@@ -450,8 +451,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "smokva",
                       "naziv":  "smokva",
-                      "lat":  317.44,
-                      "lng":  223.97,
+                      "lat":  313.49687142745086,
+                      "lng":  215.74865673474412,
                       "napomena":  "",
                       "ikonica":  "icons/fig.png"
                   },
@@ -614,6 +615,1506 @@
                       "lng":  162.24,
                       "napomena":  "",
                       "ikonica":  "icons/blackberry.png"
+                  },
+                  {
+                      "id":  "vinova_loza062",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  704.8767,
+                      "lng":  8.2355,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza063",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  697.8251,
+                      "lng":  8.222,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza064",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  690.7735,
+                      "lng":  8.2085,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza065",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  683.7218,
+                      "lng":  8.195,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza066",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  676.6702,
+                      "lng":  8.1814,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza067",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  669.6186,
+                      "lng":  8.1679,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza068",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  662.567,
+                      "lng":  8.1544,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza069",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  655.5154,
+                      "lng":  8.1408,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza070",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  648.4637,
+                      "lng":  8.1273,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza071",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  641.4121,
+                      "lng":  8.1138,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza072",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  634.3605,
+                      "lng":  8.1002,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza073",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  627.3089,
+                      "lng":  8.0867,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza074",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  620.2572,
+                      "lng":  8.0732,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza075",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  613.2056,
+                      "lng":  8.0597,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza076",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  606.154,
+                      "lng":  8.0461,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza077",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  599.1024,
+                      "lng":  8.0326,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza078",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  592.0508,
+                      "lng":  8.0191,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza079",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  584.9991,
+                      "lng":  8.0055,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza080",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  577.9475,
+                      "lng":  7.992,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza081",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  570.8959,
+                      "lng":  7.9785,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza082",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  563.8443,
+                      "lng":  7.9649,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza083",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  556.7926,
+                      "lng":  7.9514,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza084",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  549.741,
+                      "lng":  7.9379,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza085",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  542.6894,
+                      "lng":  7.9244,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza086",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  535.6378,
+                      "lng":  7.9108,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza087",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  528.5862,
+                      "lng":  7.8973,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza088",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  521.5345,
+                      "lng":  7.8838,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza089",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  514.4829,
+                      "lng":  7.8702,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza090",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  507.4313,
+                      "lng":  7.8567,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza091",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  500.3797,
+                      "lng":  7.8432,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza092",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  493.3281,
+                      "lng":  7.8296,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza093",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  486.2764,
+                      "lng":  7.8161,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza094",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  479.2248,
+                      "lng":  7.8026,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza095",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  472.1732,
+                      "lng":  7.7891,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza096",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  465.1216,
+                      "lng":  7.7755,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza097",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  458.0699,
+                      "lng":  7.762,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza098",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  451.0183,
+                      "lng":  7.7485,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza099",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  443.9667,
+                      "lng":  7.7349,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza100",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  436.9151,
+                      "lng":  7.7214,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza101",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  429.8635,
+                      "lng":  7.7079,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza102",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  422.8118,
+                      "lng":  7.6943,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza103",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  415.7602,
+                      "lng":  7.6808,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza104",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  408.7086,
+                      "lng":  7.6673,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza105",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  401.657,
+                      "lng":  7.6537,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza106",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  394.6053,
+                      "lng":  7.6402,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza107",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  387.5537,
+                      "lng":  7.6267,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza108",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  380.5021,
+                      "lng":  7.6132,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza109",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  373.4505,
+                      "lng":  7.5996,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza110",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  366.3989,
+                      "lng":  7.5861,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza111",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  359.3472,
+                      "lng":  7.5726,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza112",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  352.2956,
+                      "lng":  7.559,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza113",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  345.244,
+                      "lng":  7.5455,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza114",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  340.8196,
+                      "lng":  12.0277,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza115",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  337.3698,
+                      "lng":  18.1779,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza116",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  333.9201,
+                      "lng":  24.3281,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza117",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  330.4704,
+                      "lng":  30.4783,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza118",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  327.0206,
+                      "lng":  36.6285,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza119",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  323.5709,
+                      "lng":  42.7787,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza120",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  320.1212,
+                      "lng":  48.9289,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza121",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  316.6714,
+                      "lng":  55.0791,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza122",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  313.2217,
+                      "lng":  61.2293,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza123",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  309.772,
+                      "lng":  67.3795,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza124",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  306.3223,
+                      "lng":  73.5297,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza125",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  302.8725,
+                      "lng":  79.6799,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza126",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  299.4228,
+                      "lng":  85.8301,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza127",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  295.9731,
+                      "lng":  91.9803,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza128",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  292.5233,
+                      "lng":  98.1305,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza129",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  289.0736,
+                      "lng":  104.2807,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza130",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  285.6239,
+                      "lng":  110.4309,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza131",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  282.1741,
+                      "lng":  116.5811,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza132",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  278.7244,
+                      "lng":  122.7313,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza133",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  275.2747,
+                      "lng":  128.8815,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza134",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  271.825,
+                      "lng":  135.0317,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza135",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  268.3752,
+                      "lng":  141.1819,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza136",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  264.9255,
+                      "lng":  147.3321,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza137",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  261.4758,
+                      "lng":  153.4823,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza138",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  258.026,
+                      "lng":  159.6325,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza139",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  254.5763,
+                      "lng":  165.7826,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza140",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  251.1266,
+                      "lng":  171.9328,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza141",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  247.6768,
+                      "lng":  178.083,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza142",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  244.2271,
+                      "lng":  184.2332,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza143",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  240.7774,
+                      "lng":  190.3834,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza144",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  237.3277,
+                      "lng":  196.5336,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza145",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  233.8779,
+                      "lng":  202.6838,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza146",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  230.4282,
+                      "lng":  208.834,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza147",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  226.9785,
+                      "lng":  214.9842,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza148",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  223.5287,
+                      "lng":  221.1344,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza149",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  220.079,
+                      "lng":  227.2846,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza150",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  216.6293,
+                      "lng":  233.4348,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza151",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  213.1795,
+                      "lng":  239.585,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza152",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  209.7298,
+                      "lng":  245.7352,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza153",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  206.2801,
+                      "lng":  251.8854,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza154",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  202.8304,
+                      "lng":  258.0356,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza155",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  199.3806,
+                      "lng":  264.1858,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza156",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  195.9309,
+                      "lng":  270.336,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza157",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  192.4812,
+                      "lng":  276.4862,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza158",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  189.0314,
+                      "lng":  282.6364,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza159",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  185.5817,
+                      "lng":  288.7866,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza160",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  182.132,
+                      "lng":  294.9368,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza161",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  178.6822,
+                      "lng":  301.087,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza162",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  175.2325,
+                      "lng":  307.2372,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza163",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  171.7828,
+                      "lng":  313.3874,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza164",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  168.3331,
+                      "lng":  319.5376,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza165",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  164.8833,
+                      "lng":  325.6878,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza166",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  161.4336,
+                      "lng":  331.838,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza167",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  157.9839,
+                      "lng":  337.9881,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza168",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  154.5341,
+                      "lng":  344.1383,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza169",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  151.0844,
+                      "lng":  350.2885,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza170",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  147.6347,
+                      "lng":  356.4387,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza171",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  144.1849,
+                      "lng":  362.5889,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza172",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  140.7352,
+                      "lng":  368.7391,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza173",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  137.2855,
+                      "lng":  374.8893,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza174",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  133.8358,
+                      "lng":  381.0395,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza175",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  130.386,
+                      "lng":  387.1897,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza176",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  126.9363,
+                      "lng":  393.3399,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza177",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  123.4866,
+                      "lng":  399.4901,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza178",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  120.0368,
+                      "lng":  405.6403,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza179",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  116.5871,
+                      "lng":  411.7905,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza180",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  113.1374,
+                      "lng":  417.9407,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza181",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  109.6876,
+                      "lng":  424.0909,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza182",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  106.2379,
+                      "lng":  430.2411,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza183",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  102.7882,
+                      "lng":  436.3913,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza184",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  99.3385,
+                      "lng":  442.5415,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza185",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  95.8887,
+                      "lng":  448.6917,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza186",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  92.439,
+                      "lng":  454.8419,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza187",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  88.9893,
+                      "lng":  460.9921,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza188",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  85.5395,
+                      "lng":  467.1423,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza189",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  82.0898,
+                      "lng":  473.2925,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza190",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  78.6401,
+                      "lng":  479.4427,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza191",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  75.1903,
+                      "lng":  485.5929,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza192",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  71.7406,
+                      "lng":  491.7431,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza193",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  68.2909,
+                      "lng":  497.8933,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza194",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  64.8412,
+                      "lng":  504.0435,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza195",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  61.3914,
+                      "lng":  510.1937,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza196",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  57.9417,
+                      "lng":  516.3438,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza197",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  54.492,
+                      "lng":  522.494,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza198",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  51.0422,
+                      "lng":  528.6442,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza199",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  47.5925,
+                      "lng":  534.7944,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza200",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  44.1428,
+                      "lng":  540.9446,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza201",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  40.693,
+                      "lng":  547.0948,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza202",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  37.2433,
+                      "lng":  553.245,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza203",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  33.7936,
+                      "lng":  559.3952,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza204",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  30.3439,
+                      "lng":  565.5454,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza205",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  26.8941,
+                      "lng":  571.6956,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza206",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  23.4444,
+                      "lng":  577.8458,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza207",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  19.9947,
+                      "lng":  583.996,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza208",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  16.5449,
+                      "lng":  590.1462,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza209",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  13.0952,
+                      "lng":  596.2964,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza210",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  9.6455,
+                      "lng":  602.4466,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza211",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  6.1957,
+                      "lng":  608.5968,
+                      "napomena":  "",
+                      "ikonica":  null
                   }
               ]
 }

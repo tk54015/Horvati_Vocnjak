@@ -81,6 +81,7 @@ function iconByType(typeText) {
     if (t === 'tresnja') return 'icons/cherry.png';
     if (t === 'dunja') return 'icons/dunja.png';
     if (t === 'glog') return 'icons/glog.png';
+    if (t === 'vinova_loza') return 'icons/grapes.png';
     return null;
 }
 

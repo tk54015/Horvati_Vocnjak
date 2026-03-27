@@ -759,7 +759,7 @@ function loadInventory() {
     plantDetails = loadPlantDetails();
     positionOverrides = loadPositionOverrides();
 
-    fetch('data/stabla.json')
+    fetch('data/stabla.json?v=20260327c')
         .then(function (response) {
             if (!response.ok) throw new Error('Nema data/stabla.json');
             return response.json();

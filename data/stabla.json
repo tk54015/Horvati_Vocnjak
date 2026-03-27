@@ -3,7 +3,7 @@
                  "naziv":  "Horvati vocnjak",
                  "verzija":  1,
                  "opis":  "Izvoz oznaka iz aplikacije",
-                 "generatedAt":  "2026-03-24T13:23:14.418Z"
+                 "generatedAt":  "2026-03-27T10:51:43.8315089+01:00"
              },
     "items":  [
                   {
@@ -2115,6 +2115,166 @@
                       "lng":  608.5968,
                       "napomena":  "",
                       "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza212",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  343.3357499411684,
+                      "lng":  7.541844747971197,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza213",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  347.1854731911733,
+                      "lng":  179.5304880508078,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza214",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  297.64675710587727,
+                      "lng":  277.54644441384744,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza215",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  528.0074303598043,
+                      "lng":  311.03052875581557,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza216",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  524.0043017872551,
+                      "lng":  321.5322383661412,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza217",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  517.9996089284314,
+                      "lng":  332.0339479764669,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "vinova_loza218",
+                      "kategorija":  "loza",
+                      "vrsta":  "vinova_loza",
+                      "naziv":  "vinova_loza",
+                      "lat":  514.4968714274509,
+                      "lng":  340.035250536715,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "jabuka212",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  555.4730160617634,
+                      "lng":  234.52702812514872,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "ribizl213",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  541.4620660578413,
+                      "lng":  259.0310172159086,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl214",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  588.4988267852941,
+                      "lng":  170.5166076431637,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl215",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  601.0086035745102,
+                      "lng":  144.51237432235723,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl216",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  619.0226821509815,
+                      "lng":  110.00675703128718,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl217",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribiz",
+                      "lat":  646.0438000156885,
+                      "lng":  88.00317499060483,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl218",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  667.5606160931402,
+                      "lng":  45.99633654930216,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl219",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  634.5348053696096,
+                      "lng":  75.50113974021713,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl220",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  637.5371517990214,
+                      "lng":  119.50830382158185,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
                   }
               ]
 }

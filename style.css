@@ -118,6 +118,22 @@ body {
     border-color: #244b77;
 }
 
+#toggle-placement.placement-locked {
+    background: #9a4646;
+    border-color: #7a3535;
+    color: #fff;
+}
+
+#toggle-placement.placement-active {
+    background: #3d8f56;
+    border-color: #2e6f41;
+    color: #fff;
+}
+
+#toggle-placement:hover {
+    filter: brightness(0.95);
+}
+
 #tree-type-picker small {
     color: #555;
     font-size: 11px;

@@ -45,6 +45,7 @@ var baseOriginalNotesById = {};
 var baseOriginalPositionsById = {};
 var baseVisibleVineIds = {};
 var dragEnabled = false;
+var placementEnabled = false;
 var selectedPlant = null;
 
 var VINE_DISPLAY_STEP = 5;
@@ -1069,6 +1070,16 @@ if (exportBtn) {
     exportBtn.addEventListener('click', downloadJson);
 }
 
+var togglePlacementBtn = document.getElementById('toggle-placement');
+if (togglePlacementBtn) {
+    togglePlacementBtn.addEventListener('click', function () {
+        placementEnabled = !placementEnabled;
+        togglePlacementBtn.textContent = placementEnabled ? '✅ Postavljanje stabala uključeno' : '🔒 Postavljanje stabala zaključano';
+        togglePlacementBtn.classList.toggle('placement-active', placementEnabled);
+        togglePlacementBtn.classList.toggle('placement-locked', !placementEnabled);
+    });
+}
+
 var toggleDragBtn = document.getElementById('toggle-drag');
 if (toggleDragBtn) {
     toggleDragBtn.addEventListener('click', function () {
@@ -1088,6 +1099,8 @@ if (toggleDragBtn) {
 
 // Klik na mapu: dodaj novo stablo
 map.on('click', function (e) {
+    if (!placementEnabled) return;
+
     var coords = e.latlng;
     var treeTypeEl = document.getElementById('tree-type');
     var treeTypeRaw = treeTypeEl ? treeTypeEl.options[treeTypeEl.selectedIndex].text : 'Stablo';

@@ -849,13 +849,29 @@ function loadInventory() {
     plantDetails = loadPlantDetails();
     positionOverrides = loadPositionOverrides();
 
-    fetch('data/stabla.json?v=20260327c')
+    fetch('data/stabla.json?v=20260327d')
         .then(function (response) {
             if (!response.ok) throw new Error('Nema data/stabla.json');
             return response.json();
         })
-        .then(function (data) {
-            baseItems = normalizeItems(data);
+        .then(function (stablaData) {
+            return fetch('data/loza.json?v=20260327d')
+                .then(function (response) {
+                    if (!response.ok) throw new Error('Nema data/loza.json');
+                    return response.json();
+                })
+                .catch(function () {
+                    return { items: [] };
+                })
+                .then(function (lozaData) {
+                    return {
+                        stablaData: stablaData,
+                        lozaData: lozaData
+                    };
+                });
+        })
+        .then(function (mergedData) {
+            baseItems = normalizeItems(mergedData.stablaData).concat(normalizeItems(mergedData.lozaData));
             computeVisibleBaseVineIds(baseItems);
             applyStoredPositionsToBaseItems();
             applyStoredNotesToBaseItems();

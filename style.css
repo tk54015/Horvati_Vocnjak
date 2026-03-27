@@ -334,20 +334,24 @@ body {
 
 .yield-link {
     position: fixed;
-    right: 12px;
+    left: 12px;
     bottom: 10px;
     z-index: 1400;
-    border: 0;
-    background: transparent;
-    color: #0a4e9b;
-    text-decoration: underline;
+    border: 2px solid #0a4e9b;
+    background: rgba(255, 255, 255, 0.95);
+    color: #083b75;
+    text-decoration: none;
     font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    padding: 4px 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
 .yield-link:hover {
-    color: #083b75;
+    background: #0a4e9b;
+    color: #fff;
 }
 
 #yield-modal {

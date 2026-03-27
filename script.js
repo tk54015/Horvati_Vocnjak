@@ -48,9 +48,31 @@ var dragEnabled = false;
 var selectedPlant = null;
 
 var VINE_DISPLAY_STEP = 5;
+var ALWAYS_VISIBLE_VINE_IDS = {
+    vinova_loza213: true,
+    vinova_loza214: true,
+    vinova_loza215: true,
+    vinova_loza216: true,
+    vinova_loza217: true,
+    vinova_loza218: true
+};
 var FULL_ICON_SIZE = 30;
 var VINE_DOT_SIZE = 4;
 var VINE_DOT_HIT_MULTIPLIER = 4;
+var AVG_YIELD_KG_BY_TYPE = {
+    jabuka: 25,
+    kruska: 20,
+    sljiva: 18,
+    breskva: 20,
+    smokva: 15,
+    kupina: 2,
+    glog: 5,
+    dunja: 15,
+    tresnja: 18,
+    ribizl: 3.5,
+    vinova_loza: 1.5,
+    _default: 10
+};
 
 function slugify(text) {
     return String(text || '')
@@ -91,6 +113,69 @@ function iconByType(typeText) {
     if (t === 'glog') return 'icons/glog.png';
     if (t === 'vinova_loza') return 'icons/grapes.png';
     return null;
+}
+
+function escapeHtml(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function getAverageYieldKg(item) {
+    var t = normalizeType(item && item.treeType ? item.treeType : '');
+    return AVG_YIELD_KG_BY_TYPE[t] || AVG_YIELD_KG_BY_TYPE._default;
+}
+
+function formatKg(value) {
+    return Number(value).toFixed(1).replace(/\.0$/, '');
+}
+
+function renderYieldTable() {
+    var body = document.getElementById('yield-table-body');
+    var summary = document.getElementById('yield-summary');
+    if (!body || !summary) return;
+
+    var merged = baseItems.concat(userItems);
+    if (!merged.length) {
+        body.innerHTML = '<tr><td colspan="4">Nema podataka.</td></tr>';
+        summary.innerHTML = '<p>Ukupna ocekivana kolicina: 0 kg</p>';
+        return;
+    }
+
+    var totalsByType = {};
+    var totalAll = 0;
+
+    var sorted = merged.slice().sort(function (a, b) {
+        return String(a.id || '').localeCompare(String(b.id || ''));
+    });
+
+    var rows = sorted.map(function (item) {
+        var typeKey = normalizeType(item.treeType);
+        var yieldKg = getAverageYieldKg(item);
+
+        totalsByType[typeKey] = (totalsByType[typeKey] || 0) + yieldKg;
+        totalAll += yieldKg;
+
+        return '<tr>' +
+            '<td>' + escapeHtml(item.id || '-') + '</td>' +
+            '<td>' + escapeHtml(typeKey) + '</td>' +
+            '<td>' + escapeHtml(item.name || '-') + '</td>' +
+            '<td>' + formatKg(yieldKg) + '</td>' +
+            '</tr>';
+    });
+
+    body.innerHTML = rows.join('');
+
+    var summaryLines = Object.keys(totalsByType)
+        .sort()
+        .map(function (type) {
+            return '<p>Ocekivano ' + formatKg(totalsByType[type]) + ' kg: ' + escapeHtml(type) + '</p>';
+        });
+    summaryLines.push('<p><b>Ukupno ocekivano: ' + formatKg(totalAll) + ' kg</b></p>');
+    summary.innerHTML = summaryLines.join('');
 }
 
 function nextGlobalIdNumber() {
@@ -697,6 +782,10 @@ function normalizeItems(data) {
 function computeVisibleBaseVineIds(items) {
     baseVisibleVineIds = {};
 
+    Object.keys(ALWAYS_VISIBLE_VINE_IDS).forEach(function (id) {
+        baseVisibleVineIds[id] = true;
+    });
+
     var vines = items
         .filter(function (item) {
             return normalizeType(item.treeType) === 'vinova_loza';
@@ -866,6 +955,9 @@ if (plantPanelEl && togglePlantPanelBtn) {
 var toggleChangesBtn = document.getElementById('toggle-changes');
 var changesModal = document.getElementById('changes-modal');
 var closeChangesModalBtn = document.getElementById('close-changes-modal');
+var openYieldTableBtn = document.getElementById('open-yield-table');
+var yieldModal = document.getElementById('yield-modal');
+var closeYieldModalBtn = document.getElementById('close-yield-modal');
 
 function openChangesModal() {
     if (!changesModal) return;
@@ -897,6 +989,31 @@ if (changesModal) {
     });
 }
 
+function openYieldModal() {
+    if (!yieldModal) return;
+    renderYieldTable();
+    yieldModal.classList.remove('hidden');
+}
+
+function closeYieldModal() {
+    if (!yieldModal) return;
+    yieldModal.classList.add('hidden');
+}
+
+if (openYieldTableBtn) {
+    openYieldTableBtn.addEventListener('click', openYieldModal);
+}
+
+if (closeYieldModalBtn) {
+    closeYieldModalBtn.addEventListener('click', closeYieldModal);
+}
+
+if (yieldModal) {
+    yieldModal.addEventListener('click', function (event) {
+        if (event.target === yieldModal) closeYieldModal();
+    });
+}
+
 var changeListEl = document.getElementById('tree-list-items');
 if (changeListEl) {
     changeListEl.addEventListener('click', function (event) {
@@ -924,6 +1041,7 @@ if (changeListEl) {
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closeChangesModal();
+        closeYieldModal();
         return;
     }
 

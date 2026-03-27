@@ -85,7 +85,32 @@
         <ul id="tree-list-items"></ul>
       </div>
     </div>
+
+    <button id="open-yield-table" type="button" class="yield-link">Prikazi tablicu</button>
+
+    <div id="yield-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Procjena uroda">
+      <div class="yield-modal-card">
+        <div class="yield-modal-header">
+          <b>Procjena uroda (prosjecno)</b>
+          <button id="close-yield-modal" type="button">Zatvori</button>
+        </div>
+        <div id="yield-summary"></div>
+        <div class="yield-table-wrap">
+          <table id="yield-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Vrsta</th>
+                <th>Naziv</th>
+                <th>Prosjecan urod (kg)</th>
+              </tr>
+            </thead>
+            <tbody id="yield-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20260327b"></script>
+    <script src="script.js?v=20260327c"></script>
 </body>
 </html>

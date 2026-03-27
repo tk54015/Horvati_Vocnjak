@@ -331,3 +331,102 @@ body {
     font-size: 12px;
     color: black;
 }
+
+.yield-link {
+    position: fixed;
+    right: 12px;
+    bottom: 10px;
+    z-index: 1400;
+    border: 0;
+    background: transparent;
+    color: #0a4e9b;
+    text-decoration: underline;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.yield-link:hover {
+    color: #083b75;
+}
+
+#yield-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.yield-modal-card {
+    width: min(980px, 100%);
+    max-height: min(86vh, 860px);
+    background: #fff;
+    border: 1px solid #b5b5b5;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.yield-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+    gap: 8px;
+}
+
+#close-yield-modal {
+    border: 1px solid #666;
+    background: #888;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 8px;
+}
+
+#close-yield-modal:hover {
+    background: #777;
+}
+
+#yield-summary {
+    padding: 10px 12px 0;
+    font-size: 12px;
+    color: #222;
+    line-height: 1.45;
+}
+
+#yield-summary p {
+    margin: 0 0 6px;
+}
+
+.yield-table-wrap {
+    padding: 8px 12px 12px;
+    overflow: auto;
+}
+
+#yield-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+#yield-table th,
+#yield-table td {
+    border-bottom: 1px solid #e7e7e7;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+#yield-table th {
+    position: sticky;
+    top: 0;
+    background: #f8f8f8;
+    z-index: 1;
+}

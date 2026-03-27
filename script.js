@@ -63,6 +63,7 @@ function slugify(text) {
 function normalizeType(typeText) {
     var t = String(typeText || '').toLowerCase();
     if (t.indexOf('jabuk') !== -1) return 'jabuka';
+    if (t.indexOf('ribiz') !== -1) return 'ribizl';
     if (t.indexOf('kru') !== -1) return 'kruska';
     if (t.indexOf('bresk') !== -1) return 'breskva';
     if (t.indexOf('smok') !== -1) return 'smokva';
@@ -79,6 +80,7 @@ function normalizeType(typeText) {
 function iconByType(typeText) {
     var t = normalizeType(typeText);
     if (t === 'jabuka') return 'icons/apple.png';
+    if (t === 'ribizl') return 'icons/ribiz.png';
     if (t === 'kruska') return 'icons/pear.png';
     if (t === 'breskva') return 'icons/peach.png';
     if (t === 'kupina') return 'icons/blackberry.png';
@@ -159,12 +161,102 @@ function saveUserItems() {
     }
 }
 
+function remapObjectKeysById(objectMap, idMap) {
+    var changed = false;
+    if (!objectMap || typeof objectMap !== 'object') return changed;
+
+    Object.keys(idMap).forEach(function (oldId) {
+        var newId = idMap[oldId];
+        if (!newId || oldId === newId) return;
+        if (!Object.prototype.hasOwnProperty.call(objectMap, oldId)) return;
+
+        if (!Object.prototype.hasOwnProperty.call(objectMap, newId)) {
+            objectMap[newId] = objectMap[oldId];
+        }
+        delete objectMap[oldId];
+        changed = true;
+    });
+
+    return changed;
+}
+
+function makeUniqueRenamedId(oldId, preferredPrefix, usedIds) {
+    var suffixMatch = String(oldId || '').match(/(\d+)$/);
+    var suffix = suffixMatch ? suffixMatch[1] : '';
+    var baseCandidate = preferredPrefix + suffix;
+    var candidate = baseCandidate;
+
+    if (!candidate || candidate === preferredPrefix) {
+        candidate = preferredPrefix + '001';
+        baseCandidate = candidate;
+    }
+
+    var counter = 1;
+    while (usedIds[candidate]) {
+        candidate = baseCandidate + '_' + counter;
+        counter += 1;
+    }
+
+    usedIds[candidate] = true;
+    return candidate;
+}
+
 function loadUserItems() {
     try {
         var raw = localStorage.getItem(USER_STORAGE_KEY);
         if (!raw) return [];
         var parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
+        if (!Array.isArray(parsed)) return [];
+
+        var corrected = false;
+        var idMap = {};
+        var usedIds = {};
+
+        baseItems.forEach(function (item) {
+            if (item && item.id) usedIds[item.id] = true;
+        });
+        parsed.forEach(function (item) {
+            if (item && item.id) usedIds[item.id] = true;
+        });
+
+        var normalized = parsed.map(function (item) {
+            if (!item || typeof item !== 'object') return item;
+
+            var nameNorm = normalizeText(item.name);
+            var typeNorm = normalizeType(item.treeType);
+            if (typeNorm === 'jabuka' && nameNorm.indexOf('ribiz') !== -1) {
+                corrected = true;
+                item.treeType = 'ribizl';
+                item.iconUrl = iconByType('ribizl');
+
+                if (item.id && String(item.id).indexOf('jabuka') === 0) {
+                    var oldId = item.id;
+                    delete usedIds[oldId];
+                    var newId = makeUniqueRenamedId(oldId, 'ribizl', usedIds);
+                    item.id = newId;
+                    idMap[oldId] = newId;
+                }
+            }
+
+            return item;
+        });
+
+        if (corrected) {
+            if (Object.keys(idMap).length > 0) {
+                var detailsChanged = remapObjectKeysById(plantDetails, idMap);
+                if (detailsChanged) savePlantDetails();
+
+                var positionsChanged = remapObjectKeysById(positionOverrides, idMap);
+                if (positionsChanged) savePositionOverrides();
+
+                var notesChanged = remapObjectKeysById(noteOverrides, idMap);
+                if (notesChanged) saveNoteOverrides();
+            }
+
+            localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(normalized));
+        }
+
+        return normalized;
     } catch (error) {
         console.error('Ne mogu učitati userItems:', error);
         return [];

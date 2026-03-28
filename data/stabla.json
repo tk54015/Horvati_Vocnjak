@@ -637,26 +637,6 @@
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
-                      "id":  "ribizl214",
-                      "kategorija":  "stablo",
-                      "vrsta":  "ribizl",
-                      "naziv":  "ribizl",
-                      "lat":  588.4988267852941,
-                      "lng":  170.5166076431637,
-                      "napomena":  "Visak",
-                      "ikonica":  "icons/ribiz.png"
-                  },
-                  {
-                      "id":  "ribizl215",
-                      "kategorija":  "stablo",
-                      "vrsta":  "ribizl",
-                      "naziv":  "ribizl",
-                      "lat":  601.0086035745102,
-                      "lng":  144.51237432235723,
-                      "napomena":  "Viska",
-                      "ikonica":  "icons/ribiz.png"
-                  },
-                  {
                       "id":  "ribizl216",
                       "kategorija":  "stablo",
                       "vrsta":  "ribizl",

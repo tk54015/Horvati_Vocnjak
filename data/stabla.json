@@ -3,7 +3,7 @@
                  "naziv":  "Horvati vocnjak",
                  "verzija":  1,
                  "opis":  "Izvoz oznaka iz aplikacije",
-                 "generatedAt":  "2026-03-27T10:51:43.8315089+01:00"
+                 "generatedAt":  "2026-03-28T12:02:00.539Z"
              },
     "items":  [
                   {
@@ -13,7 +13,7 @@
                       "naziv":  "glog",
                       "lat":  151.28,
                       "lng":  892.07,
-                      "napomena":  "",
+                      "napomena":  "Dobar, ali nema lisca uopce, upitno zasto",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -23,7 +23,7 @@
                       "naziv":  "glog",
                       "lat":  125.49,
                       "lng":  843.5,
-                      "napomena":  "",
+                      "napomena":  "Dobar, malo nagorio",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -33,7 +33,7 @@
                       "naziv":  "glog",
                       "lat":  117.26,
                       "lng":  821.06,
-                      "napomena":  "",
+                      "napomena":  "Dobar",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -43,7 +43,7 @@
                       "naziv":  "dunja",
                       "lat":  105,
                       "lng":  799,
-                      "napomena":  "",
+                      "napomena":  "Dobar, valida je dunja",
                       "ikonica":  "icons/dunja.png"
                   },
                   {
@@ -53,7 +53,7 @@
                       "naziv":  "dunja",
                       "lat":  95.99,
                       "lng":  775,
-                      "napomena":  "",
+                      "napomena":  "Dobar, dunja",
                       "ikonica":  "icons/dunja.png"
                   },
                   {
@@ -63,7 +63,7 @@
                       "naziv":  "glog",
                       "lat":  109.75,
                       "lng":  746.04,
-                      "napomena":  "",
+                      "napomena":  "Nije glog, ali nezz sto je",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -83,7 +83,7 @@
                       "naziv":  "jabuka",
                       "lat":  143.78,
                       "lng":  708.54,
-                      "napomena":  "",
+                      "napomena":  "Kaki jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -93,7 +93,7 @@
                       "naziv":  "breskva",
                       "lat":  236.01,
                       "lng":  761.99,
-                      "napomena":  "",
+                      "napomena":  "Breskva, da",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -113,7 +113,7 @@
                       "naziv":  "kupina",
                       "lat":  248.01,
                       "lng":  741.49,
-                      "napomena":  "",
+                      "napomena":  "1x4m , kupin",
                       "ikonica":  "icons/blackberry.png"
                   },
                   {
@@ -123,7 +123,7 @@
                       "naziv":  "jabuka",
                       "lat":  268,
                       "lng":  702.5,
-                      "napomena":  "",
+                      "napomena":  "Jabuka, malo vise gore",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -133,7 +133,7 @@
                       "naziv":  "breskva",
                       "lat":  282.39,
                       "lng":  685.54,
-                      "napomena":  "",
+                      "napomena":  "Dobar",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -143,7 +143,7 @@
                       "naziv":  "jabuka",
                       "lat":  293.9,
                       "lng":  668.03,
-                      "napomena":  "",
+                      "napomena":  "Dobar",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -153,7 +153,7 @@
                       "naziv":  "breskva",
                       "lat":  305,
                       "lng":  635.5,
-                      "napomena":  "",
+                      "napomena":  "Breskva",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -163,7 +163,7 @@
                       "naziv":  "sljiva",
                       "lat":  330.51,
                       "lng":  582.49,
-                      "napomena":  "",
+                      "napomena":  "Sljiva",
                       "ikonica":  "icons/plum.png"
                   },
                   {
@@ -173,7 +173,7 @@
                       "naziv":  "sljiva",
                       "lat":  305.4,
                       "lng":  598.52,
-                      "napomena":  "",
+                      "napomena":  "Ovo je visnja",
                       "ikonica":  "icons/plum.png"
                   },
                   {
@@ -183,7 +183,7 @@
                       "naziv":  "sljiva",
                       "lat":  346.94,
                       "lng":  519.01,
-                      "napomena":  "",
+                      "napomena":  "Manolija",
                       "ikonica":  "icons/plum.png"
                   },
                   {
@@ -193,7 +193,7 @@
                       "naziv":  "breskva",
                       "lat":  286.89,
                       "lng":  413.49,
-                      "napomena":  "",
+                      "napomena":  "Breskva, da",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -203,7 +203,7 @@
                       "naziv":  "jabuka",
                       "lat":  262.37,
                       "lng":  318.48,
-                      "napomena":  "",
+                      "napomena":  "Dobar",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -213,7 +213,7 @@
                       "naziv":  "jabuka",
                       "lat":  238.35,
                       "lng":  356.98,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -223,7 +223,7 @@
                       "naziv":  "jabuka",
                       "lat":  203.83,
                       "lng":  299.97,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -233,7 +233,7 @@
                       "naziv":  "kruska",
                       "lat":  216.84,
                       "lng":  401.49,
-                      "napomena":  "",
+                      "napomena":  "Kriska",
                       "ikonica":  "icons/pear.png"
                   },
                   {
@@ -243,7 +243,7 @@
                       "naziv":  "kruska",
                       "lat":  203.68,
                       "lng":  423.99,
-                      "napomena":  "",
+                      "napomena":  "Kruska",
                       "ikonica":  "icons/pear.png"
                   },
                   {
@@ -253,7 +253,7 @@
                       "naziv":  "jabuka",
                       "lat":  187.67,
                       "lng":  341.98,
-                      "napomena":  "",
+                      "napomena":  "Ovo je tresnja",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -263,7 +263,7 @@
                       "naziv":  "jabuka",
                       "lat":  189.67,
                       "lng":  450.99,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -273,7 +273,7 @@
                       "naziv":  "tresnja",
                       "lat":  158.65,
                       "lng":  505,
-                      "napomena":  "",
+                      "napomena":  "Tresnja",
                       "ikonica":  "icons/cherry.png"
                   },
                   {
@@ -303,7 +303,7 @@
                       "naziv":  "jabuka",
                       "lat":  120.62,
                       "lng":  463,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -313,7 +313,7 @@
                       "naziv":  "jabuka",
                       "lat":  138.63,
                       "lng":  543.01,
-                      "napomena":  "",
+                      "napomena":  "Visnja ?",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -323,7 +323,7 @@
                       "naziv":  "jabuka",
                       "lat":  84.59,
                       "lng":  514.01,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -333,7 +333,7 @@
                       "naziv":  "jabuka",
                       "lat":  109.61,
                       "lng":  584.02,
-                      "napomena":  "",
+                      "napomena":  "Sljiva, ko i ostala 3",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -363,7 +363,7 @@
                       "naziv":  "breskva",
                       "lat":  28.54,
                       "lng":  605.02,
-                      "napomena":  "",
+                      "napomena":  "Nije breskva",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -413,7 +413,7 @@
                       "naziv":  "jabuka",
                       "lat":  63.41,
                       "lng":  676.26,
-                      "napomena":  "",
+                      "napomena":  "Nezz",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -423,7 +423,7 @@
                       "naziv":  "tresnja",
                       "lat":  276.96,
                       "lng":  289.99,
-                      "napomena":  "",
+                      "napomena":  "Tresnja",
                       "ikonica":  "icons/cherry.png"
                   },
                   {
@@ -431,8 +431,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "jabuka",
                       "naziv":  "jabuka",
-                      "lat":  244.01,
-                      "lng":  229,
+                      "lat":  267.22647825430977,
+                      "lng":  196.140625,
                       "napomena":  "",
                       "ikonica":  "icons/apple.png"
                   },
@@ -443,7 +443,7 @@
                       "naziv":  "smokva",
                       "lat":  295.99648035588217,
                       "lng":  249.99926730986044,
-                      "napomena":  "",
+                      "napomena":  "Ogromna smomva",
                       "ikonica":  "icons/fig.png"
                   },
                   {
@@ -463,7 +463,7 @@
                       "naziv":  "jabuka",
                       "lat":  277.02,
                       "lng":  167.99,
-                      "napomena":  "",
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -493,7 +493,7 @@
                       "naziv":  "kruska",
                       "lat":  405.96,
                       "lng":  30.95,
-                      "napomena":  "",
+                      "napomena":  "Kruska",
                       "ikonica":  "icons/pear.png"
                   },
                   {
@@ -503,7 +503,7 @@
                       "naziv":  "jabuka",
                       "lat":  362.93,
                       "lng":  127.96,
-                      "napomena":  "",
+                      "napomena":  "Nezz kaj",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -513,7 +513,7 @@
                       "naziv":  "tresnja",
                       "lat":  411.46,
                       "lng":  92.46,
-                      "napomena":  "",
+                      "napomena":  "Mozda visnja",
                       "ikonica":  "icons/cherry.png"
                   },
                   {
@@ -523,7 +523,7 @@
                       "naziv":  "tresnja",
                       "lat":  387.44,
                       "lng":  159.97,
-                      "napomena":  "",
+                      "napomena":  "Tresnja",
                       "ikonica":  "icons/cherry.png"
                   },
                   {
@@ -531,9 +531,9 @@
                       "kategorija":  "stablo",
                       "vrsta":  "jabuka",
                       "naziv":  "jabuka",
-                      "lat":  410.96,
-                      "lng":  213.48,
-                      "napomena":  "",
+                      "lat":  505.71590563319126,
+                      "lng":  139.59375,
+                      "napomena":  "Jabuka",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -543,7 +543,7 @@
                       "naziv":  "jabuka",
                       "lat":  430.48,
                       "lng":  175.47,
-                      "napomena":  "",
+                      "napomena":  "Nesto",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -551,9 +551,9 @@
                       "kategorija":  "stablo",
                       "vrsta":  "jabuka",
                       "naziv":  "jabuka",
-                      "lat":  443.49,
-                      "lng":  204.47,
-                      "napomena":  "",
+                      "lat":  495.68704312784314,
+                      "lng":  111.75,
+                      "napomena":  "Visnja mozda",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -573,7 +573,7 @@
                       "naziv":  "smokva",
                       "lat":  476.51,
                       "lng":  74.95,
-                      "napomena":  "",
+                      "napomena":  "Nesto, neznam sto",
                       "ikonica":  "icons/fig.png"
                   },
                   {
@@ -581,8 +581,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "smokva",
                       "naziv":  "smokva",
-                      "lat":  483.52,
-                      "lng":  109.96,
+                      "lat":  496.37010552121194,
+                      "lng":  150.125,
                       "napomena":  "",
                       "ikonica":  "icons/fig.png"
                   },
@@ -603,7 +603,7 @@
                       "naziv":  "kupina",
                       "lat":  471.51,
                       "lng":  176.97,
-                      "napomena":  "",
+                      "napomena":  "Grmic",
                       "ikonica":  "icons/blackberry.png"
                   },
                   {
@@ -613,7 +613,7 @@
                       "naziv":  "kupina",
                       "lat":  490.02,
                       "lng":  162.24,
-                      "napomena":  "",
+                      "napomena":  "1x4",
                       "ikonica":  "icons/blackberry.png"
                   },
                   {
@@ -643,7 +643,7 @@
                       "naziv":  "ribizl",
                       "lat":  588.4988267852941,
                       "lng":  170.5166076431637,
-                      "napomena":  "",
+                      "napomena":  "Visak",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -653,7 +653,7 @@
                       "naziv":  "ribizl",
                       "lat":  601.0086035745102,
                       "lng":  144.51237432235723,
-                      "napomena":  "",
+                      "napomena":  "Viska",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -661,8 +661,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "ribizl",
                       "naziv":  "ribizl",
-                      "lat":  619.0226821509815,
-                      "lng":  110.00675703128718,
+                      "lat":  626.8427162593078,
+                      "lng":  135.1015625,
                       "napomena":  "",
                       "ikonica":  "icons/ribiz.png"
                   },
@@ -691,8 +691,8 @@
                       "kategorija":  "stablo",
                       "vrsta":  "ribizl",
                       "naziv":  "ribizl",
-                      "lat":  634.5348053696096,
-                      "lng":  75.50113974021713,
+                      "lat":  634.4497241232085,
+                      "lng":  102.40625,
                       "napomena":  "",
                       "ikonica":  "icons/ribiz.png"
                   },
@@ -701,10 +701,280 @@
                       "kategorija":  "stablo",
                       "vrsta":  "ribizl",
                       "naziv":  "ribizl",
-                      "lat":  637.5371517990214,
-                      "lng":  119.50830382158185,
+                      "lat":  631.76876372588,
+                      "lng":  123.4609375,
                       "napomena":  "",
                       "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "breskva221",
+                      "kategorija":  "stablo",
+                      "vrsta":  "breskva",
+                      "naziv":  "breskva",
+                      "lat":  50.763086429222426,
+                      "lng":  695.1328125,
+                      "napomena":  "Breskva",
+                      "ikonica":  "icons/peach.png"
+                  },
+                  {
+                      "id":  "jabuka222",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  461.33496751271707,
+                      "lng":  35.828125,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka223",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  505.3467203669543,
+                      "lng":  35.328125,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka224",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  537.8554014524705,
+                      "lng":  34.828125,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka225",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "neki grm",
+                      "lat":  515.8495250253518,
+                      "lng":  59.828125,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka226",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  554.9707514195687,
+                      "lng":  30.25,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka227",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  554.220551086826,
+                      "lng":  38.5,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "drenak228",
+                      "kategorija":  "stablo",
+                      "vrsta":  "drenak",
+                      "naziv":  "drenak",
+                      "lat":  534.5512449770096,
+                      "lng":  59.5625,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "drenak229",
+                      "kategorija":  "stablo",
+                      "vrsta":  "drenak",
+                      "naziv":  "drenak",
+                      "lat":  529.2413897268408,
+                      "lng":  82.703125,
+                      "napomena":  "",
+                      "ikonica":  null
+                  },
+                  {
+                      "id":  "kupina230",
+                      "kategorija":  "stablo",
+                      "vrsta":  "kupina",
+                      "naziv":  "kupina",
+                      "lat":  569.115931932595,
+                      "lng":  39.6484375,
+                      "napomena":  "",
+                      "ikonica":  "icons/blackberry.png"
+                  },
+                  {
+                      "id":  "kupina231",
+                      "kategorija":  "stablo",
+                      "vrsta":  "kupina",
+                      "naziv":  "kupina",
+                      "lat":  564.364663158558,
+                      "lng":  54.6484375,
+                      "napomena":  "",
+                      "ikonica":  "icons/blackberry.png"
+                  },
+                  {
+                      "id":  "ljiva232",
+                      "kategorija":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "tresnja",
+                      "lat":  529.4710459174628,
+                      "lng":  116.6875,
+                      "napomena":  "",
+                      "ikonica":  "icons/plum.png"
+                  },
+                  {
+                      "id":  "ljiva233",
+                      "kategorija":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "ljiva",
+                      "lat":  590.4374961842838,
+                      "lng":  31,
+                      "napomena":  "",
+                      "ikonica":  "icons/plum.png"
+                  },
+                  {
+                      "id":  "ljiva234",
+                      "kategorija":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "cvijet",
+                      "lat":  587.436694853313,
+                      "lng":  55,
+                      "napomena":  "",
+                      "ikonica":  "icons/plum.png"
+                  },
+                  {
+                      "id":  "jabuka235",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  622.1282403428859,
+                      "lng":  40.234375,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka236",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  619.1274390119152,
+                      "lng":  67.734375,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka237",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  640.1330483287102,
+                      "lng":  99.734375,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "jabuka238",
+                      "kategorija":  "stablo",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
+                      "lat":  683.6446676277856,
+                      "lng":  30.734375,
+                      "napomena":  "",
+                      "ikonica":  "icons/apple.png"
+                  },
+                  {
+                      "id":  "ribizl239",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  576.5506870062036,
+                      "lng":  50.2890625,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl240",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  607.6121127216162,
+                      "lng":  30.8828125,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl241",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  660.7160769889061,
+                      "lng":  23.75,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl242",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  671.9690819800464,
+                      "lng":  23.25,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl243",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  658.715542768259,
+                      "lng":  40.75,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl244",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  678.9709517523114,
+                      "lng":  47.25,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl245",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  654.4644075493838,
+                      "lng":  59.25,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ribizl246",
+                      "kategorija":  "stablo",
+                      "vrsta":  "ribizl",
+                      "naziv":  "ribizl",
+                      "lat":  671.2188816473036,
+                      "lng":  61.5,
+                      "napomena":  "",
+                      "ikonica":  "icons/ribiz.png"
+                  },
+                  {
+                      "id":  "ljiva247",
+                      "kategorija":  "stablo",
+                      "vrsta":  "sljiva",
+                      "naziv":  "ljiva",
+                      "lat":  507.4427048355935,
+                      "lng":  276.5,
+                      "napomena":  "",
+                      "ikonica":  "icons/plum.png"
                   }
               ]
 }

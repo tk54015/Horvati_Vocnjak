@@ -3,7 +3,7 @@
                  "naziv":  "Horvati vocnjak",
                  "verzija":  1,
                  "opis":  "Vinova loza (izdvojeno iz glavnog popisa)",
-                 "generatedAt":  "2026-03-27T10:51:43.8315089+01:00"
+                 "generatedAt":  "2026-03-28T12:02:00.539Z"
              },
     "items":  [
                   {
@@ -1533,7 +1533,7 @@
                       "naziv":  "vinova_loza",
                       "lat":  297.64675710587727,
                       "lng":  277.54644441384744,
-                      "napomena":  "",
+                      "napomena":  "Kao 16 grana i 1 kiwi",
                       "ikonica":  null
                   },
                   {

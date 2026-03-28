@@ -85,6 +85,12 @@ function slugify(text) {
 
 function normalizeType(typeText) {
     var t = String(typeText || '').toLowerCase();
+    var tAscii = t
+        .replace(/š/g, 's')
+        .replace(/đ/g, 'd')
+        .replace(/č/g, 'c')
+        .replace(/ć/g, 'c')
+        .replace(/ž/g, 'z');
     if (t.indexOf('jabuk') !== -1) return 'jabuka';
     if (t.indexOf('ribiz') !== -1) return 'ribizl';
     if (t.indexOf('kru') !== -1) return 'kruska';
@@ -97,6 +103,8 @@ function normalizeType(typeText) {
     if (t.indexOf('cherry') !== -1) return 'tresnja';
     if (t.indexOf('tres') !== -1 || t.indexOf('tre') !== -1) return 'tresnja';
     if (t.indexOf('sljiv') !== -1 || t.indexOf('slji') !== -1) return 'sljiva';
+    if (tAscii.indexOf('tres') !== -1 || tAscii.indexOf('tre') !== -1) return 'tresnja';
+    if (tAscii.indexOf('sljiv') !== -1 || tAscii.indexOf('slji') !== -1) return 'sljiva';
     return slugify(typeText || 'stablo');
 }
 
@@ -849,13 +857,13 @@ function loadInventory() {
     plantDetails = loadPlantDetails();
     positionOverrides = loadPositionOverrides();
 
-    fetch('data/stabla.json?v=20260327d')
+    fetch('data/stabla.json?v=20260328a')
         .then(function (response) {
             if (!response.ok) throw new Error('Nema data/stabla.json');
             return response.json();
         })
         .then(function (stablaData) {
-            return fetch('data/loza.json?v=20260327d')
+            return fetch('data/loza.json?v=20260328a')
                 .then(function (response) {
                     if (!response.ok) throw new Error('Nema data/loza.json');
                     return response.json();
@@ -1119,7 +1127,7 @@ map.on('click', function (e) {
 
     var coords = e.latlng;
     var treeTypeEl = document.getElementById('tree-type');
-    var treeTypeRaw = treeTypeEl ? treeTypeEl.options[treeTypeEl.selectedIndex].text : 'Stablo';
+    var treeTypeRaw = treeTypeEl ? treeTypeEl.value : 'stablo';
     var treeType = normalizeType(treeTypeRaw);
     var nextId = nextGlobalIdNumber();
 

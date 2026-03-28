@@ -1074,16 +1074,16 @@ document.addEventListener('keydown', function (e) {
         map.zoomIn();
     } else if (e.key === '-' || e.key === '_' || e.code === 'Minus') {
         map.zoomOut();
-    } else if (e.key === 'ArrowLeft' || e.key === 'a') {
+    } else if (e.key === 'ArrowLeft') {
         map.panBy([-20, 0]);
         e.preventDefault();
-    } else if (e.key === 'ArrowRight' || e.key === 'd') {
+    } else if (e.key === 'ArrowRight') {
         map.panBy([20, 0]);
         e.preventDefault();
-    } else if (e.key === 'ArrowUp' || e.key === 'w') {
+    } else if (e.key === 'ArrowUp') {
         map.panBy([0, -20]);
         e.preventDefault();
-    } else if (e.key === 'ArrowDown' || e.key === 's') {
+    } else if (e.key === 'ArrowDown') {
         map.panBy([0, 20]);
         e.preventDefault();
     }

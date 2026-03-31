@@ -85,9 +85,9 @@ var WATER_NEED_LEVEL = {
     kupina: 3,
     glog: 1,
     dunja: 2,
-    sljiva: 2,
+    sljiva: 3,
     tresnja: 3,
-    ribizl: 4,
+    ribizl: 2,
     vinova_loza: 2,
     _default: 2
 };
@@ -258,16 +258,21 @@ function buildMarkerIcon(item, isUserItem) {
 function buildWaterIcon(item) {
     var t = normalizeType(item.treeType);
     var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
-    var fillPct = level * 25;
+    var resolvedIcon = item.iconUrl || iconByType(item.treeType);
     var size = FULL_ICON_SIZE;
-    var inner = size - 4;
+    var drops = '';
+    for (var i = 0; i < 4; i++) { drops += i < level ? '💧' : '<span style="opacity:0.25">💧</span>'; }
+    var imgHtml = resolvedIcon
+        ? '<img src="' + resolvedIcon + '" style="width:' + size + 'px;height:' + size + 'px;display:block;">'
+        : '<div style="width:' + size + 'px;height:' + size + 'px;background:#ccc;border-radius:3px;"></div>';
     return L.divIcon({
         className: 'water-need-icon',
-        html: '<div style="width:' + inner + 'px;height:' + inner + 'px;border:2px solid #1a6bb5;border-radius:3px;background:#e8f4ff;position:relative;overflow:hidden;">'
-            + '<div style="position:absolute;bottom:0;left:0;right:0;height:' + fillPct + '%;background:rgba(30,100,200,0.72);"></div>'
+        html: '<div style="display:flex;flex-direction:column;align-items:center;line-height:1;">'
+            + imgHtml
+            + '<div style="font-size:8px;letter-spacing:-1px;margin-top:1px;">' + drops + '</div>'
             + '</div>',
-        iconSize: [size, size],
-        iconAnchor: [Math.round(size / 2), Math.round(size / 2)]
+        iconSize: [size, size + 12],
+        iconAnchor: [Math.round(size / 2), size]
     });
 }
 
@@ -701,6 +706,15 @@ function openPlantPanel(item, isUserItem) {
     document.getElementById('plant-id').textContent = item.id || '-';
     document.getElementById('plant-type').textContent = item.treeType || '-';
     document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
+
+    var waterEl = document.getElementById('plant-water');
+    if (waterEl) {
+        var t = normalizeType(item.treeType);
+        var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
+        var drops = '';
+        for (var i = 0; i < 4; i++) { drops += i < level ? '\uD83D\uDCA7' : '\u25CB'; }
+        waterEl.textContent = drops;
+    }
 
     var details = getPlantDetails(item.id);
     document.getElementById('status-orezano').value = details.orezano || 'nepoznato';

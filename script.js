@@ -46,6 +46,7 @@ var baseOriginalPositionsById = {};
 var baseVisibleVineIds = {};
 var dragEnabled = false;
 var placementEnabled = false;
+var waterFilterEnabled = false;
 var selectedPlant = null;
 
 var VINE_DISPLAY_STEP = 5;
@@ -73,6 +74,22 @@ var AVG_YIELD_KG_BY_TYPE = {
     ribizl: 3.5,
     vinova_loza: 1.5,
     _default: 10
+};
+
+// Potrebe za zalijevanjem: 0 = minimalno, 4 = visoko (svaki stupanj = 25%)
+var WATER_NEED_LEVEL = {
+    jabuka: 3,
+    kruska: 3,
+    breskva: 4,
+    smokva: 1,
+    kupina: 3,
+    glog: 1,
+    dunja: 2,
+    sljiva: 2,
+    tresnja: 3,
+    ribizl: 4,
+    vinova_loza: 2,
+    _default: 2
 };
 
 function slugify(text) {
@@ -222,6 +239,10 @@ function buildMarkerIcon(item, isUserItem) {
         });
     }
 
+    if (waterFilterEnabled) {
+        return buildWaterIcon(item);
+    }
+
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
     if (!resolvedIcon) return null;
 
@@ -231,6 +252,33 @@ function buildMarkerIcon(item, isUserItem) {
         iconSize: [iconSize, iconSize],
         iconAnchor: [Math.round(iconSize / 2), iconSize],
         popupAnchor: [0, -iconSize]
+    });
+}
+
+function buildWaterIcon(item) {
+    var t = normalizeType(item.treeType);
+    var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
+    var fillPct = level * 25;
+    var size = FULL_ICON_SIZE;
+    var inner = size - 4;
+    return L.divIcon({
+        className: 'water-need-icon',
+        html: '<div style="width:' + inner + 'px;height:' + inner + 'px;border:2px solid #1a6bb5;border-radius:3px;background:#e8f4ff;position:relative;overflow:hidden;">'
+            + '<div style="position:absolute;bottom:0;left:0;right:0;height:' + fillPct + '%;background:rgba(30,100,200,0.72);"></div>'
+            + '</div>',
+        iconSize: [size, size],
+        iconAnchor: [Math.round(size / 2), Math.round(size / 2)]
+    });
+}
+
+function refreshAllMarkerIcons() {
+    Object.keys(allMarkersById).forEach(function (id) {
+        var marker = allMarkersById[id];
+        var item = allItemsById[id];
+        if (!marker || !item) return;
+        var isUserItem = userItems.some(function (u) { return u.id === id; });
+        var newIcon = buildMarkerIcon(item, isUserItem);
+        if (newIcon) marker.setIcon(newIcon);
     });
 }
 
@@ -1092,6 +1140,17 @@ document.addEventListener('keydown', function (e) {
 var exportBtn = document.getElementById('export-json');
 if (exportBtn) {
     exportBtn.addEventListener('click', downloadJson);
+}
+
+var toggleWaterFilterBtn = document.getElementById('toggle-water-filter');
+if (toggleWaterFilterBtn) {
+    toggleWaterFilterBtn.addEventListener('click', function () {
+        waterFilterEnabled = !waterFilterEnabled;
+        toggleWaterFilterBtn.textContent = waterFilterEnabled ? '💧 Prikaz zalijevanja uključen' : '💧 Prikaz zalijevanja';
+        toggleWaterFilterBtn.classList.toggle('water-filter-active', waterFilterEnabled);
+        toggleWaterFilterBtn.classList.toggle('water-filter-inactive', !waterFilterEnabled);
+        refreshAllMarkerIcons();
+    });
 }
 
 var togglePlacementBtn = document.getElementById('toggle-placement');

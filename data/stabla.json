@@ -169,22 +169,12 @@
                   {
                       "id":  "stablo017",
                       "kategorija":  "stablo",
-                      "vrsta":  "sljiva",
-                      "naziv":  "sljiva",
+                      "vrsta":  "visnja",
+                      "naziv":  "visnja",
                       "lat":  305.4,
                       "lng":  598.52,
                       "napomena":  "Ovo je visnja",
-                      "ikonica":  "icons/plum.png"
-                  },
-                  {
-                      "id":  "stablo018",
-                      "kategorija":  "stablo",
-                      "vrsta":  "sljiva",
-                      "naziv":  "sljiva",
-                      "lat":  346.94,
-                      "lng":  519.01,
-                      "napomena":  "Manolija",
-                      "ikonica":  "icons/plum.png"
+                      "ikonica":  "icons/visnja.png"
                   },
                   {
                       "id":  "breskva019",

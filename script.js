@@ -71,6 +71,7 @@ var AVG_YIELD_KG_BY_TYPE = {
     glog: 5,
     dunja: 15,
     tresnja: 18,
+    visnja: 18,
     ribizl: 3.5,
     vinova_loza: 1.5,
     _default: 10
@@ -87,6 +88,7 @@ var WATER_NEED_LEVEL = {
     dunja: 2,
     sljiva: 3,
     tresnja: 3,
+    visnja: 3,
     ribizl: 2,
     vinova_loza: 2,
     _default: 2
@@ -117,9 +119,11 @@ function normalizeType(typeText) {
     if (t.indexOf('glog') !== -1) return 'glog';
     if (t.indexOf('dunj') !== -1) return 'dunja';
     if (t.indexOf('plum') !== -1) return 'sljiva';
+    if (t.indexOf('visn') !== -1) return 'visnja';
     if (t.indexOf('cherry') !== -1) return 'tresnja';
     if (t.indexOf('tres') !== -1 || t.indexOf('tre') !== -1) return 'tresnja';
     if (t.indexOf('sljiv') !== -1 || t.indexOf('slji') !== -1) return 'sljiva';
+    if (tAscii.indexOf('visn') !== -1) return 'visnja';
     if (tAscii.indexOf('tres') !== -1 || tAscii.indexOf('tre') !== -1) return 'tresnja';
     if (tAscii.indexOf('sljiv') !== -1 || tAscii.indexOf('slji') !== -1) return 'sljiva';
     return slugify(typeText || 'stablo');
@@ -135,6 +139,7 @@ function iconByType(typeText) {
     if (t === 'smokva') return 'icons/fig.png';
     if (t === 'sljiva') return 'icons/plum.png';
     if (t === 'tresnja') return 'icons/cherry.png';
+    if (t === 'visnja') return 'icons/visnja.png';
     if (t === 'dunja') return 'icons/dunja.png';
     if (t === 'glog') return 'icons/glog.png';
     if (t === 'vinova_loza') return 'icons/grapes.png';

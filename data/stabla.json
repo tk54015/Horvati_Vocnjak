@@ -624,6 +624,8 @@
                       "lat":  541.4620660578413,
                       "lng":  259.0310172159086,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -634,6 +636,8 @@
                       "lat":  595.48,
                       "lng":  185.01,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -644,6 +648,8 @@
                       "lat":  640,
                       "lng":  99.5,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -654,6 +660,8 @@
                       "lat":  664.5,
                       "lng":  51,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -664,6 +672,8 @@
                       "lat":  612.98,
                       "lng":  135.51,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -674,6 +684,8 @@
                       "lat":  612.48,
                       "lng":  162.01,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -864,6 +876,8 @@
                       "lat":  576.5506870062036,
                       "lng":  50.2890625,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "mala",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -874,6 +888,8 @@
                       "lat":  607.6121127216162,
                       "lng":  30.8828125,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -884,6 +900,8 @@
                       "lat":  656.5,
                       "lng":  26,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -894,6 +912,8 @@
                       "lat":  671,
                       "lng":  26.5,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -904,6 +924,8 @@
                       "lat":  650.49,
                       "lng":  53.5,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -914,6 +936,8 @@
                       "lat":  673,
                       "lng":  56.5,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -924,6 +948,8 @@
                       "lat":  647.99,
                       "lng":  74,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {
@@ -934,6 +960,8 @@
                       "lat":  662.99,
                       "lng":  78.5,
                       "napomena":  "",
+                      "visina_m":  1.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/ribiz.png"
                   },
                   {

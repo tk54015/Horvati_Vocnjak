@@ -77,6 +77,40 @@ var AVG_YIELD_KG_BY_TYPE = {
     _default: 10
 };
 
+var REFERENCE_YIELD_BY_TYPE = {
+    jabuka: { adultHeightM: 4.0, minKg: 30, maxKg: 80 },
+    kruska: { adultHeightM: 4.5, minKg: 30, maxKg: 100 },
+    sljiva: { adultHeightM: 4.0, minKg: 20, maxKg: 60 },
+    breskva: { adultHeightM: 3.2, minKg: 15, maxKg: 40 },
+    tresnja: { adultHeightM: 5.0, minKg: 30, maxKg: 80 },
+    visnja: { adultHeightM: 5.0, minKg: 20, maxKg: 50 },
+    smokva: { adultHeightM: 4.0, minKg: 20, maxKg: 60 },
+    dunja: { adultHeightM: 3.8, minKg: 20, maxKg: 50 },
+    glog: { adultHeightM: 4.0, minKg: 5, maxKg: 20 },
+    drenak: { adultHeightM: 4.0, minKg: 10, maxKg: 30 },
+    ribizl: { adultHeightM: 1.5, minKg: 3, maxKg: 4 },
+    kupina: { adultHeightM: 2.0, minKg: 2, maxKg: 6 },
+    vinova_loza: { adultHeightM: 2.0, minKg: 2, maxKg: 8 }
+};
+
+var STAGE_COEFFICIENT = {
+    mlado: 0.2,
+    u_razvoju: 0.6,
+    odraslo: 1.0,
+    _default: 1.0
+};
+
+var CANOPY_DENSITY_COEFFICIENT = {
+    mala: 0.3,
+    srednja: 0.7,
+    velika: 1.0,
+    _default: 1.0
+};
+
+var HEIGHT_FACTOR_ALPHA = 0.6;
+var HEIGHT_FACTOR_MIN = 0.4;
+var HEIGHT_FACTOR_MAX = 1.35;
+
 // Potrebe za zalijevanjem: 0 = minimalno, 4 = visoko (svaki stupanj = 25%)
 var WATER_NEED_LEVEL = {
     jabuka: 3,
@@ -164,6 +198,92 @@ function formatKg(value) {
     return Number(value).toFixed(1).replace(/\.0$/, '');
 }
 
+function normalizeCanopyDensity(value) {
+    var t = String(value || '').toLowerCase();
+    if (!t) return '';
+    var tAscii = t
+        .replace(/š/g, 's')
+        .replace(/đ/g, 'd')
+        .replace(/č/g, 'c')
+        .replace(/ć/g, 'c')
+        .replace(/ž/g, 'z');
+    if (t.indexOf('mala') !== -1 || t.indexOf('malo') !== -1 || tAscii.indexOf('mala') !== -1 || tAscii.indexOf('malo') !== -1) return 'mala';
+    if (t.indexOf('sred') !== -1 || tAscii.indexOf('sred') !== -1) return 'srednja';
+    if (t.indexOf('velik') !== -1 || t.indexOf('jako') !== -1 || tAscii.indexOf('velik') !== -1 || tAscii.indexOf('jako') !== -1) return 'velika';
+    return '';
+}
+
+function normalizeGrowthStage(value) {
+    var t = String(value || '').toLowerCase();
+    if (!t) return '';
+    var tAscii = t
+        .replace(/š/g, 's')
+        .replace(/đ/g, 'd')
+        .replace(/č/g, 'c')
+        .replace(/ć/g, 'c')
+        .replace(/ž/g, 'z');
+    if (t.indexOf('mlad') !== -1 || tAscii.indexOf('mlad') !== -1) return 'mlado';
+    if (t.indexOf('razvoj') !== -1 || tAscii.indexOf('razvoj') !== -1) return 'u_razvoju';
+    if (t.indexOf('odras') !== -1 || tAscii.indexOf('odras') !== -1) return 'odraslo';
+    return '';
+}
+
+function getReferenceYield(typeKey) {
+    if (REFERENCE_YIELD_BY_TYPE[typeKey]) return REFERENCE_YIELD_BY_TYPE[typeKey];
+    var avg = AVG_YIELD_KG_BY_TYPE[typeKey] || AVG_YIELD_KG_BY_TYPE._default;
+    return {
+        adultHeightM: null,
+        minKg: avg,
+        maxKg: avg
+    };
+}
+
+function clamp(value, minValue, maxValue) {
+    return Math.max(minValue, Math.min(maxValue, value));
+}
+
+function getHeightFactor(item, reference) {
+    var h = item && typeof item.heightM === 'number' ? item.heightM : Number(item && item.heightM);
+    if (!h || h <= 0 || !reference || !reference.adultHeightM) return 1;
+    var ratio = h / reference.adultHeightM;
+    var raw = Math.pow(ratio, HEIGHT_FACTOR_ALPHA);
+    return clamp(raw, HEIGHT_FACTOR_MIN, HEIGHT_FACTOR_MAX);
+}
+
+function getYieldRangeKg(item) {
+    var t = normalizeType(item && item.treeType ? item.treeType : '');
+    var density = normalizeCanopyDensity(item && item.canopyDensity ? item.canopyDensity : '');
+    var stage = normalizeGrowthStage(item && item.growthStage ? item.growthStage : '');
+    var stageFactor = STAGE_COEFFICIENT[stage] !== undefined ? STAGE_COEFFICIENT[stage] : STAGE_COEFFICIENT._default;
+    var densityFactor = CANOPY_DENSITY_COEFFICIENT[density] !== undefined ? CANOPY_DENSITY_COEFFICIENT[density] : CANOPY_DENSITY_COEFFICIENT._default;
+    var reference = getReferenceYield(t);
+    var heightFactor = getHeightFactor(item, reference);
+    var totalFactor = stageFactor * densityFactor * heightFactor;
+
+    if (t === 'ribizl') {
+        var baseMin = 3.0;
+        var baseMax = 4.0;
+        if (density === 'mala') {
+            baseMin = 0.5;
+            baseMax = 1.0;
+        } else if (density === 'srednja') {
+            baseMin = 1.5;
+            baseMax = 2.5;
+        }
+        return {
+            min: baseMin * stageFactor * heightFactor,
+            max: baseMax * stageFactor * heightFactor,
+            density: density || 'velika'
+        };
+    }
+
+    return {
+        min: reference.minKg * totalFactor,
+        max: reference.maxKg * totalFactor,
+        density: density || ''
+    };
+}
+
 function renderYieldTable() {
     var body = document.getElementById('yield-table-body');
     var summary = document.getElementById('yield-summary');
@@ -171,41 +291,77 @@ function renderYieldTable() {
 
     var merged = baseItems.concat(userItems);
     if (!merged.length) {
-        body.innerHTML = '<tr><td colspan="4">Nema podataka.</td></tr>';
-        summary.innerHTML = '<p>Ukupna ocekivana kolicina: 0 kg</p>';
+        body.innerHTML = '<tr><td colspan="3">Nema podataka.</td></tr>';
+        summary.innerHTML = '<p>Ukupni ocekivani urod: 0-0 kg</p>';
         return;
     }
 
-    var totalsByType = {};
-    var totalAll = 0;
+    var grouped = {};
+    var totalMinAll = 0;
+    var totalMaxAll = 0;
 
-    var sorted = merged.slice().sort(function (a, b) {
-        return String(a.id || '').localeCompare(String(b.id || ''));
-    });
-
-    var rows = sorted.map(function (item) {
+    merged.forEach(function (item) {
         var typeKey = normalizeType(item.treeType);
-        var yieldKg = getAverageYieldKg(item);
+        var range = getYieldRangeKg(item);
+        var density = range.density || '';
+        var rangeKey = Number(range.min).toFixed(3) + '|' + Number(range.max).toFixed(3);
+        var groupKey = typeKey + '|' + density + '|' + rangeKey;
 
-        totalsByType[typeKey] = (totalsByType[typeKey] || 0) + yieldKg;
-        totalAll += yieldKg;
+        if (!grouped[groupKey]) {
+            grouped[groupKey] = {
+                type: typeKey,
+                density: density,
+                count: 0,
+                minEach: range.min,
+                maxEach: range.max,
+                minTotal: 0,
+                maxTotal: 0
+            };
+        }
 
-        return '<tr>' +
-            '<td>' + escapeHtml(item.id || '-') + '</td>' +
-            '<td>' + escapeHtml(typeKey) + '</td>' +
-            '<td>' + escapeHtml(item.name || '-') + '</td>' +
-            '<td>' + formatKg(yieldKg) + '</td>' +
-            '</tr>';
+        grouped[groupKey].count += 1;
+        grouped[groupKey].minTotal += range.min;
+        grouped[groupKey].maxTotal += range.max;
+        totalMinAll += range.min;
+        totalMaxAll += range.max;
     });
 
-    body.innerHTML = rows.join('');
+    var summaryByType = {};
+    Object.keys(grouped).forEach(function (key) {
+        var group = grouped[key];
+        if (!summaryByType[group.type]) {
+            summaryByType[group.type] = {
+                min: 0,
+                max: 0,
+                parts: []
+            };
+        }
+        summaryByType[group.type].min += group.minTotal;
+        summaryByType[group.type].max += group.maxTotal;
 
-    var summaryLines = Object.keys(totalsByType)
+        summaryByType[group.type].parts.push(group.count + 'x ' + formatKg(group.minEach) + '-' + formatKg(group.maxEach));
+    });
+
+    var groupedRows = Object.keys(summaryByType)
         .sort()
         .map(function (type) {
-            return '<p>Ocekivano ' + formatKg(totalsByType[type]) + ' kg: ' + escapeHtml(type) + '</p>';
+            var info = summaryByType[type];
+            return '<tr>' +
+                '<td>' + escapeHtml(type) + '</td>' +
+                '<td>' + escapeHtml(info.parts.join(' + ')) + '</td>' +
+                '<td>' + escapeHtml(formatKg(info.min) + '-' + formatKg(info.max) + ' kg') + '</td>' +
+                '</tr>';
         });
-    summaryLines.push('<p><b>Ukupno ocekivano: ' + formatKg(totalAll) + ' kg</b></p>');
+
+    body.innerHTML = groupedRows.join('');
+
+    var summaryLines = Object.keys(summaryByType)
+        .sort()
+        .map(function (type) {
+            var info = summaryByType[type];
+            return '<p>Ocekivano ' + formatKg(info.min) + '-' + formatKg(info.max) + ' kg: ' + escapeHtml(type) + '</p>';
+        });
+    summaryLines.push('<p><b>Ukupno ocekivano: ' + formatKg(totalMinAll) + '-' + formatKg(totalMaxAll) + ' kg</b></p>');
     summary.innerHTML = summaryLines.join('');
 }
 
@@ -833,6 +989,9 @@ function normalizeItems(data) {
                 lat: Number(item.lat),
                 lng: Number(item.lng),
                 notes: item.napomena || '',
+                growthStage: item.stadij_razvoja || '',
+                heightM: typeof item.visina_m === 'number' ? item.visina_m : Number(item.visina_m) || null,
+                canopyDensity: item.gustoca_krosnje || '',
                 iconUrl: item.ikonica || null
             };
         });

@@ -198,6 +198,12 @@ function formatKg(value) {
     return Number(value).toFixed(1).replace(/\.0$/, '');
 }
 
+function formatMeters(value) {
+    var numeric = typeof value === 'number' ? value : Number(value);
+    if (!numeric || numeric <= 0) return '-';
+    return formatKg(numeric) + ' m';
+}
+
 function normalizeCanopyDensity(value) {
     var t = String(value || '').toLowerCase();
     if (!t) return '';
@@ -646,7 +652,7 @@ function toExportItem(item, index) {
     var category = lowerType.indexOf('loza') !== -1 ? 'loza' : 'stablo';
     var baseId = slugify(item.name || (category + '_' + (index + 1)));
 
-    return {
+    var exportItem = {
         id: item.id || (baseId + '_' + (index + 1)),
         kategorija: category,
         vrsta: treeType,
@@ -656,6 +662,18 @@ function toExportItem(item, index) {
         napomena: item.notes || '',
         ikonica: item.iconUrl || null
     };
+
+    if (item.heightM !== null && item.heightM !== undefined && item.heightM !== '') {
+        exportItem.visina_m = typeof item.heightM === 'number' ? item.heightM : Number(item.heightM);
+    }
+    if (item.growthStage) {
+        exportItem.stadij_razvoja = item.growthStage;
+    }
+    if (item.canopyDensity) {
+        exportItem.gustoca_krosnje = item.canopyDensity;
+    }
+
+    return exportItem;
 }
 
 function downloadJson() {
@@ -866,6 +884,7 @@ function openPlantPanel(item, isUserItem) {
 
     document.getElementById('plant-id').textContent = item.id || '-';
     document.getElementById('plant-type').textContent = item.treeType || '-';
+    document.getElementById('plant-height').textContent = formatMeters(item.heightM);
     document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
 
     var waterEl = document.getElementById('plant-water');

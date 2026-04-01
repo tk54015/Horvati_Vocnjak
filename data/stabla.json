@@ -13,7 +13,7 @@
                       "naziv":  "glog",
                       "lat":  151.28,
                       "lng":  892.07,
-                      "napomena":  "Dobar, ali nema lisca uopce, upitno zasto",
+                      "napomena":  "treba rusit, suho",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -23,7 +23,10 @@
                       "naziv":  "glog",
                       "lat":  125.49,
                       "lng":  843.5,
-                      "napomena":  "Dobar, malo nagorio",
+                      "napomena":  "2.5m, odrastao, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  2.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -83,7 +86,10 @@
                       "naziv":  "jabuka",
                       "lat":  143.78,
                       "lng":  708.54,
-                      "napomena":  "Kaki jabuka",
+                      "napomena":  "Kaki jabuka, 4m, odrasla ? velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  4,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -93,7 +99,10 @@
                       "naziv":  "breskva",
                       "lat":  236.01,
                       "lng":  761.99,
-                      "napomena":  "Breskva, da",
+                      "napomena":  "Breskva, 2m , mlada, slaba krosnja",
+                      "stadij_razvoja":  "mlado",
+                      "visina_m":  2,
+                      "gustoca_krosnje":  "mala",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -103,7 +112,10 @@
                       "naziv":  "jabuka",
                       "lat":  257.51,
                       "lng":  725.99,
-                      "napomena":  "",
+                      "napomena":  "jabuka, 3m, odrasla, srednja krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  3,
+                      "gustoca_krosnje":  "srednja",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -113,7 +125,7 @@
                       "naziv":  "kupina",
                       "lat":  248.01,
                       "lng":  741.49,
-                      "napomena":  "1x4m , kupin",
+                      "napomena":  "1x4m , kupina",
                       "ikonica":  "icons/blackberry.png"
                   },
                   {
@@ -133,7 +145,10 @@
                       "naziv":  "breskva",
                       "lat":  282.39,
                       "lng":  685.54,
-                      "napomena":  "Dobar",
+                      "napomena":  "breskva, 2.5m, mlada , slaba krosnja",
+                      "stadij_razvoja":  "mlado",
+                      "visina_m":  2.5,
+                      "gustoca_krosnje":  "mala",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -143,7 +158,10 @@
                       "naziv":  "jabuka",
                       "lat":  293.9,
                       "lng":  668.03,
-                      "napomena":  "Dobar",
+                      "napomena":  "2.5m jabuka, odrasla, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  2.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -153,7 +171,10 @@
                       "naziv":  "breskva",
                       "lat":  305,
                       "lng":  635.5,
-                      "napomena":  "Breskva",
+                      "napomena":  "Breskva, 2m, mlada, srednja krosnja",
+                      "stadij_razvoja":  "mlado",
+                      "visina_m":  2,
+                      "gustoca_krosnje":  "srednja",
                       "ikonica":  "icons/peach.png"
                   },
                   {
@@ -173,7 +194,10 @@
                       "naziv":  "visnja",
                       "lat":  305.4,
                       "lng":  598.52,
-                      "napomena":  "Ovo je visnja",
+                      "napomena":  "Ovo je visnja, 4m, odrasla, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  4,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/visnja.png"
                   },
                   {
@@ -183,7 +207,10 @@
                       "naziv":  "breskva",
                       "lat":  286.89,
                       "lng":  413.49,
-                      "napomena":  "Breskva, da",
+                      "napomena":  "Breskva, 3m, odrasla, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  3,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/peach.png"
                   },
                   {

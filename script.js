@@ -864,6 +864,11 @@ function applyNote(item, noteText, isUserItem) {
 }
 
 function openPlantPanel(item, isUserItem) {
+    if (plantPanelAutosaveTimer) {
+        clearTimeout(plantPanelAutosaveTimer);
+        plantPanelAutosaveTimer = null;
+    }
+
     if (plantPanelEl && plantPanelEl.classList.contains('minimized')) {
         plantPanelEl.classList.remove('minimized');
         if (togglePlantPanelBtn) {
@@ -923,6 +928,28 @@ function saveSelectedPlantPanel() {
 
     item.notes = details.napomena;
     applyNote(item, details.napomena, selectedPlant.isUserItem);
+}
+
+var plantPanelAutosaveTimer = null;
+
+function queuePlantPanelAutosave(delayMs) {
+    if (plantPanelAutosaveTimer) {
+        clearTimeout(plantPanelAutosaveTimer);
+    }
+
+    plantPanelAutosaveTimer = setTimeout(function () {
+        plantPanelAutosaveTimer = null;
+        saveSelectedPlantPanel();
+    }, delayMs || 700);
+}
+
+function flushPlantPanelAutosave() {
+    if (plantPanelAutosaveTimer) {
+        clearTimeout(plantPanelAutosaveTimer);
+        plantPanelAutosaveTimer = null;
+    }
+
+    saveSelectedPlantPanel();
 }
 
 function createMarker(item, options) {
@@ -1203,6 +1230,41 @@ if (noteInputEl) {
     });
     noteInputEl.addEventListener('click', function () {
         noteInputEl.removeAttribute('readonly');
+    });
+    noteInputEl.addEventListener('input', function () {
+        queuePlantPanelAutosave();
+    });
+    noteInputEl.addEventListener('blur', function () {
+        flushPlantPanelAutosave();
+    });
+    noteInputEl.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        flushPlantPanelAutosave();
+    });
+}
+
+var sprayInputEl = document.getElementById('status-spricano');
+if (sprayInputEl) {
+    sprayInputEl.addEventListener('input', function () {
+        queuePlantPanelAutosave();
+    });
+    sprayInputEl.addEventListener('blur', function () {
+        flushPlantPanelAutosave();
+    });
+}
+
+var pruneSelectEl = document.getElementById('status-orezano');
+if (pruneSelectEl) {
+    pruneSelectEl.addEventListener('change', function () {
+        flushPlantPanelAutosave();
+    });
+}
+
+var fertilizeSelectEl = document.getElementById('status-gnojeno');
+if (fertilizeSelectEl) {
+    fertilizeSelectEl.addEventListener('change', function () {
+        flushPlantPanelAutosave();
     });
 }
 

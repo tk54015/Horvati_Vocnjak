@@ -36,7 +36,10 @@
                       "naziv":  "glog",
                       "lat":  117.26,
                       "lng":  821.06,
-                      "napomena":  "Dobar",
+                      "napomena":  "2.5m, odrastao, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  2.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/glog.png"
                   },
                   {
@@ -184,7 +187,10 @@
                       "naziv":  "sljiva",
                       "lat":  330.51,
                       "lng":  582.49,
-                      "napomena":  "Sljiva",
+                      "napomena":  "5m, odrastao, mala krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  5,
+                      "gustoca_krosnje":  "mala",
                       "ikonica":  "icons/plum.png"
                   },
                   {
@@ -220,7 +226,10 @@
                       "naziv":  "jabuka",
                       "lat":  262.37,
                       "lng":  318.48,
-                      "napomena":  "Dobar",
+                      "napomena":  "2.5m, odrastao, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  2.5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/apple.png"
                   },
                   {
@@ -440,7 +449,10 @@
                       "naziv":  "tresnja",
                       "lat":  276.96,
                       "lng":  289.99,
-                      "napomena":  "Tresnja",
+                      "napomena":  "5m, odrastao, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/cherry.png"
                   },
                   {
@@ -460,7 +472,10 @@
                       "naziv":  "smokva",
                       "lat":  295.99648035588217,
                       "lng":  249.99926730986044,
-                      "napomena":  "Ogromna smomva",
+                      "napomena":  "5m, odrastao, velika krosnja",
+                      "stadij_razvoja":  "odraslo",
+                      "visina_m":  5,
+                      "gustoca_krosnje":  "velika",
                       "ikonica":  "icons/fig.png"
                   },
                   {

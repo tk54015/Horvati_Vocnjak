@@ -778,6 +778,9 @@ function clearBaseItemChanges(itemId) {
     renderChangeList();
 }
 
+// TEST: dodano radi provjere push-a
+console.log('Testni commit za push: novi sadržaj je dodan u script.js');
+
 function clearBaseItemPosition(itemId) {
     delete positionOverrides[itemId];
     savePositionOverrides();

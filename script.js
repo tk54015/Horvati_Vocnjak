@@ -471,8 +471,11 @@ function buildMarkerIcon(item, isUserItem) {
     }
 
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
+    if (resolvedIcon && item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
+        resolvedIcon = null; // Kriva ikona, koristi emoji
+    }
     if (!resolvedIcon) {
-        var emoji = getEmojiForType(item.treeType);
+        var emoji = getEmojiForType(item);
         var size = FULL_ICON_SIZE;
         return L.divIcon({
             className: 'emoji-icon',
@@ -496,12 +499,15 @@ function buildWaterIcon(item) {
     var t = normalizeType(item.treeType);
     var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
+    if (resolvedIcon && item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
+        resolvedIcon = null; // Kriva ikona, koristi emoji
+    }
     var size = FULL_ICON_SIZE;
     var drops = '';
     for (var i = 0; i < 4; i++) { drops += i < level ? '💧' : '<span style="opacity:0.25">💧</span>'; }
     var imgHtml = resolvedIcon
         ? '<img src="' + resolvedIcon + '" style="width:' + size + 'px;height:' + size + 'px;display:block;">'
-        : '<div style="font-size:' + size + 'px;text-align:center;">' + getEmojiForType(item.treeType) + '</div>';
+        : '<div style="font-size:' + size + 'px;text-align:center;">' + getEmojiForType(item) + '</div>';
     return L.divIcon({
         className: 'water-need-icon',
         html: '<div style="display:flex;flex-direction:column;align-items:center;line-height:1;">'

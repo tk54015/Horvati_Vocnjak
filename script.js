@@ -474,24 +474,15 @@ function buildMarkerIcon(item, isUserItem) {
     if (item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
         resolvedIcon = null; // Kriva ikona, koristi emoji
     }
-    if (!resolvedIcon) {
-        var emoji = getEmojiForType(item);
-        var size = FULL_ICON_SIZE;
-        return L.divIcon({
-            className: 'emoji-icon',
-            html: '<div style="font-size:' + size + 'px;text-align:center;">' + emoji + '</div>',
-            iconSize: [size, size],
-            iconAnchor: [Math.round(size / 2), size],
-            popupAnchor: [0, -size]
-        });
-    }
-
-    var iconSize = FULL_ICON_SIZE;
-    return L.icon({
-        iconUrl: resolvedIcon,
-        iconSize: [iconSize, iconSize],
-        iconAnchor: [Math.round(iconSize / 2), iconSize],
-        popupAnchor: [0, -iconSize]
+    // Uvijek koristi emoji po vrsti
+    var emoji = getEmojiForType(item);
+    var size = FULL_ICON_SIZE;
+    return L.divIcon({
+        className: 'emoji-icon',
+        html: '<div style="font-size:' + size + 'px;text-align:center;">' + emoji + '</div>',
+        iconSize: [size, size],
+        iconAnchor: [Math.round(size / 2), size],
+        popupAnchor: [0, -size]
     });
 }
 
@@ -505,9 +496,7 @@ function buildWaterIcon(item) {
     var size = FULL_ICON_SIZE;
     var drops = '';
     for (var i = 0; i < 4; i++) { drops += i < level ? '💧' : '<span style="opacity:0.25">💧</span>'; }
-    var imgHtml = resolvedIcon
-        ? '<img src="' + resolvedIcon + '" style="width:' + size + 'px;height:' + size + 'px;display:block;">'
-        : '<div style="font-size:' + size + 'px;text-align:center;">' + getEmojiForType(item) + '</div>';
+    var imgHtml = '<div style="font-size:' + size + 'px;text-align:center;">' + getEmojiForType(item) + '</div>';
     return L.divIcon({
         className: 'water-need-icon',
         html: '<div style="display:flex;flex-direction:column;align-items:center;line-height:1;">'

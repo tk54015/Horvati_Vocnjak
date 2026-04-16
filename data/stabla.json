@@ -1,4 +1,4 @@
-﻿{
+{
     "meta":  {
                  "naziv":  "Horvati vocnjak",
                  "verzija":  1,
@@ -134,7 +134,7 @@
                       "gustoca_krosnje":  "srednja"
                   },
                   {
-                      "id":  "stablo016",
+                      "id":  "sljiva016",
                       "kategorija":  "stablo",
                       "vrsta":  "sljiva",
                       "naziv":  "sljiva",
@@ -147,7 +147,7 @@
                       "gustoca_krosnje":  "mala"
                   },
                   {
-                      "id":  "stablo017",
+                      "id":  "visnja017",
                       "kategorija":  "stablo",
                       "vrsta":  "visnja",
                       "naziv":  "visnja",
@@ -238,7 +238,7 @@
                       "gustoca_krosnje":  "srednja"
                   },
                   {
-                      "id":  "jabuka025",
+                      "id":  "tresnja025",
                       "kategorija":  "stablo",
                       "vrsta":  "tresnja",
                       "naziv":  "tresnja",
@@ -304,7 +304,7 @@
                       "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "jabuka031",
+                      "id":  "visnja031",
                       "kategorija":  "stablo",
                       "vrsta":  "Visnja",
                       "naziv":  "Visnja",
@@ -324,7 +324,7 @@
                       "ikonica":  "icons/apple.png"
                   },
                   {
-                      "id":  "jabuka033",
+                      "id":  "sljiva033",
                       "kategorija":  "stablo",
                       "vrsta":  "Sljiva",
                       "naziv":  "Sljiva",
@@ -344,7 +344,7 @@
                       "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "breskva036",
+                      "id":  "kruska036",
                       "kategorija":  "stablo",
                       "vrsta":  "kruska",
                       "naziv":  "kruska",
@@ -394,7 +394,7 @@
                       "ikonica":  "icons/peach.png"
                   },
                   {
-                      "id":  "jabuka041",
+                      "id":  "sljiva041",
                       "kategorija":  "stablo",
                       "vrsta":  "sljiva",
                       "naziv":  "sljiva",
@@ -417,7 +417,7 @@
                       "gustoca_krosnje":  "velika"
                   },
                   {
-                      "id":  "jabuka043",
+                      "id":  "kruska043",
                       "kategorija":  "stablo",
                       "vrsta":  "kruska",
                       "naziv":  "kruska",
@@ -782,7 +782,7 @@
                       "ikonica":  "icons/blackberry.png"
                   },
                   {
-                      "id":  "ljiva232",
+                      "id":  "sljiva232",
                       "kategorija":  "stablo",
                       "vrsta":  "sljiva",
                       "naziv":  "sljiva",
@@ -792,7 +792,7 @@
                       "ikonica":  "icons/plum.png"
                   },
                   {
-                      "id":  "ljiva233",
+                      "id":  "visnja233",
                       "kategorija":  "stablo",
                       "vrsta":  "visnja",
                       "naziv":  "visnja",
@@ -938,7 +938,7 @@
                       "gustoca_krosnje":  "velika"
                   },
                   {
-                      "id":  "ljiva247",
+                      "id":  "sljiva247",
                       "kategorija":  "stablo",
                       "vrsta":  "sljiva",
                       "naziv":  "ljiva",

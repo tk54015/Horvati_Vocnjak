@@ -49,7 +49,13 @@ var placementEnabled = false;
 var waterFilterEnabled = false;
 var selectedPlant = null;
 
-function getTypeWithEmoji(type) {
+function getTypeWithEmoji(typeOrItem) {
+    var type;
+    if (typeof typeOrItem === 'string') {
+        type = typeOrItem;
+    } else {
+        type = typeOrItem.treeType;
+    }
     var emojis = {
         jabuka: '🍎',
         kruska: '🍐',
@@ -67,6 +73,38 @@ function getTypeWithEmoji(type) {
         vinova_loza: '🍇'
     };
     return type + (emojis[type] ? ' ' + emojis[type] : '');
+}
+
+function getTypeFromId(id) {
+    if (!id) return null;
+    var match = id.match(/^([a-zA-ZšđčćžŠĐČĆŽ]+)\d+/);
+    if (match) {
+        var type = match[1].toLowerCase();
+        type = type.replace(/š/g, 's').replace(/đ/g, 'd').replace(/č/g, 'c').replace(/ć/g, 'c').replace(/ž/g, 'z');
+        return type;
+    }
+    return null;
+}
+
+function getEmojiForType(item) {
+    var type = item.treeType;
+    var emojis = {
+        jabuka: '🍎',
+        kruska: '🍐',
+        sljiva: '🍇',
+        smokva: '🫠',
+        breskva: '🍑',
+        tresnja: '🍒',
+        visnja: '🍒',
+        glog: '🌳',
+        drena: '🌳',
+        drenak: '🌳',
+        kupina: '🫐',
+        ribizl: '🍓',
+        dud2: '🌳',
+        vinova_loza: '🍇'
+    };
+    return emojis[type] || '🌿';
 }
 
 var VINE_DISPLAY_STEP = 5;
@@ -433,7 +471,17 @@ function buildMarkerIcon(item, isUserItem) {
     }
 
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
-    if (!resolvedIcon) return null;
+    if (!resolvedIcon) {
+        var emoji = getEmojiForType(item.treeType);
+        var size = FULL_ICON_SIZE;
+        return L.divIcon({
+            className: 'emoji-icon',
+            html: '<div style="font-size:' + size + 'px;text-align:center;">' + emoji + '</div>',
+            iconSize: [size, size],
+            iconAnchor: [Math.round(size / 2), size],
+            popupAnchor: [0, -size]
+        });
+    }
 
     var iconSize = FULL_ICON_SIZE;
     return L.icon({
@@ -453,7 +501,7 @@ function buildWaterIcon(item) {
     for (var i = 0; i < 4; i++) { drops += i < level ? '💧' : '<span style="opacity:0.25">💧</span>'; }
     var imgHtml = resolvedIcon
         ? '<img src="' + resolvedIcon + '" style="width:' + size + 'px;height:' + size + 'px;display:block;">'
-        : '<div style="width:' + size + 'px;height:' + size + 'px;background:#ccc;border-radius:3px;"></div>';
+        : '<div style="font-size:' + size + 'px;text-align:center;">' + getEmojiForType(item.treeType) + '</div>';
     return L.divIcon({
         className: 'water-need-icon',
         html: '<div style="display:flex;flex-direction:column;align-items:center;line-height:1;">'

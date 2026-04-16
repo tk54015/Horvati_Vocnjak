@@ -89,7 +89,10 @@
                       "lat":  268,
                       "lng":  702.5,
                       "napomena":  "jabuka, 3m , odrasla, srednja krosnja",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  "icons/apple.png",
+                      "visina_m":  3,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "srednja"
                   },
                   {
                       "id":  "breskva013",
@@ -190,7 +193,10 @@
                       "lat":  238.35,
                       "lng":  356.98,
                       "napomena":  "2m, jabuka, odrasla, srednja krosnja",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  "icons/apple.png",
+                      "visina_m":  2,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "srednja"
                   },
                   {
                       "id":  "jabuka022",
@@ -200,7 +206,10 @@
                       "lat":  203.83,
                       "lng":  299.97,
                       "napomena":  "3m, jabuka, odrasla, velika krosnja",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  "icons/apple.png",
+                      "visina_m":  3,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "velika"
                   },
                   {
                       "id":  "kruska023",
@@ -210,7 +219,10 @@
                       "lat":  216.84,
                       "lng":  401.49,
                       "napomena":  "3m kruska, odrasla, velika krosnja",
-                      "ikonica":  "icons/pear.png"
+                      "ikonica":  "icons/pear.png",
+                      "visina_m":  3,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "velika"
                   },
                   {
                       "id":  "kruska024",
@@ -220,7 +232,10 @@
                       "lat":  203.68,
                       "lng":  423.99,
                       "napomena":  "2m kruska, odrasla, srednja krosnja",
-                      "ikonica":  "icons/pear.png"
+                      "ikonica":  "icons/pear.png",
+                      "visina_m":  2,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "srednja"
                   },
                   {
                       "id":  "jabuka025",
@@ -235,22 +250,28 @@
                   {
                       "id":  "jabuka026",
                       "kategorija":  "stablo",
-                      "vrsta":  "Jabuka",
-                      "naziv":  "Jabuka",
+                      "vrsta":  "jabuka",
+                      "naziv":  "jabuka",
                       "lat":  189.67,
                       "lng":  450.99,
                       "napomena":  "Jabuka, 1m , mala, mlada,",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  "icons/apple.png",
+                      "visina_m":  1,
+                      "stadij_razvoja":  "mlado",
+                      "gustoca_krosnje":  "mala"
                   },
                   {
                       "id":  "tresnja027",
                       "kategorija":  "stablo",
-                      "vrsta":  "Tresnja",
-                      "naziv":  "Tresnja",
+                      "vrsta":  "tresnja",
+                      "naziv":  "tresnja",
                       "lat":  158.65,
                       "lng":  505,
                       "napomena":  "Tresnja, 6m , jako rodna, odrasla, velika krosnja",
-                      "ikonica":  "icons/cherry.png"
+                      "ikonica":  "icons/cherry.png",
+                      "visina_m":  6,
+                      "stadij_razvoja":  "odraslo",
+                      "gustoca_krosnje":  "velika"
                   },
                   {
                       "id":  "jabuka028",

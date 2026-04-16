@@ -74,6 +74,7 @@ var AVG_YIELD_KG_BY_TYPE = {
     visnja: 18,
     ribizl: 3.5,
     vinova_loza: 1.5,
+    dud2: 15,
     _default: 10
 };
 
@@ -90,7 +91,8 @@ var REFERENCE_YIELD_BY_TYPE = {
     drenak: { adultHeightM: 4.0, minKg: 10, maxKg: 30 },
     ribizl: { adultHeightM: 1.5, minKg: 3, maxKg: 4 },
     kupina: { adultHeightM: 2.0, minKg: 2, maxKg: 6 },
-    vinova_loza: { adultHeightM: 2.0, minKg: 2, maxKg: 8 }
+    vinova_loza: { adultHeightM: 2.0, minKg: 2, maxKg: 8 },
+    dud2: { adultHeightM: 6.0, minKg: 10, maxKg: 20 }
 };
 
 var STAGE_COEFFICIENT = {

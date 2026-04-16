@@ -799,7 +799,8 @@
                       "lat":  590.4374961842838,
                       "lng":  31,
                       "napomena":  "visnja, 9m, ogromno, velika krosnja",
-                      "ikonica":  "icons/plum.png"
+                      "ikonica":  "icons/plum.png",
+                      "visina_m":  9
                   },
                   {
                       "id":  "jabuka235",

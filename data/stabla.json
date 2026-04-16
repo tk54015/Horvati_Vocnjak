@@ -492,12 +492,12 @@
                   {
                       "id":  "jabuka050",
                       "kategorija":  "stablo",
-                      "vrsta":  "jabuka",
-                      "naziv":  "jabuka",
+                      "vrsta":  "dud2",
+                      "naziv":  "dud",
                       "lat":  362.93,
                       "lng":  127.96,
                       "napomena":  "dud ! iliti murva, 4m, odrastao, velika krosnja",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  null
                   },
                   {
                       "id":  "tresnja051",
@@ -542,12 +542,12 @@
                   {
                       "id":  "smokva057",
                       "kategorija":  "stablo",
-                      "vrsta":  "smokva",
-                      "naziv":  "smokva",
+                      "vrsta":  "dud2",
+                      "naziv":  "dud",
                       "lat":  476.51,
                       "lng":  74.95,
                       "napomena":  "dud iliti murva, 6m, velika krosnja,",
-                      "ikonica":  "icons/fig.png"
+                      "ikonica":  null
                   },
                   {
                       "id":  "smokva058",
@@ -951,12 +951,12 @@
                   {
                       "id":  "jabuka248",
                       "kategorija":  "stablo",
-                      "vrsta":  "jabuka",
-                      "naziv":  "mladi orah",
+                      "vrsta":  "orah",
+                      "naziv":  "orah",
                       "lat":  445.5922928902006,
                       "lng":  158.51269996241922,
                       "napomena":  "2m, mladi orah",
-                      "ikonica":  "icons/apple.png"
+                      "ikonica":  null
                   },
                   {
                       "id":  "sljiva249",

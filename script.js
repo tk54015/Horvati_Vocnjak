@@ -49,6 +49,26 @@ var placementEnabled = false;
 var waterFilterEnabled = false;
 var selectedPlant = null;
 
+function getTypeWithEmoji(type) {
+    var emojis = {
+        jabuka: '🍎',
+        kruska: '🍐',
+        sljiva: '🍇',
+        smokva: '🫠',
+        breskva: '🍑',
+        tresnja: '🍒',
+        visnja: '🍒',
+        glog: '🌳',
+        drena: '🌳',
+        drenak: '🌳',
+        kupina: '🫐',
+        ribizl: '🍓',
+        dud2: '🌳',
+        vinova_loza: '🍇'
+    };
+    return type + (emojis[type] ? ' ' + emojis[type] : '');
+}
+
 var VINE_DISPLAY_STEP = 5;
 var ALWAYS_VISIBLE_VINE_IDS = {
     vinova_loza213: true,
@@ -355,7 +375,7 @@ function renderYieldTable() {
         .map(function (type) {
             var info = summaryByType[type];
             return '<tr>' +
-                '<td>' + escapeHtml(type) + '</td>' +
+                '<td>' + escapeHtml(getTypeWithEmoji(type)) + '</td>' +
                 '<td>' + escapeHtml(info.parts.join(' + ')) + '</td>' +
                 '<td>' + escapeHtml(formatKg(info.min) + '-' + formatKg(info.max) + ' kg') + '</td>' +
                 '</tr>';
@@ -367,7 +387,7 @@ function renderYieldTable() {
         .sort()
         .map(function (type) {
             var info = summaryByType[type];
-            return '<p>Ocekivano ' + formatKg(info.min) + '-' + formatKg(info.max) + ' kg: ' + escapeHtml(type) + '</p>';
+            return '<p>Ocekivano ' + formatKg(info.min) + '-' + formatKg(info.max) + ' kg: ' + escapeHtml(getTypeWithEmoji(type)) + '</p>';
         });
     summaryLines.push('<p><b>Ukupno ocekivano: ' + formatKg(totalMinAll) + '-' + formatKg(totalMaxAll) + ' kg</b></p>');
     summary.innerHTML = summaryLines.join('');

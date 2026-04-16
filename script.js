@@ -52,9 +52,9 @@ var selectedPlant = null;
 function getTypeWithEmoji(typeOrItem) {
     var type;
     if (typeof typeOrItem === 'string') {
-        type = typeOrItem;
+        type = normalizeType(typeOrItem);
     } else {
-        type = typeOrItem.treeType;
+        type = normalizeType(typeOrItem.treeType);
     }
     var emojis = {
         jabuka: '🍎',
@@ -87,7 +87,7 @@ function getTypeFromId(id) {
 }
 
 function getEmojiForType(item) {
-    var type = item.treeType;
+    var type = normalizeType(item.treeType);
     var emojis = {
         jabuka: '🍎',
         kruska: '🍐',
@@ -471,7 +471,7 @@ function buildMarkerIcon(item, isUserItem) {
     }
 
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
-    if (resolvedIcon && item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
+    if (item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
         resolvedIcon = null; // Kriva ikona, koristi emoji
     }
     if (!resolvedIcon) {
@@ -499,7 +499,7 @@ function buildWaterIcon(item) {
     var t = normalizeType(item.treeType);
     var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
     var resolvedIcon = item.iconUrl || iconByType(item.treeType);
-    if (resolvedIcon && item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
+    if (item.iconUrl && item.iconUrl !== iconByType(item.treeType)) {
         resolvedIcon = null; // Kriva ikona, koristi emoji
     }
     var size = FULL_ICON_SIZE;

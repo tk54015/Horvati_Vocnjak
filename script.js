@@ -1319,7 +1319,9 @@ function renderWeather(data) {
 
     (data.rainfallHistory || []).slice().reverse().forEach(function (record) {
         var row = document.createElement('tr');
-        var date = record.recordedAt ? new Date(record.recordedAt).toLocaleDateString('hr-HR') : '-';
+        var date = record.observationDate
+            ? new Date(record.observationDate + 'T12:00:00').toLocaleDateString('hr-HR')
+            : (record.recordedAt ? new Date(record.recordedAt).toLocaleDateString('hr-HR') : '-');
         row.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
         row.children[0].textContent = date;
         row.children[1].textContent = Number(record.rainfallMm || 0).toLocaleString('hr-HR') + ' mm';

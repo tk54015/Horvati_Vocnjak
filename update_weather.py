@@ -75,11 +75,20 @@ def parse_rainfall(html):
     return 0.0, False
 
 
+def parse_rainfall_observation_date(html):
+    match = re.search(r"izmjerena\s+(\d{2}\.\d{2}\.\d{4})\.?\s+u\s+(\d{1,2})\s+sati", html, re.I)
+    if not match:
+        raise RuntimeError("DHMZ datum mjerenja oborine nije pronađen")
+    day, month, year = match.group(1).rstrip(".").split(".")
+    return f"{year}-{month}-{day}", f"{match.group(1)} u {match.group(2)} sati"
+
+
 def main():
     forecast_html = download(FORECAST_URL)
     rain_html = download(RAIN_URL)
     forecast = parse_forecast(forecast_html)
     rain_mm, station_reported = parse_rainfall(rain_html)
+    observation_date, measurement_period = parse_rainfall_observation_date(rain_html)
     now = datetime.now(timezone.utc).isoformat()
 
     existing = {}
@@ -89,7 +98,29 @@ def main():
         except json.JSONDecodeError:
             existing = {}
 
+    known_dates = {
+        str(item.get("observationDate"))
+        for item in existing.get("rainfallHistory", [])
+        if item.get("observationDate")
+    }
+    if observation_date in known_dates:
+        previous_record = existing.get("rainfall24h", {})
+    elif known_dates and observation_date < max(known_dates):
+        print(f"DHMZ vraća stariji zapis {observation_date}; čeka se noviji podatak.")
+        return
+    else:
+        previous_record = existing.get("rainfall24h", {})
+
+    previous_record = existing.get("rainfall24h", {})
+    same_measurement = (
+        previous_record.get("observationDate") == observation_date
+        and previous_record.get("rainfallMm") == rain_mm
+        and previous_record.get("stationReported") == station_reported
+        and previous_record.get("maxTemperatureC") == forecast[0].get("maxTemperatureC")
+    )
     record = {
+        "observationDate": observation_date,
+        "measurementPeriod": measurement_period,
         "recordedAt": now,
         "rainfallMm": rain_mm,
         "stationReported": station_reported,
@@ -97,21 +128,26 @@ def main():
         "heatPoints": forecast[0].get("heatPoints", 0.0),
         "source": RAIN_URL,
     }
+    if same_measurement:
+        record = previous_record
     history = existing.get("rainfallHistory", [])
-    record_date = now[:10]
-    history = [item for item in history if not str(item.get("recordedAt", "")).startswith(record_date)]
+    history = [item for item in history if item.get("observationDate") != observation_date]
     history.append(record)
+    forecast_changed = existing.get("forecast") != forecast
     data = {
-        "updatedAt": now,
+        "updatedAt": now if not same_measurement or forecast_changed else existing.get("updatedAt", now),
         "forecastSource": FORECAST_URL,
         "forecastLocation": "Zagreb-Maksimir",
         "forecast": forecast,
         "rainfall24h": record,
         "rainfallHistory": history[-365:],
     }
+    if data == existing:
+        print(f"Podatak za {observation_date} je već aktualan; bez novih promjena.")
+        return
     OUTPUT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Spremljeno: {OUTPUT}")
-    print(f"Rakov Potok: {rain_mm:g} mm (postaja navedena: {station_reported})")
+    print(f"Rakov Potok: {rain_mm:g} mm za {measurement_period} (postaja navedena: {station_reported})")
 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@ name: Azuriraj vremenske podatke
 
 on:
   schedule:
-    # Svaki dan u 06:15 UTC (08:15 tijekom ljetnog racunanja vremena u Hrvatskoj).
-    - cron: "15 6 * * *"
+    # Provjera svakih 6 sati; GitHub koristi UTC.
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 permissions:

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T16:56:23.458097+00:00",
+  "updatedAt": "2026-09-04T17:07:21.952642+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
@@ -89,7 +89,9 @@
     }
   ],
   "rainfall24h": {
-    "recordedAt": "2026-09-04T16:56:23.458097+00:00",
+    "observationDate": "2026-09-04",
+    "measurementPeriod": "04.09.2026 u 8 sati",
+    "recordedAt": "2026-09-04T17:07:21.952642+00:00",
     "rainfallMm": 0.0,
     "stationReported": false,
     "maxTemperatureC": 32.4,
@@ -99,6 +101,16 @@
   "rainfallHistory": [
     {
       "recordedAt": "2026-09-04T16:56:23.458097+00:00",
+      "rainfallMm": 0.0,
+      "stationReported": false,
+      "maxTemperatureC": 32.4,
+      "heatPoints": 1.2,
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
+    },
+    {
+      "observationDate": "2026-09-04",
+      "measurementPeriod": "04.09.2026 u 8 sati",
+      "recordedAt": "2026-09-04T17:07:21.952642+00:00",
       "rainfallMm": 0.0,
       "stationReported": false,
       "maxTemperatureC": 32.4,

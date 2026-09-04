@@ -9,9 +9,35 @@
 </head>
 <body>
     <div id="map"></div>
+    <aside id="weather-panel" aria-label="Vrijeme">
+      <div class="weather-header">
+        <b>Vrijeme</b>
+        <div class="weather-header-actions">
+          <span id="weather-updated">Učitavanje...</span>
+          <button id="close-weather" type="button" title="Zatvori prognozu">x</button>
+        </div>
+      </div>
+      <div id="weather-status" class="weather-status">Učitavanje podataka...</div>
+      <div class="weather-rain">
+        <span>Rakov Potok, zadnja 24 h</span>
+        <strong id="weather-rain-value">-</strong>
+      </div>
+      <div class="weather-subtitle">Prognoza za Zagreb-Maksimir</div>
+      <div id="weather-forecast" class="weather-forecast"></div>
+      <div class="weather-subtitle">Povijest oborina</div>
+      <div class="weather-history-wrap">
+        <table class="weather-history">
+          <thead>
+            <tr><th>Datum</th><th>Oborina</th><th>Izvor</th></tr>
+          </thead>
+          <tbody id="weather-history-body"></tbody>
+        </table>
+      </div>
+    </aside>
     <div class="map-controls">
       <button id="zoom-in">+</button>
       <button id="zoom-out">-</button>
+      <button id="open-weather" type="button">Prognoza</button>
     </div>
     <!-- icon-picker privremeno sakriven
     <div id="icon-picker">

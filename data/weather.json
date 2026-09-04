@@ -1,0 +1,91 @@
+{
+  "updatedAt": "2026-09-04T15:16:04.593879+00:00",
+  "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
+  "forecastLocation": "Zagreb-Maksimir",
+  "forecast": [
+    {
+      "date": "Petak04.09.2026.",
+      "night": "",
+      "morning": "Malo oblačno",
+      "afternoon": "Malo oblačno",
+      "evening": "Vedro",
+      "temperature": "31.9 °C / 22.5 °C",
+      "wind": "Slab do umjeren južni",
+      "precipitation": ""
+    },
+    {
+      "date": "Subota05.09.2026.",
+      "night": "Vedro",
+      "morning": "Sunčano",
+      "afternoon": "Malo oblačno",
+      "evening": "Umjereno oblačno",
+      "temperature": "33.0 °C / 19.1 °C",
+      "wind": "Slab istočni",
+      "precipitation": ""
+    },
+    {
+      "date": "Nedjelja06.09.2026.",
+      "night": "Umjereno oblačno",
+      "morning": "Malo oblačno",
+      "afternoon": "Sunčano",
+      "evening": "Vedro",
+      "temperature": "28.2 °C / 18.4 °C",
+      "wind": "Slab istočni",
+      "precipitation": ""
+    },
+    {
+      "date": "Ponedjeljak07.09.2026.",
+      "night": "Vedro",
+      "morning": "Sunčano",
+      "afternoon": "Sunčano",
+      "evening": "Malo oblačno",
+      "temperature": "28.2 °C / 17.2 °C",
+      "wind": "Slab jugoistočni",
+      "precipitation": ""
+    },
+    {
+      "date": "Utorak08.09.2026.",
+      "night": "Malo oblačno",
+      "morning": "Sunčano",
+      "afternoon": "Sunčano",
+      "evening": "Vedro",
+      "temperature": "30.7 °C / 19.1 °C",
+      "wind": "Slab jugoistočni",
+      "precipitation": ""
+    },
+    {
+      "date": "Srijeda09.09.2026.",
+      "night": "Vedro",
+      "morning": "Sunčano",
+      "afternoon": "Malo oblačno",
+      "evening": "Malo oblačno",
+      "temperature": "32.7 °C / 20.5 °C",
+      "wind": "Slab zapadni",
+      "precipitation": "0.1 mm"
+    },
+    {
+      "date": "Četvrtak10.09.2026.",
+      "night": "Malo oblačno",
+      "morning": "Promjenljivo oblačno uz malu količinu kiše te moguću grmljavinu",
+      "afternoon": "Oblačno uz malu količinu kiše",
+      "evening": "Promjenljivo oblačno uz malu količinu kiše",
+      "temperature": "23.4 °C / 18.4 °C",
+      "wind": "Slab zapadni",
+      "precipitation": "8.0 mm"
+    }
+  ],
+  "rainfall24h": {
+    "recordedAt": "2026-09-04T15:16:04.593879+00:00",
+    "rainfallMm": 0.0,
+    "stationReported": false,
+    "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
+  },
+  "rainfallHistory": [
+    {
+      "recordedAt": "2026-09-04T15:16:04.593879+00:00",
+      "rainfallMm": 0.0,
+      "stationReported": false,
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
+    }
+  ]
+}

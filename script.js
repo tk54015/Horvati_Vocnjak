@@ -1285,6 +1285,79 @@ function loadInventory() {
 
 loadInventory();
 
+function renderWeather(data) {
+    var updatedEl = document.getElementById('weather-updated');
+    var statusEl = document.getElementById('weather-status');
+    var rainEl = document.getElementById('weather-rain-value');
+    var forecastEl = document.getElementById('weather-forecast');
+    var historyEl = document.getElementById('weather-history-body');
+    if (!updatedEl || !statusEl || !rainEl || !forecastEl || !historyEl) return;
+
+    var rain = data.rainfall24h || {};
+    rainEl.textContent = Number(rain.rainfallMm || 0).toLocaleString('hr-HR') + ' mm';
+    statusEl.textContent = rain.stationReported
+        ? 'Podatak je pronađen na DHMZ popisu.'
+        : 'Postaja nije navedena na popisu; prema dogovoru računa se 0 mm.';
+    updatedEl.textContent = data.updatedAt
+        ? new Date(data.updatedAt).toLocaleString('hr-HR')
+        : 'Nema datuma';
+    forecastEl.innerHTML = '';
+    historyEl.innerHTML = '';
+
+    (data.forecast || []).forEach(function (day) {
+        var card = document.createElement('div');
+        card.className = 'weather-day';
+        card.title = [day.night, day.morning, day.afternoon, day.evening].filter(Boolean).join(' | ');
+        card.innerHTML = '<div class="weather-day-date"></div>'
+            + '<div class="weather-day-temp"></div>'
+            + '<div class="weather-day-rain"></div>';
+        card.querySelector('.weather-day-date').textContent = day.date.replace(/\.2026$/, '').replace(/\.20\d\d$/, '');
+        card.querySelector('.weather-day-temp').textContent = day.temperature || '-';
+        card.querySelector('.weather-day-rain').textContent = day.precipitation || '-';
+        forecastEl.appendChild(card);
+    });
+
+    (data.rainfallHistory || []).slice().reverse().forEach(function (record) {
+        var row = document.createElement('tr');
+        var date = record.recordedAt ? new Date(record.recordedAt).toLocaleDateString('hr-HR') : '-';
+        row.innerHTML = '<td></td><td></td><td></td>';
+        row.children[0].textContent = date;
+        row.children[1].textContent = Number(record.rainfallMm || 0).toLocaleString('hr-HR') + ' mm';
+        row.children[2].textContent = record.stationReported ? 'izmjereno' : 'računa se 0';
+        historyEl.appendChild(row);
+    });
+}
+
+function loadWeather() {
+    fetch('data/weather.json?v=' + Date.now())
+        .then(function (response) {
+            if (!response.ok) throw new Error('Nema data/weather.json');
+            return response.json();
+        })
+        .then(renderWeather)
+        .catch(function (error) {
+            var statusEl = document.getElementById('weather-status');
+            if (statusEl) statusEl.textContent = 'Vremenski podaci nisu dostupni: ' + error.message;
+        });
+}
+
+loadWeather();
+
+var weatherPanelEl = document.getElementById('weather-panel');
+var openWeatherEl = document.getElementById('open-weather');
+var closeWeatherEl = document.getElementById('close-weather');
+if (weatherPanelEl && openWeatherEl && closeWeatherEl) {
+    weatherPanelEl.classList.add('hidden');
+    openWeatherEl.addEventListener('click', function () {
+        weatherPanelEl.classList.remove('hidden');
+        weatherPanelEl.classList.add('weather-open');
+    });
+    closeWeatherEl.addEventListener('click', function () {
+        weatherPanelEl.classList.remove('weather-open');
+        weatherPanelEl.classList.add('hidden');
+    });
+}
+
 document.getElementById('zoom-in').addEventListener('click', function () { map.zoomIn(); });
 document.getElementById('zoom-out').addEventListener('click', function () { map.zoomOut(); });
 

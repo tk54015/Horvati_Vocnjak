@@ -1320,10 +1320,17 @@ function renderWeather(data) {
     (data.rainfallHistory || []).slice().reverse().forEach(function (record) {
         var row = document.createElement('tr');
         var date = record.recordedAt ? new Date(record.recordedAt).toLocaleDateString('hr-HR') : '-';
-        row.innerHTML = '<td></td><td></td><td></td>';
+        row.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
         row.children[0].textContent = date;
         row.children[1].textContent = Number(record.rainfallMm || 0).toLocaleString('hr-HR') + ' mm';
-        row.children[2].textContent = record.stationReported ? 'izmjereno' : 'računa se 0';
+        row.children[2].textContent = record.maxTemperatureC == null
+            ? '-'
+            : Number(record.maxTemperatureC).toLocaleString('hr-HR') + ' °C';
+        row.children[3].textContent = Number(record.heatPoints || 0).toLocaleString('hr-HR', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        });
+        row.children[4].textContent = record.stationReported ? 'izmjereno' : 'računa se 0';
         historyEl.appendChild(row);
     });
 }

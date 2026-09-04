@@ -34,6 +34,7 @@ def parse_forecast(html):
         values = cells(row)
         if len(values) < 7 or not re.search(r"\d{2}\.\d{2}\.\d{4}", values[0]):
             continue
+        max_temperature = parse_max_temperature(values[5])
         forecast.append({
             "date": values[0],
             "night": values[1],
@@ -42,11 +43,26 @@ def parse_forecast(html):
             "evening": values[4],
             "temperature": values[5],
             "wind": values[6],
-            "precipitation": values[7] if len(values) > 7 else ""
+            "precipitation": values[7] if len(values) > 7 else "",
+            "maxTemperatureC": max_temperature,
+            "heatPoints": calculate_heat_points(max_temperature),
         })
     if not forecast:
         raise RuntimeError("DHMZ prognoza nema očekivane retke")
     return forecast[:7]
+
+
+def parse_max_temperature(value):
+    match = re.search(r"-?\d+(?:[.,]\d+)?", value or "")
+    return float(match.group(0).replace(",", ".")) if match else None
+
+
+def calculate_heat_points(temperature):
+    if temperature is None or temperature <= 25:
+        return 0.0
+    if temperature <= 30:
+        return round((temperature - 25) * 0.2, 1)
+    return round(min(2.0, 1.0 + (temperature - 30) * 0.1), 1)
 
 
 def parse_rainfall(html):
@@ -62,6 +78,7 @@ def parse_rainfall(html):
 def main():
     forecast_html = download(FORECAST_URL)
     rain_html = download(RAIN_URL)
+    forecast = parse_forecast(forecast_html)
     rain_mm, station_reported = parse_rainfall(rain_html)
     now = datetime.now(timezone.utc).isoformat()
 
@@ -76,6 +93,8 @@ def main():
         "recordedAt": now,
         "rainfallMm": rain_mm,
         "stationReported": station_reported,
+        "maxTemperatureC": forecast[0].get("maxTemperatureC"),
+        "heatPoints": forecast[0].get("heatPoints", 0.0),
         "source": RAIN_URL,
     }
     history = existing.get("rainfallHistory", [])
@@ -86,7 +105,7 @@ def main():
         "updatedAt": now,
         "forecastSource": FORECAST_URL,
         "forecastLocation": "Zagreb-Maksimir",
-        "forecast": parse_forecast(forecast_html),
+        "forecast": forecast,
         "rainfall24h": record,
         "rainfallHistory": history[-365:],
     }

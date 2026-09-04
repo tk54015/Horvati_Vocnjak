@@ -83,6 +83,10 @@ def parse_rainfall_observation_date(html):
     return f"{year}-{month}-{day}", f"{match.group(1)} u {match.group(2)} sati"
 
 
+def history_observation_date(item):
+    return item.get("observationDate") or str(item.get("recordedAt", ""))[:10]
+
+
 def main():
     forecast_html = download(FORECAST_URL)
     rain_html = download(RAIN_URL)
@@ -131,7 +135,7 @@ def main():
     if same_measurement:
         record = previous_record
     history = existing.get("rainfallHistory", [])
-    history = [item for item in history if item.get("observationDate") != observation_date]
+    history = [item for item in history if history_observation_date(item) != observation_date]
     history.append(record)
     forecast_changed = existing.get("forecast") != forecast
     data = {

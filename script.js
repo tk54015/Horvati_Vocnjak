@@ -225,18 +225,20 @@ function normalizeType(typeText) {
 
 function iconByType(typeText) {
     var t = normalizeType(typeText);
-    if (t === 'jabuka') return 'icons/apple.png';
-    if (t === 'ribizl') return 'icons/ribiz.png';
-    if (t === 'kruska') return 'icons/pear.png';
-    if (t === 'breskva') return 'icons/peach.png';
-    if (t === 'kupina') return 'icons/blackberry.png';
-    if (t === 'smokva') return 'icons/fig.png';
-    if (t === 'sljiva') return 'icons/plum.png';
-    if (t === 'tresnja') return 'icons/cherry.png';
-    if (t === 'visnja') return 'icons/visnja.png';
-    if (t === 'dunja') return 'icons/dunja.png';
-    if (t === 'glog') return 'icons/glog.png';
-    if (t === 'vinova_loza') return 'icons/grapes.png';
+    if (t === 'jabuka') return 'icons 2/jabuka.png';
+    if (t === 'ribizl') return 'icons 2/ribizl.png';
+    if (t === 'kruska') return 'icons 2/kruska.png';
+    if (t === 'breskva') return 'icons 2/breskva.png';
+    if (t === 'kupina') return 'icons 2/kupina.png';
+    if (t === 'smokva') return 'icons 2/smokva.png';
+    if (t === 'sljiva') return 'icons 2/sljiva.png';
+    if (t === 'tresnja') return 'icons 2/tresnja.png';
+    if (t === 'visnja') return 'icons 2/visnja.png';
+    if (t === 'dunja') return null;
+    if (t === 'glog') return 'icons 2/glog.png';
+    if (t === 'drenak') return 'icons 2/drenak.png';
+    if (t === 'dud2') return 'icons 2/dud.png';
+    if (t === 'vinova_loza') return 'icons 2/vinova-loza.png';
     return null;
 }
 
@@ -1301,6 +1303,7 @@ function renderWeather(data) {
     updatedEl.textContent = data.updatedAt
         ? new Date(data.updatedAt).toLocaleString('hr-HR')
         : 'Nema datuma';
+    renderWeatherScores(data);
     forecastEl.innerHTML = '';
     historyEl.innerHTML = '';
 
@@ -1322,18 +1325,145 @@ function renderWeather(data) {
         var date = record.observationDate
             ? new Date(record.observationDate + 'T12:00:00').toLocaleDateString('hr-HR')
             : (record.recordedAt ? new Date(record.recordedAt).toLocaleDateString('hr-HR') : '-');
-        row.innerHTML = '<td></td><td></td><td></td><td></td><td></td>';
+        row.innerHTML = '<td></td><td></td><td></td><td></td><td></td><td></td>';
         row.children[0].textContent = date;
-        row.children[1].textContent = Number(record.rainfallMm || 0).toLocaleString('hr-HR') + ' mm';
-        row.children[2].textContent = record.maxTemperatureC == null
+        row.children[1].textContent = typeof record.rainfallMm === 'number'
+            ? record.rainfallMm.toLocaleString('hr-HR') + ' mm'
+            : (record.rainfallMm || 'NEPOZNATO');
+        row.children[2].textContent = record.openMeteoRainfallMm == null
+            ? '-'
+            : Number(record.openMeteoRainfallMm).toLocaleString('hr-HR') + ' mm';
+        row.children[3].textContent = record.maxTemperatureC == null
             ? '-'
             : Number(record.maxTemperatureC).toLocaleString('hr-HR') + ' °C';
-        row.children[3].textContent = Number(record.heatPoints || 0).toLocaleString('hr-HR', {
+        row.children[4].textContent = Number(record.heatPoints || 0).toLocaleString('hr-HR', {
             minimumFractionDigits: 1,
             maximumFractionDigits: 1
         });
-        row.children[4].textContent = record.stationReported ? 'izmjereno' : 'računa se 0';
+        row.children[5].textContent = record.rainfallStatus === 'unknown'
+            ? 'nema arhive'
+            : (record.stationReported ? 'izmjereno' : 'računa se 0');
         historyEl.appendChild(row);
+    });
+}
+
+var WEATHER_DAY_NAMES = ['nedjelja', 'ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak', 'subota'];
+
+function weatherDate(value) {
+    var date = new Date(value + 'T12:00:00');
+    return isNaN(date.getTime()) ? null : date;
+}
+
+function weatherDateKey(date) {
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+}
+
+function weatherDateLabel(date) {
+    return date.getDate() + '. ' + (date.getMonth() + 1) + '. ' + date.getFullYear() + '. (' + WEATHER_DAY_NAMES[date.getDay()] + ')';
+}
+
+function weatherHeatPoints(temperature) {
+    if (temperature == null || temperature <= 25) return 0;
+    if (temperature <= 30) return Math.round((temperature - 25) * 0.2 * 10) / 10;
+    return Math.round(Math.min(2, 1 + (temperature - 30) * 0.1) * 10) / 10;
+}
+
+function weatherRainPoints(rainMm) {
+    return Math.min(7, rainMm / 2);
+}
+
+function weatherRating(score) {
+    if (score >= 7) return { label: 'Crveno', className: 'score-red' };
+    if (score >= 5) return { label: 'Narančasto', className: 'score-orange' };
+    if (score >= 3) return { label: 'Žuto', className: 'score-yellow' };
+    return { label: 'Zeleno', className: 'score-green' };
+}
+
+function weatherScoreResult(days) {
+    var heat = days.reduce(function (sum, day) { return sum + Number(day.heatPoints || weatherHeatPoints(day.maxTemperatureC)); }, 0);
+    var rain = days.reduce(function (sum, day) {
+        if (day.rainfallKnown) return sum + day.rainfallMm;
+        if (Number.isFinite(day.openMeteoRainfallMm)) return sum + day.openMeteoRainfallMm;
+        return sum + (typeof day.rainfallMm === 'number' ? day.rainfallMm : 0);
+    }, 0);
+    var score = Math.max(0, heat - weatherRainPoints(rain));
+    return { heat: heat, rain: rain, score: score, rating: weatherRating(score) };
+}
+
+function renderScoreResult(container, result) {
+    if (!container) return;
+    var isCollapsed = container.classList.contains('collapsed');
+    container.className = 'weather-score-result ' + result.rating.className + (isCollapsed ? ' collapsed' : '');
+    var card = container.closest('.weather-score-card');
+    var swatches = card ? card.querySelectorAll('.weather-score-swatch') : [];
+    swatches.forEach(function (swatch) {
+        swatch.className = 'weather-score-swatch ' + result.rating.className;
+    });
+    container.textContent = result.rating.label + ' | ' + result.score.toLocaleString('hr-HR', { maximumFractionDigits: 1 })
+        + ' bod. | vrućina ' + result.heat.toLocaleString('hr-HR', { maximumFractionDigits: 1 })
+        + ' | kiša ' + result.rain.toLocaleString('hr-HR', { maximumFractionDigits: 1 }) + ' mm';
+}
+
+function renderWeatherScores(data) {
+    var history = (data.rainfallHistory || []).map(function (record) {
+        var date = weatherDate(record.observationDate || (record.recordedAt || '').slice(0, 10));
+        return date ? {
+            date: date,
+            key: weatherDateKey(date),
+            rainfallMm: Number(record.rainfallMm || 0),
+            openMeteoRainfallMm: Number(record.openMeteoRainfallMm || 0),
+            rainfallKnown: typeof record.rainfallMm === 'number',
+            maxTemperatureC: record.maxTemperatureC == null ? null : Number(record.maxTemperatureC),
+            heatPoints: record.heatPoints == null ? null : Number(record.heatPoints)
+        } : null;
+    }).filter(Boolean);
+    var today = new Date();
+    today.setHours(12, 0, 0, 0);
+    var todayKey = weatherDateKey(today);
+    var pastDays = history.filter(function (day) {
+        var age = Math.round((today - day.date) / 86400000);
+        return age >= 0 && age < 7;
+    });
+    var futureDays = (data.forecast || []).map(function (day, index) {
+        var dateMatch = (day.date || '').match(/(\d{2})\.(\d{2})\.(\d{4})/);
+        var date = dateMatch ? weatherDate(dateMatch[3] + '-' + dateMatch[2] + '-' + dateMatch[1]) : null;
+        if (!date) { date = new Date(today); date.setDate(today.getDate() + index); }
+        var rainMatch = (day.precipitation || '').replace(',', '.').match(/\d+(?:\.\d+)?/);
+        return {
+            date: date,
+            rainfallMm: rainMatch ? Number(rainMatch[0]) : 0,
+            maxTemperatureC: day.maxTemperatureC,
+            heatPoints: day.heatPoints
+        };
+    }).filter(function (day) {
+        var age = Math.round((day.date - today) / 86400000);
+        return age >= 0 && age < 7;
+    });
+    renderScoreResult(document.querySelector('#weather-score-past .weather-score-result'), weatherScoreResult(pastDays));
+    renderScoreResult(document.querySelector('#weather-score-future .weather-score-result'), weatherScoreResult(futureDays));
+
+    var weeks = {};
+    history.forEach(function (day) {
+        var monday = new Date(day.date);
+        var offset = (monday.getDay() + 6) % 7;
+        monday.setDate(monday.getDate() - offset);
+        var key = weatherDateKey(monday);
+        if (!weeks[key]) weeks[key] = { start: monday, days: [] };
+        weeks[key].days.push(day);
+    });
+    var weekList = document.querySelector('#weather-score-calendar .weather-score-list');
+    if (!weekList) return;
+    weekList.innerHTML = '';
+    Object.keys(weeks).sort().reverse().slice(0, 8).forEach(function (key) {
+        var week = weeks[key];
+        var result = weatherScoreResult(week.days);
+        var end = new Date(week.start);
+        end.setDate(end.getDate() + 6);
+        var row = document.createElement('div');
+        row.className = 'weather-week-row ' + result.rating.className;
+        row.textContent = weatherDateLabel(week.start) + ' - ' + weatherDateLabel(end)
+            + ': ' + result.rating.label + ' (' + result.score.toLocaleString('hr-HR', { maximumFractionDigits: 1 }) + ' bod.)';
+        weekList.appendChild(row);
     });
 }
 
@@ -1351,6 +1481,17 @@ function loadWeather() {
 }
 
 loadWeather();
+
+document.querySelectorAll('.weather-section-toggle').forEach(function (toggleEl) {
+    var cardEl = toggleEl.closest('.weather-score-card');
+    var contentEl = cardEl ? cardEl.querySelector('.weather-score-list, .weather-score-result') : null;
+    if (!contentEl) return;
+    contentEl.classList.add('collapsed');
+    toggleEl.addEventListener('click', function () {
+        var isCollapsed = contentEl.classList.toggle('collapsed');
+        toggleEl.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+});
 
 var weatherPanelEl = document.getElementById('weather-panel');
 var openWeatherEl = document.getElementById('open-weather');

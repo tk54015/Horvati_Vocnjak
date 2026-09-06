@@ -22,13 +22,27 @@
         <span>Rakov Potok, zadnja 24 h</span>
         <strong id="weather-rain-value">-</strong>
       </div>
+      <div class="weather-scores">
+        <div class="weather-score-card" id="weather-score-calendar">
+          <button id="toggle-calendar-weeks" class="weather-section-toggle" type="button" aria-expanded="false">Kalendarski tjedni <span class="weather-toggle-arrow"></span></button>
+          <div class="weather-score-list"></div>
+        </div>
+        <div class="weather-score-card" id="weather-score-past">
+          <button class="weather-section-toggle" type="button" aria-expanded="false"><i class="weather-score-swatch"></i><span class="weather-score-label">Zadnjih 7 dana</span><i class="weather-score-swatch"></i><span class="weather-toggle-arrow"></span></button>
+          <div class="weather-score-result"></div>
+        </div>
+        <div class="weather-score-card" id="weather-score-future">
+          <button class="weather-section-toggle" type="button" aria-expanded="false"><i class="weather-score-swatch"></i><span class="weather-score-label">Budućih 7 dana</span><i class="weather-score-swatch"></i><span class="weather-toggle-arrow"></span></button>
+          <div class="weather-score-result"></div>
+        </div>
+      </div>
       <div class="weather-subtitle">Prognoza za Zagreb-Maksimir</div>
       <div id="weather-forecast" class="weather-forecast"></div>
       <div class="weather-subtitle">Povijest oborina</div>
       <div class="weather-history-wrap">
         <table class="weather-history">
           <thead>
-            <tr><th>Datum</th><th>Oborina</th><th>Max.</th><th>Bodovi</th><th>Izvor</th></tr>
+            <tr><th>Datum</th><th>DHMZ oborina</th><th>Open-Meteo oborina</th><th>Max.</th><th>Bodovi</th><th>Izvor</th></tr>
           </thead>
           <tbody id="weather-history-body"></tbody>
         </table>

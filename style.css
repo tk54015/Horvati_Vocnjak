@@ -525,10 +525,13 @@ body {
 #weather-panel.weather-open {
     inset: 0;
     width: auto;
+    height: 100vh;
+    max-height: 100vh;
     bottom: auto;
     z-index: 1800;
     border-radius: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
 }
 
 #weather-panel.weather-open .weather-forecast {
@@ -561,6 +564,111 @@ body {
 #weather-rain-value {
     color: #1769aa;
     font-size: 15px;
+}
+
+.weather-scores {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.weather-score-card {
+    padding: 7px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fafafa;
+}
+
+.weather-section-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+}
+
+.weather-toggle-arrow {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid #666;
+    transition: transform 0.15s ease;
+}
+
+.weather-score-swatch {
+    width: 11px;
+    height: 11px;
+    margin-left: auto;
+    margin-right: 8px;
+    border: 1px solid #777;
+    border-radius: 2px;
+    background: #aaa;
+}
+
+.weather-score-swatch:first-child {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+.weather-score-swatch.score-green { background: #3d8f56; }
+.weather-score-swatch.score-yellow { background: #d6a300; }
+.weather-score-swatch.score-orange { background: #d8751b; }
+.weather-score-swatch.score-red { background: #c33b3b; }
+
+.weather-section-toggle[aria-expanded="true"] .weather-toggle-arrow {
+    transform: rotate(90deg);
+}
+
+.weather-score-list.collapsed,
+.weather-score-result.collapsed {
+    display: none;
+}
+
+#weather-score-calendar .weather-score-list:not(.collapsed) {
+    max-height: 210px;
+    overflow-y: auto;
+    padding-right: 3px;
+}
+
+.weather-score-result,
+.weather-week-row {
+    margin-top: 4px;
+    padding: 5px 6px;
+    border-left: 5px solid #777;
+    background: #f1f1f1;
+    font-size: 11px;
+}
+
+.weather-week-row {
+    margin-top: 3px;
+}
+
+.score-green {
+    border-left-color: #3d8f56;
+    background: #e8f5eb;
+}
+
+.score-yellow {
+    border-left-color: #d6a300;
+    background: #fff7d6;
+}
+
+.score-orange {
+    border-left-color: #d8751b;
+    background: #fff0df;
+}
+
+.score-red {
+    border-left-color: #c33b3b;
+    background: #fde7e7;
 }
 
 .weather-subtitle {

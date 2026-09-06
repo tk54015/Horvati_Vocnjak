@@ -1,6 +1,6 @@
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from html import unescape
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -10,12 +10,22 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "data" / "weather.json"
 FORECAST_URL = "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d"
 RAIN_URL = "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
+OPEN_METEO_ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive"
+# Srediste poligona Horvati212.kml; Open-Meteo bira najblizu modelsku tocku.
+OPEN_METEO_LATITUDE = 45.71205
+OPEN_METEO_LONGITUDE = 15.81212
+BACKFILL_START_DATE = "2026-07-01"
+BACKFILL_ARCHIVE_START_DATE = "2026-06-30"
 
 
 def download(url):
     request = Request(url, headers={"User-Agent": "HorvatiVockeWeather/1.0"})
     with urlopen(request, timeout=30) as response:
         return response.read().decode("utf-8", errors="replace")
+
+
+def download_json(url):
+    return json.loads(download(url))
 
 
 def cells(row):
@@ -83,8 +93,58 @@ def parse_rainfall_observation_date(html):
     return f"{year}-{month}-{day}", f"{match.group(1)} u {match.group(2)} sati"
 
 
+def get_open_meteo_archive(start_date):
+    url = (
+        f"{OPEN_METEO_ARCHIVE_URL}?latitude={OPEN_METEO_LATITUDE}"
+        f"&longitude={OPEN_METEO_LONGITUDE}&start_date={start_date}"
+        f"&end_date={start_date}"
+        "&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb"
+    )
+    data = download_json(url)
+    daily = data.get("daily", {})
+    temperatures = daily.get("temperature_2m_max", [])
+    precipitation = daily.get("precipitation_sum", [])
+    if not temperatures or not precipitation:
+        raise RuntimeError(f"Open-Meteo nema arhivu za {start_date}")
+    return float(temperatures[0]), float(precipitation[0]), url
+
+
+def get_open_meteo_archive_range(start_date, end_date):
+    url = (
+        f"{OPEN_METEO_ARCHIVE_URL}?latitude={OPEN_METEO_LATITUDE}"
+        f"&longitude={OPEN_METEO_LONGITUDE}&start_date={start_date}"
+        f"&end_date={end_date}"
+        "&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb"
+    )
+    data = download_json(url)
+    daily = data.get("daily", {})
+    dates = daily.get("time", [])
+    temperatures = daily.get("temperature_2m_max", [])
+    precipitation = daily.get("precipitation_sum", [])
+    return {
+        date: {
+            "temperature": float(temperatures[index]),
+            "rainfall": float(precipitation[index]),
+        }
+        for index, date in enumerate(dates)
+        if index < len(temperatures) and index < len(precipitation)
+    }, url
+
+
 def history_observation_date(item):
     return item.get("observationDate") or str(item.get("recordedAt", ""))[:10]
+
+
+def normalize_history_item(item):
+    item = dict(item)
+    if item.get("measurementEndDate") and item.get("periodStartDate"):
+        item["observationDate"] = item["periodStartDate"]
+    elif item.get("measurementPeriod") and item.get("observationDate"):
+        end_date = datetime.strptime(item["observationDate"], "%Y-%m-%d").date()
+        item["observationDate"] = (end_date - timedelta(days=1)).isoformat()
+        item["periodStartDate"] = item["observationDate"]
+        item["measurementEndDate"] = end_date.isoformat()
+    return item
 
 
 def main():
@@ -93,7 +153,14 @@ def main():
     forecast = parse_forecast(forecast_html)
     rain_mm, station_reported = parse_rainfall(rain_html)
     observation_date, measurement_period = parse_rainfall_observation_date(rain_html)
+    period_start = (datetime.strptime(observation_date, "%Y-%m-%d") - timedelta(days=1)).date().isoformat()
+    open_meteo_temperature, open_meteo_rain, open_meteo_source = get_open_meteo_archive(period_start)
     now = datetime.now(timezone.utc).isoformat()
+    backfill_end_date = (datetime.now().date() - timedelta(days=1)).isoformat()
+    open_meteo_history, open_meteo_history_source = get_open_meteo_archive_range(
+        BACKFILL_ARCHIVE_START_DATE,
+        backfill_end_date,
+    )
 
     existing = {}
     if OUTPUT.exists():
@@ -102,41 +169,88 @@ def main():
         except json.JSONDecodeError:
             existing = {}
 
-    known_dates = {
-        str(item.get("observationDate"))
-        for item in existing.get("rainfallHistory", [])
-        if item.get("observationDate")
-    }
-    if observation_date in known_dates:
-        previous_record = existing.get("rainfall24h", {})
-    elif known_dates and observation_date < max(known_dates):
+    previous_record = existing.get("rainfall24h", {})
+    previous_end_date = previous_record.get("measurementEndDate")
+    if previous_end_date and observation_date < previous_end_date:
         print(f"DHMZ vraća stariji zapis {observation_date}; čeka se noviji podatak.")
         return
-    else:
-        previous_record = existing.get("rainfall24h", {})
-
-    previous_record = existing.get("rainfall24h", {})
     same_measurement = (
-        previous_record.get("observationDate") == observation_date
+        previous_record.get("observationDate") == period_start
+        and previous_record.get("measurementEndDate") == observation_date
         and previous_record.get("rainfallMm") == rain_mm
         and previous_record.get("stationReported") == station_reported
-        and previous_record.get("maxTemperatureC") == forecast[0].get("maxTemperatureC")
+        and previous_record.get("openMeteoMaxTemperatureC") == open_meteo_temperature
+        and previous_record.get("openMeteoRainfallMm") == open_meteo_rain
     )
     record = {
-        "observationDate": observation_date,
+        "observationDate": period_start,
+        "measurementEndDate": observation_date,
         "measurementPeriod": measurement_period,
         "recordedAt": now,
         "rainfallMm": rain_mm,
         "stationReported": station_reported,
-        "maxTemperatureC": forecast[0].get("maxTemperatureC"),
-        "heatPoints": forecast[0].get("heatPoints", 0.0),
+        "periodStartDate": period_start,
+        "openMeteoRainfallMm": open_meteo_rain,
+        "openMeteoMaxTemperatureC": open_meteo_temperature,
+        "openMeteoSource": open_meteo_source,
+        "maxTemperatureC": open_meteo_temperature,
+        "heatPoints": calculate_heat_points(open_meteo_temperature),
         "source": RAIN_URL,
     }
     if same_measurement:
         record = previous_record
-    history = existing.get("rainfallHistory", [])
-    history = [item for item in history if history_observation_date(item) != observation_date]
-    history.append(record)
+    history = [dict(item) for item in existing.get("rainfallHistory", [])]
+    history_by_date = {}
+    for item in history:
+        item = normalize_history_item(item)
+        item_date = history_observation_date(item)
+        if item_date not in history_by_date or item.get("measurementPeriod"):
+            history_by_date[item_date] = item
+    history_by_date[period_start] = record
+    start_date = datetime.strptime(BACKFILL_START_DATE, "%Y-%m-%d").date()
+    end_date = datetime.strptime(backfill_end_date, "%Y-%m-%d").date()
+    current_date = start_date
+    while current_date <= end_date:
+        item_date = current_date.isoformat()
+        archive = open_meteo_history.get(item_date)
+        existing_dhmz_record = "measurementPeriod" in history_by_date.get(item_date, {})
+        archive_date = item_date
+        if existing_dhmz_record:
+            archive_date = history_by_date[item_date].get("periodStartDate") or (
+                current_date - timedelta(days=1)
+            ).isoformat()
+            archive = open_meteo_history.get(archive_date)
+        if archive:
+            item = history_by_date.get(item_date, {
+                "observationDate": item_date,
+                "recordedAt": now,
+                "rainfallMm": "NEPOZNATO",
+                "stationReported": False,
+                "source": RAIN_URL,
+            })
+            if existing_dhmz_record:
+                item["periodStartDate"] = archive_date
+                if item.get("rainfallMm") == "NEPOZNATO":
+                    item["rainfallMm"] = 0.0
+                    item.pop("rainfallStatus", None)
+            else:
+                item.pop("periodStartDate", None)
+            item["openMeteoRainfallMm"] = archive["rainfall"]
+            item["openMeteoMaxTemperatureC"] = archive["temperature"]
+            item["openMeteoSource"] = open_meteo_history_source
+            item["maxTemperatureC"] = archive["temperature"]
+            item["heatPoints"] = calculate_heat_points(archive["temperature"])
+            item["observationDate"] = item_date
+            if not existing_dhmz_record:
+                item["rainfallMm"] = "NEPOZNATO"
+                item["rainfallStatus"] = "unknown"
+            history_by_date[item_date] = item
+        current_date += timedelta(days=1)
+    history = [
+        history_by_date[key]
+        for key in sorted(history_by_date)
+        if key <= backfill_end_date
+    ][-365:]
     forecast_changed = existing.get("forecast") != forecast
     data = {
         "updatedAt": now if not same_measurement or forecast_changed else existing.get("updatedAt", now),

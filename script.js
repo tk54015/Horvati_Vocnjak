@@ -225,20 +225,18 @@ function normalizeType(typeText) {
 
 function iconByType(typeText) {
     var t = normalizeType(typeText);
-    if (t === 'jabuka') return 'icons 2/jabuka.png';
-    if (t === 'ribizl') return 'icons 2/ribizl.png';
-    if (t === 'kruska') return 'icons 2/kruska.png';
-    if (t === 'breskva') return 'icons 2/breskva.png';
-    if (t === 'kupina') return 'icons 2/kupina.png';
-    if (t === 'smokva') return 'icons 2/smokva.png';
-    if (t === 'sljiva') return 'icons 2/sljiva.png';
-    if (t === 'tresnja') return 'icons 2/tresnja.png';
-    if (t === 'visnja') return 'icons 2/visnja.png';
-    if (t === 'dunja') return null;
-    if (t === 'glog') return 'icons 2/glog.png';
-    if (t === 'drenak') return 'icons 2/drenak.png';
-    if (t === 'dud2') return 'icons 2/dud.png';
-    if (t === 'vinova_loza') return 'icons 2/vinova-loza.png';
+    if (t === 'jabuka') return 'icons/apple.png';
+    if (t === 'ribizl') return 'icons/ribiz.png';
+    if (t === 'kruska') return 'icons/pear.png';
+    if (t === 'breskva') return 'icons/peach.png';
+    if (t === 'kupina') return 'icons/blackberry.png';
+    if (t === 'smokva') return 'icons/fig.png';
+    if (t === 'sljiva') return 'icons/plum.png';
+    if (t === 'tresnja') return 'icons/cherry.png';
+    if (t === 'visnja') return 'icons/visnja.png';
+    if (t === 'dunja') return 'icons/dunja.png';
+    if (t === 'glog') return 'icons/glog.png';
+    if (t === 'vinova_loza') return 'icons/grapes.png';
     return null;
 }
 

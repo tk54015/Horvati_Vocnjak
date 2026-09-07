@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-06T18:08:56.788062+00:00",
+  "updatedAt": "2026-09-07T00:24:24.308154+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
@@ -7,22 +7,22 @@
       "date": "Nedjelja06.09.2026.",
       "night": "",
       "morning": "",
-      "afternoon": "Sunčano",
+      "afternoon": "",
       "evening": "Vedro",
-      "temperature": "27.9 °C / 20.4 °C",
-      "wind": "Slab jugoistočni",
+      "temperature": "22.1 °C / 20.3 °C",
+      "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 27.9,
-      "heatPoints": 0.6
+      "maxTemperatureC": 22.1,
+      "heatPoints": 0.0
     },
     {
       "date": "Ponedjeljak07.09.2026.",
       "night": "Vedro",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
-      "evening": "Vedro",
-      "temperature": "28.1 °C / 14.9 °C",
-      "wind": "Slab jugoistočni",
+      "evening": "Malo oblačno",
+      "temperature": "28.1 °C / 15.6 °C",
+      "wind": "Slab istočni",
       "precipitation": "",
       "maxTemperatureC": 28.1,
       "heatPoints": 0.6
@@ -33,58 +33,58 @@
       "morning": "Malo oblačno",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "31.2 °C / 16.0 °C",
+      "temperature": "30.9 °C / 16.7 °C",
       "wind": "Slab jugoistočni",
       "precipitation": "",
-      "maxTemperatureC": 31.2,
+      "maxTemperatureC": 30.9,
       "heatPoints": 1.1
     },
     {
       "date": "Srijeda09.09.2026.",
       "night": "Vedro",
       "morning": "Sunčano",
-      "afternoon": "Malo oblačno",
+      "afternoon": "Sunčano",
       "evening": "Malo oblačno",
-      "temperature": "32.5 °C / 17.3 °C",
-      "wind": "Umjeren jugozapadni",
-      "precipitation": "0.3 mm",
-      "maxTemperatureC": 32.5,
+      "temperature": "32.0 °C / 16.5 °C",
+      "wind": "Slab jugozapadni",
+      "precipitation": "",
+      "maxTemperatureC": 32.0,
       "heatPoints": 1.2
     },
     {
       "date": "Četvrtak10.09.2026.",
-      "night": "Promjenljivo oblačno uz malu količinu kiše te moguću grmljavinu",
-      "morning": "Oblačno uz umjerenu količinu kiše",
-      "afternoon": "Oblačno uz malu količinu kiše",
-      "evening": "Pretežno oblačno",
-      "temperature": "22.0 °C / 15.1 °C",
-      "wind": "Slab sjeverozapadni",
-      "precipitation": "38.7 mm",
-      "maxTemperatureC": 22.0,
+      "night": "Promjenljivo oblačno uz malu količinu kiše",
+      "morning": "Promjenljivo oblačno uz malu količinu kiše",
+      "afternoon": "Malo oblačno",
+      "evening": "Oblačno uz malu količinu kiše",
+      "temperature": "22.6 °C / 16.0 °C",
+      "wind": "Slab sjeverni",
+      "precipitation": "8.8 mm",
+      "maxTemperatureC": 22.6,
       "heatPoints": 0.0
     },
     {
       "date": "Petak11.09.2026.",
-      "night": "Malo oblačno",
-      "morning": "Sunčano",
-      "afternoon": "Umjereno oblačno",
-      "evening": "Vedro",
-      "temperature": "20.3 °C / 12.3 °C",
-      "wind": "Slab istočni",
-      "precipitation": "",
-      "maxTemperatureC": 20.3,
+      "night": "Oblačno uz malu količinu kiše",
+      "morning": "Oblačno uz umjerenu količinu kiše",
+      "afternoon": "Oblačno uz malu količinu kiše",
+      "evening": "Promjenljivo oblačno uz malu količinu kiše",
+      "temperature": "18.8 °C / 14.6 °C",
+      "wind": "Slab sjeveroistočni",
+      "precipitation": "23.0 mm",
+      "maxTemperatureC": 18.8,
       "heatPoints": 0.0
     },
     {
       "date": "Subota12.09.2026.",
-      "night": "Vedro",
+      "night": "Umjereno oblačno",
       "morning": "Malo oblačno",
-      "afternoon": "Pretežno oblačno",
-      "evening": "Umjereno oblačno",
-      "temperature": "20.7 °C / 13.9 °C",
+      "afternoon": "Malo oblačno",
+      "evening": "Malo oblačno",
+      "temperature": "23.0 °C / 13.2 °C",
       "wind": "Slab sjeveroistočni",
       "precipitation": "",
-      "maxTemperatureC": 20.7,
+      "maxTemperatureC": 23.0,
       "heatPoints": 0.0
     }
   ],
@@ -98,7 +98,7 @@
     "periodStartDate": "2026-09-05",
     "openMeteoRainfallMm": 0.1,
     "openMeteoMaxTemperatureC": 30.8,
-    "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+    "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
     "maxTemperatureC": 30.8,
     "heatPoints": 1.1,
     "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
@@ -112,7 +112,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 6.4,
       "openMeteoMaxTemperatureC": 31.2,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.2,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -125,7 +125,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 2.5,
       "openMeteoMaxTemperatureC": 27.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 27.5,
       "heatPoints": 0.5,
       "rainfallStatus": "unknown"
@@ -138,7 +138,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.4,
       "openMeteoMaxTemperatureC": 29.2,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.2,
       "heatPoints": 0.8,
       "rainfallStatus": "unknown"
@@ -151,7 +151,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 28.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 28.0,
       "heatPoints": 0.6,
       "rainfallStatus": "unknown"
@@ -164,7 +164,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.0,
       "openMeteoMaxTemperatureC": 31.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.5,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -177,7 +177,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.2,
       "openMeteoMaxTemperatureC": 27.2,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 27.2,
       "heatPoints": 0.4,
       "rainfallStatus": "unknown"
@@ -190,7 +190,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.8,
       "openMeteoMaxTemperatureC": 31.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.0,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -203,7 +203,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.6,
       "openMeteoMaxTemperatureC": 29.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.0,
       "heatPoints": 0.8,
       "rainfallStatus": "unknown"
@@ -216,7 +216,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 27.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 27.8,
       "heatPoints": 0.6,
       "rainfallStatus": "unknown"
@@ -229,7 +229,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.2,
       "openMeteoMaxTemperatureC": 31.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.0,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -242,7 +242,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 6.6,
       "openMeteoMaxTemperatureC": 30.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.0,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -255,7 +255,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 29.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.1,
       "heatPoints": 0.8,
       "rainfallStatus": "unknown"
@@ -268,7 +268,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 31.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.0,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -281,7 +281,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.5,
       "openMeteoMaxTemperatureC": 32.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 32.8,
       "heatPoints": 1.3,
       "rainfallStatus": "unknown"
@@ -294,7 +294,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.0,
       "openMeteoMaxTemperatureC": 32.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 32.0,
       "heatPoints": 1.2,
       "rainfallStatus": "unknown"
@@ -307,7 +307,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 5.8,
       "openMeteoMaxTemperatureC": 30.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.0,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -320,7 +320,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 2.3,
       "openMeteoMaxTemperatureC": 31.6,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.6,
       "heatPoints": 1.2,
       "rainfallStatus": "unknown"
@@ -333,7 +333,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 3.6,
       "openMeteoMaxTemperatureC": 28.4,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 28.4,
       "heatPoints": 0.7,
       "rainfallStatus": "unknown"
@@ -346,7 +346,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 7.0,
       "openMeteoMaxTemperatureC": 30.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.1,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -359,7 +359,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 25.3,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 25.3,
       "heatPoints": 0.1,
       "rainfallStatus": "unknown"
@@ -372,7 +372,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.2,
       "openMeteoMaxTemperatureC": 26.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 26.7,
       "heatPoints": 0.3,
       "rainfallStatus": "unknown"
@@ -385,7 +385,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 25.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 25.0,
       "heatPoints": 0.0,
       "rainfallStatus": "unknown"
@@ -398,7 +398,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.2,
       "openMeteoMaxTemperatureC": 23.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 23.7,
       "heatPoints": 0.0,
       "rainfallStatus": "unknown"
@@ -411,7 +411,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.2,
       "openMeteoMaxTemperatureC": 23.9,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 23.9,
       "heatPoints": 0.0,
       "rainfallStatus": "unknown"
@@ -424,7 +424,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 29.3,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.3,
       "heatPoints": 0.9,
       "rainfallStatus": "unknown"
@@ -437,7 +437,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.1,
       "openMeteoMaxTemperatureC": 29.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.7,
       "heatPoints": 0.9,
       "rainfallStatus": "unknown"
@@ -450,7 +450,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.2,
       "openMeteoMaxTemperatureC": 31.3,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.3,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -463,7 +463,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 30.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.0,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -476,7 +476,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 33.3,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 33.3,
       "heatPoints": 1.3,
       "rainfallStatus": "unknown"
@@ -489,7 +489,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 33.9,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 33.9,
       "heatPoints": 1.4,
       "rainfallStatus": "unknown"
@@ -502,7 +502,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 35.9,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.9,
       "heatPoints": 1.6,
       "rainfallStatus": "unknown"
@@ -515,7 +515,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 35.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.7,
       "heatPoints": 1.6,
       "rainfallStatus": "unknown"
@@ -528,7 +528,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 35.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.5,
       "heatPoints": 1.6,
       "rainfallStatus": "unknown"
@@ -541,7 +541,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 36.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 36.7,
       "heatPoints": 1.7,
       "rainfallStatus": "unknown"
@@ -554,7 +554,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 37.6,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 37.6,
       "heatPoints": 1.8,
       "rainfallStatus": "unknown"
@@ -567,7 +567,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 37.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 37.1,
       "heatPoints": 1.7,
       "rainfallStatus": "unknown"
@@ -580,7 +580,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 37.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 37.1,
       "heatPoints": 1.7,
       "rainfallStatus": "unknown"
@@ -593,7 +593,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.8,
       "openMeteoMaxTemperatureC": 33.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 33.1,
       "heatPoints": 1.3,
       "rainfallStatus": "unknown"
@@ -606,7 +606,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.4,
       "openMeteoMaxTemperatureC": 29.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.8,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -619,7 +619,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 31.9,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.9,
       "heatPoints": 1.2,
       "rainfallStatus": "unknown"
@@ -632,7 +632,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 34.3,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 34.3,
       "heatPoints": 1.4,
       "rainfallStatus": "unknown"
@@ -645,7 +645,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.4,
       "openMeteoMaxTemperatureC": 35.2,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.2,
       "heatPoints": 1.5,
       "rainfallStatus": "unknown"
@@ -658,7 +658,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 1.8,
       "openMeteoMaxTemperatureC": 31.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.5,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -671,7 +671,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 30.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.5,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -684,7 +684,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 30.4,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.4,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -697,7 +697,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 32.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 32.0,
       "heatPoints": 1.2,
       "rainfallStatus": "unknown"
@@ -710,7 +710,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.1,
       "openMeteoMaxTemperatureC": 35.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.0,
       "heatPoints": 1.5,
       "rainfallStatus": "unknown"
@@ -723,7 +723,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 2.3,
       "openMeteoMaxTemperatureC": 29.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.8,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -736,7 +736,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 28.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 28.5,
       "heatPoints": 0.7,
       "rainfallStatus": "unknown"
@@ -749,7 +749,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 33.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 33.8,
       "heatPoints": 1.4,
       "rainfallStatus": "unknown"
@@ -762,7 +762,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 35.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 35.5,
       "heatPoints": 1.6,
       "rainfallStatus": "unknown"
@@ -775,7 +775,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 3.4,
       "openMeteoMaxTemperatureC": 31.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 31.0,
       "heatPoints": 1.1,
       "rainfallStatus": "unknown"
@@ -788,7 +788,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 3.4,
       "openMeteoMaxTemperatureC": 22.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 22.8,
       "heatPoints": 0.0,
       "rainfallStatus": "unknown"
@@ -801,7 +801,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.3,
       "openMeteoMaxTemperatureC": 25.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 25.7,
       "heatPoints": 0.1,
       "rainfallStatus": "unknown"
@@ -814,7 +814,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 28.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 28.7,
       "heatPoints": 0.7,
       "rainfallStatus": "unknown"
@@ -827,7 +827,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 5.9,
       "openMeteoMaxTemperatureC": 26.6,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 26.6,
       "heatPoints": 0.3,
       "rainfallStatus": "unknown"
@@ -840,7 +840,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.9,
       "openMeteoMaxTemperatureC": 30.0,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.0,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -853,7 +853,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 34.9,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 34.9,
       "heatPoints": 1.5,
       "rainfallStatus": "unknown"
@@ -866,7 +866,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 37.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 37.7,
       "heatPoints": 1.8,
       "rainfallStatus": "unknown"
@@ -879,7 +879,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 3.4,
       "openMeteoMaxTemperatureC": 27.2,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 27.2,
       "heatPoints": 0.4,
       "rainfallStatus": "unknown"
@@ -892,7 +892,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 30.1,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.1,
       "heatPoints": 1.0,
       "rainfallStatus": "unknown"
@@ -905,7 +905,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 32.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 32.5,
       "heatPoints": 1.2,
       "rainfallStatus": "unknown"
@@ -918,7 +918,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.8,
       "openMeteoMaxTemperatureC": 28.4,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 28.4,
       "heatPoints": 0.7,
       "rainfallStatus": "unknown"
@@ -931,7 +931,7 @@
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 29.7,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 29.7,
       "heatPoints": 0.9,
       "rainfallStatus": "unknown"
@@ -948,7 +948,7 @@
       "periodStartDate": "2026-09-03",
       "openMeteoRainfallMm": 0.4,
       "openMeteoMaxTemperatureC": 30.5,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "measurementEndDate": "2026-09-04"
     },
     {
@@ -961,7 +961,7 @@
       "periodStartDate": "2026-09-04",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 33.4,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 33.4,
       "heatPoints": 1.3,
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
@@ -976,10 +976,23 @@
       "periodStartDate": "2026-09-05",
       "openMeteoRainfallMm": 0.1,
       "openMeteoMaxTemperatureC": 30.8,
-      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-05&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 30.8,
       "heatPoints": 1.1,
       "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
+    },
+    {
+      "observationDate": "2026-09-06",
+      "recordedAt": "2026-09-07T00:24:24.308154+00:00",
+      "rainfallMm": "NEPOZNATO",
+      "stationReported": false,
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
+      "openMeteoRainfallMm": 0.3,
+      "openMeteoMaxTemperatureC": 28.7,
+      "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-06&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
+      "maxTemperatureC": 28.7,
+      "heatPoints": 0.7,
+      "rainfallStatus": "unknown"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-15T12:12:03.142904+00:00",
+  "updatedAt": "2026-09-15T18:09:30.008640+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Utorak15.09.2026.",
       "night": "",
-      "morning": "Sunčano",
+      "morning": "",
       "afternoon": "Malo oblačno",
       "evening": "Vedro",
-      "temperature": "26.9 °C / 16.3 °C",
+      "temperature": "25.4 °C / 15.6 °C",
       "wind": "Slab do umjeren južni",
       "precipitation": "",
-      "maxTemperatureC": 26.9,
-      "heatPoints": 0.4
+      "maxTemperatureC": 25.4,
+      "heatPoints": 0.1
     },
     {
       "date": "Srijeda16.09.2026.",
@@ -21,33 +21,33 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "27.4 °C / 11.6 °C",
+      "temperature": "26.8 °C / 11.5 °C",
       "wind": "Slab jugoistočni",
       "precipitation": "",
-      "maxTemperatureC": 27.4,
-      "heatPoints": 0.5
+      "maxTemperatureC": 26.8,
+      "heatPoints": 0.4
     },
     {
       "date": "Četvrtak17.09.2026.",
-      "night": "Vedro",
-      "morning": "Umjereno oblačno",
-      "afternoon": "Pretežno oblačno",
-      "evening": "Oblačno uz malu količinu kiše",
-      "temperature": "22.8 °C / 13.9 °C",
-      "wind": "Slab sjeverni",
-      "precipitation": "1.6 mm",
-      "maxTemperatureC": 22.8,
+      "night": "Malo oblačno",
+      "morning": "Promjenljivo oblačno uz malu količinu kiše",
+      "afternoon": "Promjenljivo oblačno uz malu količinu kiše",
+      "evening": "Pretežno oblačno",
+      "temperature": "20.6 °C / 13.6 °C",
+      "wind": "Slab sjeveroistočni",
+      "precipitation": "3.6 mm",
+      "maxTemperatureC": 20.6,
       "heatPoints": 0.0
     },
     {
       "date": "Petak18.09.2026.",
-      "night": "Magla, umjereno do pretežno oblačno",
+      "night": "Pretežno oblačno",
       "morning": "Promjenljivo oblačno uz malu količinu kiše",
       "afternoon": "Malo oblačno",
       "evening": "Promjenljivo oblačno uz malu količinu kiše",
-      "temperature": "23.0 °C / 12.2 °C",
+      "temperature": "23.0 °C / 12.4 °C",
       "wind": "Slab jugoistočni",
-      "precipitation": "3.8 mm",
+      "precipitation": "3.3 mm",
       "maxTemperatureC": 23.0,
       "heatPoints": 0.0
     },

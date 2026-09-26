@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-09-26T12:11:00.947153+00:00",
+  "updatedAt": "2026-09-26T18:09:34.229919+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Subota26.09.2026.",
       "night": "",
-      "morning": "Sunčano",
+      "morning": "",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "20.5 °C / 10.8 °C",
+      "temperature": "20.9 °C / 11.7 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 20.5,
+      "maxTemperatureC": 20.9,
       "heatPoints": 0.0
     },
     {
@@ -20,21 +20,21 @@
       "night": "Vedro",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
-      "evening": "Malo oblačno",
-      "temperature": "22.5 °C / 7.1 °C",
-      "wind": "Slab jugoistočni",
+      "evening": "Vedro",
+      "temperature": "21.4 °C / 8.1 °C",
+      "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 22.5,
+      "maxTemperatureC": 21.4,
       "heatPoints": 0.0
     },
     {
       "date": "Ponedjeljak28.09.2026.",
-      "night": "Malo oblačno",
+      "night": "Vedro",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
-      "evening": "Malo oblačno",
-      "temperature": "24.1 °C / 8.9 °C",
-      "wind": "Slab jugoistočni",
+      "evening": "Vedro",
+      "temperature": "24.1 °C / 8.8 °C",
+      "wind": "Slab do umjeren južni",
       "precipitation": "",
       "maxTemperatureC": 24.1,
       "heatPoints": 0.0
@@ -45,10 +45,10 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "21.2 °C / 8.8 °C",
+      "temperature": "22.5 °C / 8.7 °C",
       "wind": "Slab istočni",
       "precipitation": "",
-      "maxTemperatureC": 21.2,
+      "maxTemperatureC": 22.5,
       "heatPoints": 0.0
     },
     {

@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-09-27T06:14:11.882766+00:00",
+  "updatedAt": "2026-09-27T12:12:19.059783+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Nedjelja27.09.2026.",
-      "night": "Vedro",
+      "night": "",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "21.9 °C / 7.6 °C",
+      "temperature": "22.5 °C / 11.3 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 21.9,
+      "maxTemperatureC": 22.5,
       "heatPoints": 0.0
     },
     {
@@ -21,10 +21,10 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "24.4 °C / 8.3 °C",
-      "wind": "Slab do umjeren južni",
+      "temperature": "24.5 °C / 8.5 °C",
+      "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 24.4,
+      "maxTemperatureC": 24.5,
       "heatPoints": 0.0
     },
     {
@@ -33,10 +33,10 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "24.3 °C / 8.9 °C",
-      "wind": "Tišina",
+      "temperature": "24.7 °C / 9.1 °C",
+      "wind": "Slab jugoistočni",
       "precipitation": "",
-      "maxTemperatureC": 24.3,
+      "maxTemperatureC": 24.7,
       "heatPoints": 0.0
     },
     {
@@ -45,10 +45,10 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "21.1 °C / 10.5 °C",
+      "temperature": "20.7 °C / 9.5 °C",
       "wind": "Slab istočni",
       "precipitation": "",
-      "maxTemperatureC": 21.1,
+      "maxTemperatureC": 20.7,
       "heatPoints": 0.0
     },
     {
@@ -57,34 +57,34 @@
       "morning": "Malo oblačno",
       "afternoon": "Malo oblačno",
       "evening": "Malo oblačno",
-      "temperature": "20.4 °C / 12.2 °C",
+      "temperature": "20.3 °C / 11.8 °C",
       "wind": "Slab sjeveroistočni",
       "precipitation": "",
-      "maxTemperatureC": 20.4,
+      "maxTemperatureC": 20.3,
       "heatPoints": 0.0
     },
     {
       "date": "Petak02.10.2026.",
       "night": "Malo oblačno",
       "morning": "Malo oblačno",
-      "afternoon": "Malo oblačno",
+      "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "20.9 °C / 11.4 °C",
-      "wind": "Slab sjeveroistočni",
+      "temperature": "20.6 °C / 11.1 °C",
+      "wind": "Slab istočni",
       "precipitation": "",
-      "maxTemperatureC": 20.9,
+      "maxTemperatureC": 20.6,
       "heatPoints": 0.0
     },
     {
       "date": "Subota03.10.2026.",
       "night": "Vedro",
       "morning": "Sunčano",
-      "afternoon": "Sunčano",
-      "evening": "Vedro",
-      "temperature": "20.5 °C / 11.7 °C",
-      "wind": "Tišina",
+      "afternoon": "Malo oblačno",
+      "evening": "Malo oblačno",
+      "temperature": "15.7 °C / 10.0 °C",
+      "wind": "Slab sjeveroistočni",
       "precipitation": "",
-      "maxTemperatureC": 20.5,
+      "maxTemperatureC": 15.7,
       "heatPoints": 0.0
     }
   ],

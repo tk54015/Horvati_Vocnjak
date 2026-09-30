@@ -1,30 +1,18 @@
 {
-  "updatedAt": "2026-09-30T00:24:36.508053+00:00",
+  "updatedAt": "2026-09-30T06:15:07.164462+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
-    {
-      "date": "Utorak29.09.2026.",
-      "night": "",
-      "morning": "",
-      "afternoon": "",
-      "evening": "Vedro",
-      "temperature": "14.8 °C / 13.0 °C",
-      "wind": "Tišina",
-      "precipitation": "",
-      "maxTemperatureC": 14.8,
-      "heatPoints": 0.0
-    },
     {
       "date": "Srijeda30.09.2026.",
       "night": "Vedro",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "24.1 °C / 9.9 °C",
+      "temperature": "24.6 °C / 8.5 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 24.1,
+      "maxTemperatureC": 24.6,
       "heatPoints": 0.0
     },
     {
@@ -33,10 +21,10 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "22.7 °C / 9.9 °C",
+      "temperature": "23.7 °C / 9.7 °C",
       "wind": "Slab jugoistočni",
       "precipitation": "",
-      "maxTemperatureC": 22.7,
+      "maxTemperatureC": 23.7,
       "heatPoints": 0.0
     },
     {
@@ -44,11 +32,11 @@
       "night": "Malo oblačno",
       "morning": "Malo oblačno",
       "afternoon": "Malo oblačno",
-      "evening": "Malo oblačno",
-      "temperature": "22.6 °C / 8.9 °C",
+      "evening": "Vedro",
+      "temperature": "22.7 °C / 8.7 °C",
       "wind": "Slab jugoistočni",
       "precipitation": "",
-      "maxTemperatureC": 22.6,
+      "maxTemperatureC": 22.7,
       "heatPoints": 0.0
     },
     {
@@ -86,20 +74,32 @@
       "precipitation": "",
       "maxTemperatureC": 20.4,
       "heatPoints": 0.0
+    },
+    {
+      "date": "Utorak06.10.2026.",
+      "night": "Malo oblačno",
+      "morning": "Sunčano",
+      "afternoon": "Malo oblačno",
+      "evening": "Malo oblačno",
+      "temperature": "21.4 °C / 11.7 °C",
+      "wind": "Tišina",
+      "precipitation": "",
+      "maxTemperatureC": 21.4,
+      "heatPoints": 0.0
     }
   ],
   "rainfall24h": {
-    "observationDate": "2026-09-28",
-    "measurementEndDate": "2026-09-29",
-    "measurementPeriod": "29.09.2026 u 8 sati",
-    "recordedAt": "2026-09-29T06:14:55.388883+00:00",
+    "observationDate": "2026-09-29",
+    "measurementEndDate": "2026-09-30",
+    "measurementPeriod": "30.09.2026 u 8 sati",
+    "recordedAt": "2026-09-30T06:15:07.164462+00:00",
     "rainfallMm": 0.0,
     "stationReported": false,
-    "periodStartDate": "2026-09-28",
+    "periodStartDate": "2026-09-29",
     "openMeteoRainfallMm": 0.0,
-    "openMeteoMaxTemperatureC": 22.5,
+    "openMeteoMaxTemperatureC": 23.3,
     "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-29&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
-    "maxTemperatureC": 22.5,
+    "maxTemperatureC": 23.3,
     "heatPoints": 0.0,
     "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
   },
@@ -1328,16 +1328,18 @@
     },
     {
       "observationDate": "2026-09-29",
-      "recordedAt": "2026-09-30T00:24:36.508053+00:00",
-      "rainfallMm": "NEPOZNATO",
+      "measurementEndDate": "2026-09-30",
+      "measurementPeriod": "30.09.2026 u 8 sati",
+      "recordedAt": "2026-09-30T06:15:07.164462+00:00",
+      "rainfallMm": 0.0,
       "stationReported": false,
-      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
+      "periodStartDate": "2026-09-29",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 23.3,
       "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-09-29&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 23.3,
       "heatPoints": 0.0,
-      "rainfallStatus": "unknown"
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
     }
   ]
 }

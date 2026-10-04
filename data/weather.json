@@ -1,30 +1,18 @@
 {
-  "updatedAt": "2026-10-04T01:04:00.223658+00:00",
+  "updatedAt": "2026-10-04T08:02:07.418637+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
-    {
-      "date": "Subota03.10.2026.",
-      "night": "",
-      "morning": "",
-      "afternoon": "",
-      "evening": "Vedro",
-      "temperature": "12.8 °C / 11.8 °C",
-      "wind": "Tišina",
-      "precipitation": "",
-      "maxTemperatureC": 12.8,
-      "heatPoints": 0.0
-    },
     {
       "date": "Nedjelja04.10.2026.",
       "night": "Vedro",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "22.9 °C / 7.1 °C",
+      "temperature": "21.7 °C / 6.3 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 22.9,
+      "maxTemperatureC": 21.7,
       "heatPoints": 0.0
     },
     {
@@ -33,10 +21,10 @@
       "morning": "Malo oblačno",
       "afternoon": "Malo oblačno",
       "evening": "Malo oblačno",
-      "temperature": "21.3 °C / 6.0 °C",
+      "temperature": "20.9 °C / 5.7 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 21.3,
+      "maxTemperatureC": 20.9,
       "heatPoints": 0.0
     },
     {
@@ -45,15 +33,15 @@
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "20.2 °C / 6.8 °C",
-      "wind": "Slab jugoistočni",
+      "temperature": "20.6 °C / 6.5 °C",
+      "wind": "Slab do umjeren južni",
       "precipitation": "",
-      "maxTemperatureC": 20.2,
+      "maxTemperatureC": 20.6,
       "heatPoints": 0.0
     },
     {
       "date": "Srijeda07.10.2026.",
-      "night": "Malo oblačno",
+      "night": "Umjereno oblačno",
       "morning": "Sunčano",
       "afternoon": "Sunčano",
       "evening": "Vedro",
@@ -86,20 +74,32 @@
       "precipitation": "6.5 mm",
       "maxTemperatureC": 14.5,
       "heatPoints": 0.0
+    },
+    {
+      "date": "Subota10.10.2026.",
+      "night": "Oblačno uz malu količinu kiše",
+      "morning": "Sunčano",
+      "afternoon": "Malo oblačno",
+      "evening": "Malo oblačno",
+      "temperature": "15.2 °C / 7.2 °C",
+      "wind": "Slab do umjeren južni",
+      "precipitation": "2.3 mm",
+      "maxTemperatureC": 15.2,
+      "heatPoints": 0.0
     }
   ],
   "rainfall24h": {
-    "observationDate": "2026-10-02",
-    "measurementEndDate": "2026-10-03",
-    "measurementPeriod": "03.10.2026 u 8 sati",
-    "recordedAt": "2026-10-03T06:16:28.043125+00:00",
+    "observationDate": "2026-10-03",
+    "measurementEndDate": "2026-10-04",
+    "measurementPeriod": "04.10.2026 u 8 sati",
+    "recordedAt": "2026-10-04T08:02:07.418637+00:00",
     "rainfallMm": 0.0,
     "stationReported": false,
-    "periodStartDate": "2026-10-02",
+    "periodStartDate": "2026-10-03",
     "openMeteoRainfallMm": 0.0,
-    "openMeteoMaxTemperatureC": 21.5,
+    "openMeteoMaxTemperatureC": 21.1,
     "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-10-03&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
-    "maxTemperatureC": 21.5,
+    "maxTemperatureC": 21.1,
     "heatPoints": 0.0,
     "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
   },
@@ -1388,16 +1388,18 @@
     },
     {
       "observationDate": "2026-10-03",
-      "recordedAt": "2026-10-04T01:04:00.223658+00:00",
-      "rainfallMm": "NEPOZNATO",
+      "measurementEndDate": "2026-10-04",
+      "measurementPeriod": "04.10.2026 u 8 sati",
+      "recordedAt": "2026-10-04T08:02:07.418637+00:00",
+      "rainfallMm": 0.0,
       "stationReported": false,
-      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
+      "periodStartDate": "2026-10-03",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 21.1,
       "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-10-03&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 21.1,
       "heatPoints": 0.0,
-      "rainfallStatus": "unknown"
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
     }
   ]
 }

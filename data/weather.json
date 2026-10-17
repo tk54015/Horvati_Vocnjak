@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-17T12:10:23.364444+00:00",
+  "updatedAt": "2026-10-17T18:08:32.520904+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Subota17.10.2026.",
       "night": "",
-      "morning": "Magla, malo do umjereno oblačno",
-      "afternoon": "Malo oblačno",
-      "evening": "Umjereno oblačno",
-      "temperature": "17.6 °C / 6.5 °C",
-      "wind": "Slab jugozapadni",
+      "morning": "",
+      "afternoon": "Umjereno oblačno",
+      "evening": "Pretežno oblačno",
+      "temperature": "18.0 °C / 10.2 °C",
+      "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 17.6,
+      "maxTemperatureC": 18.0,
       "heatPoints": 0.0
     },
     {
@@ -21,34 +21,34 @@
       "morning": "Malo oblačno",
       "afternoon": "Malo oblačno",
       "evening": "Vedro",
-      "temperature": "18.9 °C / 7.1 °C",
+      "temperature": "19.3 °C / 7.4 °C",
       "wind": "Slab do umjeren južni",
       "precipitation": "",
-      "maxTemperatureC": 18.9,
+      "maxTemperatureC": 19.3,
       "heatPoints": 0.0
     },
     {
       "date": "Ponedjeljak19.10.2026.",
-      "night": "Vedro",
+      "night": "Malo oblačno",
       "morning": "Magla, nebo vedro",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "18.2 °C / 5.9 °C",
+      "temperature": "18.1 °C / 7.1 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 18.2,
+      "maxTemperatureC": 18.1,
       "heatPoints": 0.0
     },
     {
       "date": "Utorak20.10.2026.",
-      "night": "Malo oblačno",
+      "night": "Vedro",
       "morning": "Malo oblačno",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "15.0 °C / 5.7 °C",
+      "temperature": "16.9 °C / 5.3 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 15.0,
+      "maxTemperatureC": 16.9,
       "heatPoints": 0.0
     },
     {

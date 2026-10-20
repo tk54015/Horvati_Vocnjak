@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-20T00:21:17.854101+00:00",
+  "updatedAt": "2026-10-20T06:13:42.320221+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
@@ -89,17 +89,17 @@
     }
   ],
   "rainfall24h": {
-    "observationDate": "2026-10-18",
-    "measurementEndDate": "2026-10-19",
-    "measurementPeriod": "19.10.2026 u 8 sati",
-    "recordedAt": "2026-10-19T06:18:18.722560+00:00",
+    "observationDate": "2026-10-19",
+    "measurementEndDate": "2026-10-20",
+    "measurementPeriod": "20.10.2026 u 8 sati",
+    "recordedAt": "2026-10-20T06:13:42.320221+00:00",
     "rainfallMm": 0.0,
     "stationReported": false,
-    "periodStartDate": "2026-10-18",
+    "periodStartDate": "2026-10-19",
     "openMeteoRainfallMm": 0.0,
-    "openMeteoMaxTemperatureC": 19.2,
+    "openMeteoMaxTemperatureC": 16.5,
     "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-10-19&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
-    "maxTemperatureC": 19.2,
+    "maxTemperatureC": 16.5,
     "heatPoints": 0.0,
     "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
   },
@@ -1628,16 +1628,18 @@
     },
     {
       "observationDate": "2026-10-19",
-      "recordedAt": "2026-10-20T00:21:17.854101+00:00",
-      "rainfallMm": "NEPOZNATO",
+      "measurementEndDate": "2026-10-20",
+      "measurementPeriod": "20.10.2026 u 8 sati",
+      "recordedAt": "2026-10-20T06:13:42.320221+00:00",
+      "rainfallMm": 0.0,
       "stationReported": false,
-      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina",
+      "periodStartDate": "2026-10-19",
       "openMeteoRainfallMm": 0.0,
       "openMeteoMaxTemperatureC": 16.5,
       "openMeteoSource": "https://archive-api.open-meteo.com/v1/archive?latitude=45.71205&longitude=15.81212&start_date=2026-06-30&end_date=2026-10-19&daily=temperature_2m_max,precipitation_sum&timezone=Europe%2FZagreb",
       "maxTemperatureC": 16.5,
       "heatPoints": 0.0,
-      "rainfallStatus": "unknown"
+      "source": "https://meteo.hr/podaci.php?section=podaci_vrijeme&param=oborina"
     }
   ]
 }

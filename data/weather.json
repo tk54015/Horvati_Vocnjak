@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-26T13:35:42.642329+00:00",
+  "updatedAt": "2026-10-26T18:13:06.374476+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Ponedjeljak26.10.2026.",
       "night": "",
-      "morning": "Malo oblačno",
+      "morning": "",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "16.3 °C / 5.7 °C",
-      "wind": "Slab jugozapadni",
+      "temperature": "16.4 °C / 7.1 °C",
+      "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 16.3,
+      "maxTemperatureC": 16.4,
       "heatPoints": 0.0
     },
     {
@@ -21,10 +21,10 @@
       "morning": "Malo oblačno",
       "afternoon": "Sunčano",
       "evening": "Vedro",
-      "temperature": "14.4 °C / 3.6 °C",
+      "temperature": "15.2 °C / 4.5 °C",
       "wind": "Tišina",
       "precipitation": "",
-      "maxTemperatureC": 14.4,
+      "maxTemperatureC": 15.2,
       "heatPoints": 0.0
     },
     {
@@ -33,22 +33,22 @@
       "morning": "Sunčano",
       "afternoon": "Malo oblačno",
       "evening": "Pretežno oblačno",
-      "temperature": "14.0 °C / 2.4 °C",
-      "wind": "Tišina",
+      "temperature": "13.7 °C / 2.2 °C",
+      "wind": "Slab do umjeren južni",
       "precipitation": "",
-      "maxTemperatureC": 14.0,
+      "maxTemperatureC": 13.7,
       "heatPoints": 0.0
     },
     {
       "date": "Četvrtak29.10.2026.",
       "night": "Pretežno oblačno",
       "morning": "Pretežno oblačno",
-      "afternoon": "Pretežno oblačno",
+      "afternoon": "Umjereno oblačno",
       "evening": "Umjereno oblačno",
-      "temperature": "13.7 °C / 6.4 °C",
+      "temperature": "14.3 °C / 7.4 °C",
       "wind": "Slab sjeveroistočni",
-      "precipitation": "0.2 mm",
-      "maxTemperatureC": 13.7,
+      "precipitation": "",
+      "maxTemperatureC": 14.3,
       "heatPoints": 0.0
     },
     {

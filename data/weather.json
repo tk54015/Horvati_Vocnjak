@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-31T12:07:22.686136+00:00",
+  "updatedAt": "2026-10-31T18:05:57.311708+00:00",
   "forecastSource": "https://meteo.hr/prognoze.php?section=prognoze_model&param=7d",
   "forecastLocation": "Zagreb-Maksimir",
   "forecast": [
     {
       "date": "Subota31.10.2026.",
       "night": "",
-      "morning": "Sunčano",
+      "morning": "",
       "afternoon": "Umjereno oblačno",
-      "evening": "Umjereno oblačno",
-      "temperature": "13.1 °C / 7.9 °C",
+      "evening": "Pretežno oblačno",
+      "temperature": "13.6 °C / 9.0 °C",
       "wind": "Slab sjeveroistočni",
       "precipitation": "",
-      "maxTemperatureC": 13.1,
+      "maxTemperatureC": 13.6,
       "heatPoints": 0.0
     },
     {
@@ -21,10 +21,10 @@
       "morning": "Umjereno oblačno",
       "afternoon": "Promjenljivo oblačno uz malu količinu kiše",
       "evening": "Oblačno uz malu količinu kiše",
-      "temperature": "11.2 °C / 7.0 °C",
+      "temperature": "11.0 °C / 7.1 °C",
       "wind": "Slab sjeveroistočni",
-      "precipitation": "6.4 mm",
-      "maxTemperatureC": 11.2,
+      "precipitation": "10.3 mm",
+      "maxTemperatureC": 11.0,
       "heatPoints": 0.0
     },
     {
@@ -33,22 +33,22 @@
       "morning": "Promjenljivo oblačno uz malu količinu kiše",
       "afternoon": "Oblačno uz malu količinu kiše",
       "evening": "Oblačno uz malu količinu kiše",
-      "temperature": "8.8 °C / 6.6 °C",
+      "temperature": "8.6 °C / 7.2 °C",
       "wind": "Slab sjeveroistočni",
-      "precipitation": "7.8 mm",
-      "maxTemperatureC": 8.8,
+      "precipitation": "5.7 mm",
+      "maxTemperatureC": 8.6,
       "heatPoints": 0.0
     },
     {
       "date": "Utorak03.11.2026.",
-      "night": "Promjenljivo oblačno uz malu količinu kiše",
-      "morning": "Potpuno oblačno",
+      "night": "Pretežno oblačno",
+      "morning": "Promjenljivo oblačno uz malu količinu kiše",
       "afternoon": "Potpuno oblačno",
       "evening": "Oblačno uz malu količinu kiše",
-      "temperature": "7.7 °C / 5.8 °C",
-      "wind": "Slab sjeverni",
-      "precipitation": "1.8 mm",
-      "maxTemperatureC": 7.7,
+      "temperature": "9.0 °C / 6.4 °C",
+      "wind": "Slab sjeveroistočni",
+      "precipitation": "2.0 mm",
+      "maxTemperatureC": 9.0,
       "heatPoints": 0.0
     },
     {

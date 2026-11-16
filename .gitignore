@@ -12,3 +12,8 @@ sfsdfsd
 # Windows
 Thumbs.db
 desktop.ini
+
+# Node / Vercel
+node_modules/
+.vercel/
+.env*

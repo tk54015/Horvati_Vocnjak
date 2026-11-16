@@ -1,0 +1,6 @@
+# Ne treba na Vercelu (lokalne skripte i izvori)
+__pycache__
+kml_source
+*.ipynb
+*.py
+*.ps1

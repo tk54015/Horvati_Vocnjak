@@ -49,6 +49,349 @@ var placementEnabled = false;
 var waterFilterEnabled = false;
 var selectedPlant = null;
 
+// ---------------------------------------------------------------------------
+// Spremanje podataka: na Vercelu ide na server (api/state, Postgres),
+// inače (npr. GitHub Pages ili lokalno) ostaje u localStorage kao prije.
+// ---------------------------------------------------------------------------
+var STATE_API_URL = 'api/state';
+var storageMode = 'local'; // 'server' kad je API dostupan
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {} };
+var pendingChanges = {};
+var syncInFlight = false;
+var syncRetryTimer = null;
+var syncFlushTimer = null;
+
+function stableStringify(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(stableStringify).join(',') + ']';
+    return '{' + Object.keys(value).sort().filter(function (key) {
+        return value[key] !== undefined;
+    }).map(function (key) {
+        return JSON.stringify(key) + ':' + stableStringify(value[key]);
+    }).join(',') + '}';
+}
+
+function userItemsAsMap(items) {
+    var result = {};
+    (items || []).forEach(function (item) {
+        if (item && item.id) result[item.id] = item;
+    });
+    return result;
+}
+
+function buildSnapshotFromMap(objectMap) {
+    var snap = {};
+    Object.keys(objectMap || {}).forEach(function (id) {
+        snap[id] = stableStringify(objectMap[id]);
+    });
+    return snap;
+}
+
+function setSyncStatus(state, message) {
+    var el = document.getElementById('sync-status');
+    if (!el) return;
+    el.dataset.state = state;
+    if (message) {
+        el.textContent = message;
+    } else if (state === 'saving') {
+        el.textContent = '☁️ Spremanje...';
+    } else if (state === 'error') {
+        el.textContent = '⚠️ Spremanje nije uspjelo, pokušavam ponovno...';
+    } else if (state === 'ok') {
+        el.textContent = '☁️ Sve spremljeno na server.';
+    } else {
+        el.textContent = 'Sve novo ostaje spremljeno nakon refresha.';
+    }
+}
+
+function queueServerSync(kind, currentMap) {
+    var snap = syncSnapshot[kind];
+    var changed = false;
+
+    Object.keys(currentMap).forEach(function (id) {
+        var serialized = stableStringify(currentMap[id]);
+        if (snap[id] === serialized) return;
+        snap[id] = serialized;
+        var key = kind + '|' + id;
+        delete pendingChanges[key];
+        pendingChanges[key] = { kind: kind, id: id, value: JSON.parse(serialized) };
+        changed = true;
+    });
+
+    Object.keys(snap).forEach(function (id) {
+        if (Object.prototype.hasOwnProperty.call(currentMap, id)) return;
+        delete snap[id];
+        var key = kind + '|' + id;
+        delete pendingChanges[key];
+        pendingChanges[key] = { kind: kind, id: id, value: null };
+        changed = true;
+    });
+
+    if (changed) scheduleServerFlush();
+}
+
+function scheduleServerFlush() {
+    if (syncFlushTimer) clearTimeout(syncFlushTimer);
+    setSyncStatus('saving');
+    syncFlushTimer = setTimeout(function () {
+        syncFlushTimer = null;
+        flushServerSync(false);
+    }, 250);
+}
+
+function hasUnsavedChanges() {
+    return storageMode === 'server' && (syncInFlight || Object.keys(pendingChanges).length > 0);
+}
+
+function flushServerSync(useKeepalive) {
+    if (storageMode !== 'server' || syncInFlight) return;
+    var keys = Object.keys(pendingChanges);
+    if (keys.length === 0) {
+        setSyncStatus('ok');
+        return;
+    }
+
+    var sent = {};
+    var changes = keys.map(function (key) {
+        sent[key] = pendingChanges[key];
+        return pendingChanges[key];
+    });
+
+    syncInFlight = true;
+    setSyncStatus('saving');
+
+    fetch(STATE_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'sync', changes: changes }),
+        keepalive: !!useKeepalive
+    })
+        .then(function (response) {
+            if (response.status === 401) {
+                window.location.reload();
+                throw new Error('Nisi prijavljen');
+            }
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.json();
+        })
+        .then(function () {
+            keys.forEach(function (key) {
+                if (pendingChanges[key] === sent[key]) delete pendingChanges[key];
+            });
+            syncInFlight = false;
+            if (Object.keys(pendingChanges).length > 0) {
+                flushServerSync(false);
+            } else {
+                setSyncStatus('ok');
+            }
+        })
+        .catch(function (error) {
+            console.error('Spremanje na server nije uspjelo:', error);
+            syncInFlight = false;
+            setSyncStatus('error');
+            if (syncRetryTimer) clearTimeout(syncRetryTimer);
+            syncRetryTimer = setTimeout(function () {
+                syncRetryTimer = null;
+                flushServerSync(false);
+            }, 5000);
+        });
+}
+
+window.addEventListener('beforeunload', function (e) {
+    if (!hasUnsavedChanges()) return;
+    flushServerSync(true);
+    e.preventDefault();
+    e.returnValue = '';
+});
+
+document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && storageMode === 'server') {
+        flushServerSync(true);
+    }
+});
+
+// Vraća stanje sa servera, ili null ako server ne postoji (stari način rada).
+function fetchServerState() {
+    return fetch(STATE_API_URL, { cache: 'no-store' })
+        .catch(function () { return null; })
+        .then(function (response) {
+            if (!response) return null;
+            if (response.status === 401) {
+                window.location.reload();
+                throw new Error('Nisi prijavljen');
+            }
+            var contentType = response.headers.get('content-type') || '';
+            if (response.status === 404 || contentType.indexOf('application/json') === -1) return null;
+            return response.json().then(function (body) {
+                if (!response.ok) throw new Error(body && body.error ? body.error : 'HTTP ' + response.status);
+                return body;
+            });
+        });
+}
+
+function fetchJsonFile(url) {
+    return fetch(url, { cache: 'no-store' }).then(function (response) {
+        if (!response.ok) throw new Error('Nema ' + url);
+        return response.json();
+    });
+}
+
+// Prvo pokretanje: kopiraj data/stabla.json i data/loza.json u bazu.
+function ensureServerSeeded(state) {
+    if (state.seeded) return Promise.resolve(state);
+
+    setSyncStatus('saving', '☁️ Prvo pokretanje: kopiram podatke u bazu...');
+    return fetchJsonFile('data/stabla.json')
+        .then(function (stablaData) {
+            return fetchJsonFile('data/loza.json')
+                .catch(function () { return { items: [] }; })
+                .then(function (lozaData) {
+                    return fetch(STATE_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'seed', stabla: stablaData, loza: lozaData })
+                    });
+                });
+        })
+        .then(function (response) {
+            if (!response.ok) throw new Error('Kopiranje podataka u bazu nije uspjelo (HTTP ' + response.status + ')');
+            return fetchServerState();
+        })
+        .then(function (freshState) {
+            if (!freshState || !freshState.seeded) throw new Error('Baza je i dalje prazna nakon kopiranja.');
+            return freshState;
+        });
+}
+
+function asPlainObject(value) {
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+}
+
+var serverUserItemsRaw = null;
+
+function applyServerState(state) {
+    noteOverrides = asPlainObject(state.noteOverrides);
+    plantDetails = asPlainObject(state.plantDetails);
+    positionOverrides = asPlainObject(state.positionOverrides);
+    serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
+
+    syncSnapshot = {
+        user: buildSnapshotFromMap(userItemsAsMap(serverUserItemsRaw)),
+        note: buildSnapshotFromMap(noteOverrides),
+        details: buildSnapshotFromMap(plantDetails),
+        position: buildSnapshotFromMap(positionOverrides)
+    };
+    pendingChanges = {};
+}
+
+// Backup svih izmjena (nova stabla, napomene, status, pozicije) u jedan JSON.
+function downloadChangesBackup() {
+    var payload = {
+        format: 'horvati-izmjene',
+        verzija: 1,
+        izvor: storageMode,
+        exportedAt: new Date().toISOString(),
+        userItems: userItems,
+        noteOverrides: noteOverrides,
+        plantDetails: plantDetails,
+        positionOverrides: positionOverrides
+    };
+
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var now = new Date();
+    var datePart = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    a.href = url;
+    a.download = 'horvati-izmjene-' + datePart + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Uvoz backupa (npr. izmjena iz preglednika sa stare GitHub Pages stranice) na server.
+function importChangesBackup(file) {
+    if (storageMode !== 'server') {
+        alert('Uvoz radi samo na Vercel verziji stranice.');
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function () {
+        var data;
+        try {
+            data = JSON.parse(String(reader.result).replace(/^﻿/, ''));
+        } catch (error) {
+            alert('Datoteka nije ispravan JSON.');
+            return;
+        }
+        if (!data || data.format !== 'horvati-izmjene') {
+            alert('Ovo nije backup izmjena (treba datoteka horvati-izmjene-....json).');
+            return;
+        }
+
+        var changes = [];
+        var counts = { user: 0, skippedUser: 0, note: 0, details: 0, position: 0 };
+
+        (Array.isArray(data.userItems) ? data.userItems : []).forEach(function (item) {
+            if (!item || !item.id) return;
+            var isBase = baseItems.some(function (b) { return b.id === item.id; });
+            if (isBase || isDuplicateOfBase(item)) {
+                counts.skippedUser += 1;
+                return;
+            }
+            changes.push({ kind: 'user', id: String(item.id), value: item });
+            counts.user += 1;
+        });
+
+        [['note', data.noteOverrides], ['details', data.plantDetails], ['position', data.positionOverrides]].forEach(function (pair) {
+            var map = asPlainObject(pair[1]);
+            Object.keys(map).forEach(function (id) {
+                if (map[id] === null || map[id] === undefined) return;
+                changes.push({ kind: pair[0], id: id, value: map[id] });
+                counts[pair[0]] += 1;
+            });
+        });
+
+        if (changes.length === 0) {
+            alert('U backupu nema ničega za uvesti' + (counts.skippedUser ? ' (' + counts.skippedUser + ' stabala već postoji u osnovnim podacima).' : '.'));
+            return;
+        }
+
+        var ok = confirm(
+            'Uvesti na server:\n' +
+            '- novih stabala: ' + counts.user + (counts.skippedUser ? ' (preskočeno jer već postoje: ' + counts.skippedUser + ')' : '') + '\n' +
+            '- napomena: ' + counts.note + '\n' +
+            '- statusa biljaka: ' + counts.details + '\n' +
+            '- promjena lokacije: ' + counts.position + '\n\n' +
+            'Postojeći zapisi za iste biljke bit će zamijenjeni ovima iz backupa.'
+        );
+        if (!ok) return;
+
+        setSyncStatus('saving', '☁️ Uvozim backup...');
+        fetch(STATE_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'sync', changes: changes })
+        })
+            .then(function (response) {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.json();
+            })
+            .then(function () {
+                alert('Uvoz gotov. Stranica će se osvježiti.');
+                window.location.reload();
+            })
+            .catch(function (error) {
+                console.error(error);
+                setSyncStatus('error', '⚠️ Uvoz nije uspio.');
+                alert('Uvoz nije uspio: ' + error.message);
+            });
+    };
+    reader.readAsText(file);
+}
+
 function getTypeWithEmoji(typeOrItem) {
     var type;
     if (typeof typeOrItem === 'string') {
@@ -530,6 +873,10 @@ function buildExportPayload() {
 }
 
 function saveUserItems() {
+    if (storageMode === 'server') {
+        queueServerSync('user', userItemsAsMap(userItems));
+        return;
+    }
     try {
         localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userItems));
     } catch (error) {
@@ -579,9 +926,14 @@ function makeUniqueRenamedId(oldId, preferredPrefix, usedIds) {
 
 function loadUserItems() {
     try {
-        var raw = localStorage.getItem(USER_STORAGE_KEY);
-        if (!raw) return [];
-        var parsed = JSON.parse(raw);
+        var parsed;
+        if (storageMode === 'server') {
+            parsed = serverUserItemsRaw || [];
+        } else {
+            var raw = localStorage.getItem(USER_STORAGE_KEY);
+            if (!raw) return [];
+            parsed = JSON.parse(raw);
+        }
         if (!Array.isArray(parsed)) return [];
 
         var corrected = false;
@@ -629,7 +981,9 @@ function loadUserItems() {
                 if (notesChanged) saveNoteOverrides();
             }
 
-            localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(normalized));
+            if (storageMode !== 'server') {
+                localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(normalized));
+            }
         }
 
         return normalized;
@@ -640,6 +994,10 @@ function loadUserItems() {
 }
 
 function saveNoteOverrides() {
+    if (storageMode === 'server') {
+        queueServerSync('note', noteOverrides);
+        return;
+    }
     try {
         localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(noteOverrides));
     } catch (error) {
@@ -660,6 +1018,10 @@ function loadNoteOverrides() {
 }
 
 function savePlantDetails() {
+    if (storageMode === 'server') {
+        queueServerSync('details', plantDetails);
+        return;
+    }
     try {
         localStorage.setItem(DETAILS_STORAGE_KEY, JSON.stringify(plantDetails));
     } catch (error) {
@@ -680,6 +1042,10 @@ function loadPlantDetails() {
 }
 
 function savePositionOverrides() {
+    if (storageMode === 'server') {
+        queueServerSync('position', positionOverrides);
+        return;
+    }
     try {
         localStorage.setItem(POSITION_STORAGE_KEY, JSON.stringify(positionOverrides));
     } catch (error) {
@@ -1190,6 +1556,54 @@ function registerAllItemsMap() {
 }
 
 function loadInventory() {
+    fetchServerState()
+        .then(function (state) {
+            if (!state) {
+                storageMode = 'local';
+                setSyncStatus('local');
+                loadInventoryLegacy();
+                return;
+            }
+
+            storageMode = 'server';
+            var importBtn = document.getElementById('import-backup');
+            if (importBtn) importBtn.classList.remove('hidden');
+
+            return ensureServerSeeded(state).then(function (seededState) {
+                applyServerState(seededState);
+                baseItems = normalizeItems(seededState.stabla).concat(normalizeItems(seededState.loza));
+                computeVisibleBaseVineIds(baseItems);
+                applyStoredPositionsToBaseItems();
+                applyStoredNotesToBaseItems();
+
+                userItems = loadUserItems();
+                cleanupLegacyUserDuplicates();
+
+                baseItems.forEach(function (item) {
+                    createMarker(item, { isUserItem: false });
+                });
+
+                userItems.forEach(function (item, index) {
+                    if (!item.id) {
+                        item.id = 'user_' + Date.now() + '_' + index;
+                    }
+                    createMarker(item, { isUserItem: true });
+                });
+
+                registerAllItemsMap();
+                saveUserItems();
+                renderChangeList();
+                if (!hasUnsavedChanges()) setSyncStatus('ok');
+            });
+        })
+        .catch(function (error) {
+            console.error('Greška pri učitavanju podataka sa servera:', error);
+            setSyncStatus('error', '⚠️ Ne mogu učitati podatke sa servera: ' + error.message);
+            alert('Ne mogu učitati podatke sa servera. Osvježi stranicu za par trenutaka. ' + error.message);
+        });
+}
+
+function loadInventoryLegacy() {
     noteOverrides = loadNoteOverrides();
     plantDetails = loadPlantDetails();
     positionOverrides = loadPositionOverrides();
@@ -1685,6 +2099,25 @@ document.addEventListener('keydown', function (e) {
 var exportBtn = document.getElementById('export-json');
 if (exportBtn) {
     exportBtn.addEventListener('click', downloadJson);
+}
+
+var exportBackupBtn = document.getElementById('export-backup');
+if (exportBackupBtn) {
+    exportBackupBtn.addEventListener('click', downloadChangesBackup);
+}
+
+var importBackupBtn = document.getElementById('import-backup');
+var importBackupInput = document.getElementById('import-backup-file');
+if (importBackupBtn && importBackupInput) {
+    importBackupBtn.addEventListener('click', function () {
+        importBackupInput.value = '';
+        importBackupInput.click();
+    });
+    importBackupInput.addEventListener('change', function () {
+        if (importBackupInput.files && importBackupInput.files[0]) {
+            importChangesBackup(importBackupInput.files[0]);
+        }
+    });
 }
 
 var toggleWaterFilterBtn = document.getElementById('toggle-water-filter');

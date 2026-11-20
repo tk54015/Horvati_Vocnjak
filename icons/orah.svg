@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- Orah u ljusci (vlastiti crtež, stil kao ostale ikone) -->
+  <rect width="160" height="160" fill="#ffffff"/>
+  <ellipse cx="80" cy="84" rx="50" ry="56" fill="#c08a4e"/>
+  <ellipse cx="80" cy="84" rx="50" ry="56" fill="none" stroke="#8a5a2b" stroke-width="4"/>
+  <!-- šav po sredini -->
+  <path d="M80 28 C74 50 86 66 80 84 C74 102 86 118 80 140" fill="none" stroke="#7a4b20" stroke-width="5" stroke-linecap="round"/>
+  <!-- naborana ljuska -->
+  <path d="M58 44 C50 56 60 64 52 76 C46 86 56 94 50 106" fill="none" stroke="#9a6632" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M102 44 C110 56 100 64 108 76 C114 86 104 94 110 106" fill="none" stroke="#9a6632" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M64 70 C68 74 66 80 70 84" fill="none" stroke="#9a6632" stroke-width="3" stroke-linecap="round"/>
+  <path d="M96 70 C92 74 94 80 90 84" fill="none" stroke="#9a6632" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 116 C66 122 72 124 74 130" fill="none" stroke="#9a6632" stroke-width="3" stroke-linecap="round"/>
+  <path d="M98 116 C94 122 88 124 86 130" fill="none" stroke="#9a6632" stroke-width="3" stroke-linecap="round"/>
+  <!-- odsjaj -->
+  <ellipse cx="60" cy="58" rx="9" ry="14" fill="#ffffff" opacity="0.25" transform="rotate(-20 60 58)"/>
+  <!-- vrh -->
+  <path d="M76 26 L80 18 L84 26 Z" fill="#7a4b20"/>
+</svg>

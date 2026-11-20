@@ -450,7 +450,6 @@ function getTypeWithEmoji(typeOrItem) {
         ribizl: '🍓',
         dud2: '🍇',
         vinova_loza: '🍇',
-        orah: '🌰',
         kivi: '🥝',
         ostalo: '🌳'
     };
@@ -485,7 +484,6 @@ function getEmojiForType(item) {
         ribizl: '🍓',
         dud2: '🍇',
         vinova_loza: '🍇',
-        orah: '🌰',
         kivi: '🥝',
         ostalo: '🌳'
     };
@@ -503,7 +501,7 @@ var ALWAYS_VISIBLE_VINE_IDS = {
 };
 var FULL_ICON_SIZE = 30;
 // Vrste koje se na karti prikazuju emojijem dok nemaju vlastitu sliku u icons/
-var EMOJI_MARKERS = { ostalo: '🌳', kivi: '🥝', orah: '🌰', drenak: '🔴', dud2: '🍇' };
+var EMOJI_MARKERS = { ostalo: '🌳', kivi: '🥝', drenak: '🔴', dud2: '🍇' };
 var VINE_DOT_SIZE = 4;
 var VINE_DOT_HIT_MULTIPLIER = 4;
 var AVG_YIELD_KG_BY_TYPE = {
@@ -627,6 +625,7 @@ function iconByType(typeText) {
     if (t === 'visnja') return 'icons/visnja.png';
     if (t === 'dunja') return 'icons/dunja.png';
     if (t === 'glog') return 'icons/glog.png';
+    if (t === 'orah') return 'icons/orah.png';
     if (t === 'vinova_loza') return 'icons/grapes.png';
     return null;
 }
@@ -2704,7 +2703,7 @@ var encyclopediaSelectedId = null;
 function loadEncyclopedia() {
     if (encyclopediaData) return Promise.resolve(encyclopediaData);
     if (!encyclopediaLoading) {
-        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261122a')
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261122b')
             .then(function (data) {
                 encyclopediaData = data;
                 return data;

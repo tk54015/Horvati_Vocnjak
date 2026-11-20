@@ -918,6 +918,7 @@ function refreshAllMarkerIcons() {
         var isUserItem = userItems.some(function (u) { return u.id === id; });
         var newIcon = buildMarkerIcon(item, isUserItem);
         if (newIcon) marker.setIcon(newIcon);
+        highlightSelectedMarker(); // setIcon stvara novi element, pa ponovno označi odabrano
     });
 }
 
@@ -1259,6 +1260,7 @@ function clearBaseItemChanges(itemId) {
 
     if (selectedPlant && selectedPlant.itemId === itemId) {
         selectedPlant = null;
+        highlightSelectedMarker();
         var emptyEl = document.getElementById('plant-empty');
         var formEl = document.getElementById('plant-form');
         if (emptyEl) emptyEl.classList.remove('hidden');
@@ -1374,6 +1376,7 @@ function openPlantPanel(item, isUserItem) {
         itemId: item.id,
         isUserItem: !!isUserItem
     };
+    highlightSelectedMarker();
 
     var emptyEl = document.getElementById('plant-empty');
     var formEl = document.getElementById('plant-form');
@@ -2420,7 +2423,14 @@ function setDragEnabled(enabled) {
 
 // Klik na mapu: postavi stablo iz prozora "Dodaj stablo"
 map.on('click', function (e) {
-    if (!placementEnabled || !canEdit() || !pendingNewTree) return;
+    if (!placementEnabled || !canEdit() || !pendingNewTree) {
+        // Klik na prazan dio karte poništava odabir stabla
+        if (selectedPlant) {
+            flushPlantPanelAutosave();
+            closePlantPanelSelection();
+        }
+        return;
+    }
     placePendingTree(e.latlng);
 });
 
@@ -2617,6 +2627,7 @@ function askConfirm(title, message, okLabel) {
 // ---------------------------------------------------------------------------
 function closePlantPanelSelection() {
     selectedPlant = null;
+    highlightSelectedMarker();
     var emptyEl = document.getElementById('plant-empty');
     var formEl = document.getElementById('plant-form');
     if (emptyEl) emptyEl.classList.remove('hidden');
@@ -3318,4 +3329,31 @@ if (installAppBtn) {
             alert('Instalacija na iPhone/iPad:\n\n1. Otvori stranicu u Safariju\n2. Dodirni gumb Dijeli (kvadrat sa strelicom)\n3. Odaberi "Dodaj na početni zaslon"');
         }
     });
+}
+
+// ---------------------------------------------------------------------------
+// Označavanje odabranog stabla na karti (plavi obrub)
+// ---------------------------------------------------------------------------
+var highlightedMarkerId = null;
+
+function highlightSelectedMarker() {
+    var wantedId = selectedPlant ? selectedPlant.itemId : null;
+
+    if (highlightedMarkerId && highlightedMarkerId !== wantedId) {
+        var old = allMarkersById[highlightedMarkerId];
+        if (old) {
+            var oldEl = old.getElement();
+            if (oldEl) oldEl.classList.remove('marker-selected');
+            old.setZIndexOffset(0);
+        }
+        highlightedMarkerId = null;
+    }
+
+    if (!wantedId) return;
+    var marker = allMarkersById[wantedId];
+    if (!marker) return;
+    var el = marker.getElement();
+    if (el) el.classList.add('marker-selected');
+    marker.setZIndexOffset(1000); // ispred susjednih ikona
+    highlightedMarkerId = wantedId;
 }

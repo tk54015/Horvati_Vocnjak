@@ -1894,3 +1894,27 @@ body.placing-tree .leaflet-container {
     font-size: 12px;
     cursor: pointer;
 }
+
+/* ---------- Odabrano stablo na karti ---------- */
+.leaflet-marker-icon.marker-selected {
+    outline: 3px solid #1e88e5;
+    outline-offset: 2px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 6px rgba(30, 136, 229, 0.35), 0 0 14px 4px rgba(30, 136, 229, 0.55);
+    animation: marker-selected-pulse 1.6s ease-in-out infinite;
+}
+
+.leaflet-marker-icon.vine-dot-wrapper.marker-selected {
+    border-radius: 50%;
+}
+
+@keyframes marker-selected-pulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(30, 136, 229, 0.35), 0 0 14px 4px rgba(30, 136, 229, 0.55); }
+    50% { box-shadow: 0 0 0 9px rgba(30, 136, 229, 0.15), 0 0 18px 6px rgba(30, 136, 229, 0.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .leaflet-marker-icon.marker-selected {
+        animation: none;
+    }
+}

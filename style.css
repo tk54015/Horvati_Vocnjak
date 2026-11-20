@@ -3892,3 +3892,39 @@ body.is-admin .demo-start {
 #add-bed-modal .ct-row label {
     font-size: 12px;
 }
+
+/* ---------- Gredice: emoji unutra + ručka za okretanje ---------- */
+.bed-emoji-inside {
+    transform: translate(-50%, -50%);
+    font-size: 15px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+.bed-handle-wrap {
+    background: transparent;
+    border: 0;
+}
+
+.bed-handle {
+    width: 26px;
+    height: 26px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: #1e88e5;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 22px;
+    text-align: center;
+    cursor: grab;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+    user-select: none;
+}
+
+.bed-handle:active {
+    cursor: grabbing;
+}

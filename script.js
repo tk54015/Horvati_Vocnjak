@@ -5403,7 +5403,33 @@ function fmtMeters(n) {
     return String(Math.round(Number(n) * 100) / 100).replace('.', ',');
 }
 
-function bedLabelHtml(bed) {
+// Kutovi gredice (zakrenute za bed.rotacija stupnjeva u smjeru kazaljke) – računa se u metrima,
+// pa se pretvara u jedinice karte, tako da gredica i zakrenuta ostaje u stvarnim dimenzijama.
+function bedCorners(bed, lat, lng) {
+    var cLat = lat !== undefined ? lat : bed.lat;
+    var cLng = lng !== undefined ? lng : bed.lng;
+    var ew = (bed.smjer === 'ew' ? bed.duzina : bed.sirina) / 2;
+    var ns = (bed.smjer === 'ew' ? bed.sirina : bed.duzina) / 2;
+    var t = (Number(bed.rotacija) || 0) * Math.PI / 180;
+    var cos = Math.cos(t);
+    var sin = Math.sin(t);
+    return [[-ew, ns], [ew, ns], [ew, -ns], [-ew, -ns]].map(function (p) {
+        var x = p[0] * cos + p[1] * sin;
+        var y = -p[0] * sin + p[1] * cos;
+        return [cLat + y / METERS_PER_LAT, cLng + x / METERS_PER_LNG];
+    });
+}
+
+// Ručka za okretanje: iznad gredice, u smjeru njezine "gornje" strane
+function bedHandlePos(bed) {
+    var ns = (bed.smjer === 'ew' ? bed.sirina : bed.duzina) / 2;
+    var ew = (bed.smjer === 'ew' ? bed.duzina : bed.sirina) / 2;
+    var d = ns + Math.max(0.8, Math.min(3, Math.max(ns, ew) * 0.4));
+    var t = (Number(bed.rotacija) || 0) * Math.PI / 180;
+    return [bed.lat + d * Math.cos(t) / METERS_PER_LAT, bed.lng + d * Math.sin(t) / METERS_PER_LNG];
+}
+
+function bedEmojis(bed) {
     var year = new Date().getFullYear();
     var emojis = [];
     bedYearPlantings(bed, year).forEach(function (s) {
@@ -5411,32 +5437,79 @@ function bedLabelHtml(bed) {
         var e = v ? v.emoji : '🌱';
         if (emojis.indexOf(e) === -1) emojis.push(e);
     });
-    return '<div class="bed-label' + (bed.id === selectedBedId ? ' selected' : '') + '">' +
-        (emojis.length ? '<span class="bed-emojis">' + emojis.slice(0, 4).join('') + '</span>' : '') +
-        '<span class="bed-name">' + escapeHtml(bed.naziv) + '</span></div>';
+    return emojis;
+}
+
+function removeBedLayers(id) {
+    var old = bedLayers[id];
+    if (!old) return;
+    ['rect', 'label', 'handle', 'line'].forEach(function (k) { if (old[k]) bedLayerGroup.removeLayer(old[k]); });
+    delete bedLayers[id];
 }
 
 function drawBed(bed) {
-    var old = bedLayers[bed.id];
-    if (old) { bedLayerGroup.removeLayer(old.rect); bedLayerGroup.removeLayer(old.label); }
-    var rect = L.rectangle(bedBounds(bed), {
-        color: bed.id === selectedBedId ? '#1e88e5' : '#4e2f12',
-        weight: bed.id === selectedBedId ? 3 : 1.5,
+    removeBedLayers(bed.id);
+    var selected = bed.id === selectedBedId;
+    var rect = L.polygon(bedCorners(bed), {
+        color: selected ? '#1e88e5' : '#4e2f12',
+        weight: selected ? 3 : 1.5,
         fillColor: '#8b5a2b',
         fillOpacity: 0.55,
         bubblingMouseEvents: false
     });
     rect.on('click', function () { openBedPanel(bed.id); });
-    var span = bedSpan(bed);
-    var label = L.marker([bed.lat + span.lat / 2, bed.lng], { // natpis iznad gredice, da je ne prekriva
-        icon: L.divIcon({ className: 'bed-label-wrap', html: bedLabelHtml(bed), iconSize: null }),
-        zIndexOffset: -500,
-        keyboard: false
-    });
-    label.on('click', function () { openBedPanel(bed.id); });
     rect.addTo(bedLayerGroup);
-    label.addTo(bedLayerGroup);
-    bedLayers[bed.id] = { rect: rect, label: label };
+    var layers = { rect: rect };
+
+    // emoji povrća unutar gredice (bez naziva)
+    var emojis = bedEmojis(bed);
+    if (emojis.length) {
+        var label = L.marker([bed.lat, bed.lng], {
+            icon: L.divIcon({ className: 'bed-label-wrap', html: '<div class="bed-emoji-inside">' + emojis.slice(0, 4).join('') + '</div>', iconSize: null }),
+            zIndexOffset: -500,
+            keyboard: false
+        });
+        label.on('click', function () { openBedPanel(bed.id); });
+        label.addTo(bedLayerGroup);
+        layers.label = label;
+    }
+
+    // ručka za okretanje (samo odabrana gredica, samo admin)
+    if (selected && canEdit()) {
+        var hp = bedHandlePos(bed);
+        var line = L.polyline([[bed.lat, bed.lng], hp], { color: '#1e88e5', weight: 1.5, dashArray: '4 4', interactive: false }).addTo(bedLayerGroup);
+        var handle = L.marker(hp, {
+            draggable: true,
+            icon: L.divIcon({ className: 'bed-handle-wrap', html: '<div class="bed-handle" title="Povuci za okretanje">⟳</div>', iconSize: [26, 26], iconAnchor: [13, 13] }),
+            zIndexOffset: 2000,
+            keyboard: false
+        });
+        handle.on('drag', function (e) {
+            var p = e.target.getLatLng();
+            var dx = (p.lng - bed.lng) * METERS_PER_LNG;
+            var dy = (p.lat - bed.lat) * METERS_PER_LAT;
+            var deg = Math.round(Math.atan2(dx, dy) * 180 / Math.PI);
+            bed.rotacija = (deg + 360) % 360;
+            rect.setLatLngs(bedCorners(bed));
+            line.setLatLngs([[bed.lat, bed.lng], p]);
+            var sizeEl = document.getElementById('bed-size');
+            if (sizeEl && selectedBedId === bed.id) sizeEl.textContent = bedSizeText(bed);
+        });
+        handle.on('dragend', function () {
+            saveBeds();
+            drawBed(bed);
+        });
+        handle.addTo(bedLayerGroup);
+        layers.handle = handle;
+        layers.line = line;
+    }
+    bedLayers[bed.id] = layers;
+}
+
+function bedSizeText(bed) {
+    var rot = Number(bed.rotacija) || 0;
+    return fmtMeters(bed.sirina) + ' × ' + fmtMeters(bed.duzina) + ' m · ' + fmtMeters(bed.sirina * bed.duzina) + ' m² · dužina ' +
+        (bed.smjer === 'ew' ? 'istok–zapad' : 'sjever–jug') + (rot ? ' · zakrenuto ' + rot + '°' : '');
 }
 
 function renderBeds() {
@@ -5484,7 +5557,7 @@ function startBedPlacement(mode, bed) {
         ' (' + fmtMeters(bed.sirina) + ' × ' + fmtMeters(bed.duzina) + ' m)';
     if (hint) hint.classList.remove('hidden');
     if (bedPreview) map.removeLayer(bedPreview);
-    bedPreview = L.rectangle(bedBounds(bed, -9999, -9999), { color: '#1e88e5', weight: 2, dashArray: '4 4', fillColor: '#8b5a2b', fillOpacity: 0.35, interactive: false }).addTo(map);
+    bedPreview = L.polygon(bedCorners(bed, -9999, -9999), { color: '#1e88e5', weight: 2, dashArray: '4 4', fillColor: '#8b5a2b', fillOpacity: 0.35, interactive: false }).addTo(map);
 }
 
 function stopBedPlacement() {
@@ -5498,7 +5571,7 @@ function stopBedPlacement() {
 
 map.on('mousemove', function (e) {
     if (!bedPlacement || !bedPreview) return;
-    bedPreview.setBounds(bedBounds(bedPlacement.bed, e.latlng.lat, e.latlng.lng));
+    bedPreview.setLatLngs(bedCorners(bedPlacement.bed, e.latlng.lat, e.latlng.lng));
 });
 
 map.on('click', function (e) {
@@ -5619,7 +5692,7 @@ function renderBedPanel() {
     var editable = canEdit();
     document.getElementById('bed-name').textContent = bed.naziv;
     var area = bed.sirina * bed.duzina;
-    document.getElementById('bed-size').textContent = fmtMeters(bed.sirina) + ' × ' + fmtMeters(bed.duzina) + ' m · ' + fmtMeters(area) + ' m² · dužina ' + (bed.smjer === 'ew' ? 'istok–zapad' : 'sjever–jug');
+    document.getElementById('bed-size').textContent = bedSizeText(bed);
     var year = new Date().getFullYear();
     document.getElementById('bed-year').textContent = String(year);
 
@@ -5696,14 +5769,17 @@ if (bedFormEl) {
                 drawBed(bed);
                 renderBedPanel();
             });
+        } else if (act === 'bed-rotate-reset') {
+            bed.rotacija = 0;
+            saveBeds();
+            drawBed(bed);
+            renderBedPanel();
         } else if (act === 'bed-move') {
             startBedPlacement('move', bed);
         } else if (act === 'bed-delete') {
             askConfirm('Izbrisati gredicu?', 'Izbrisati "' + bed.naziv + '" zajedno s povijesti sadnje?', '🗑️ Izbriši').then(function (ok) {
                 if (!ok) return;
-                var layers = bedLayers[bed.id];
-                if (layers) { bedLayerGroup.removeLayer(layers.rect); bedLayerGroup.removeLayer(layers.label); }
-                delete bedLayers[bed.id];
+                removeBedLayers(bed.id);
                 delete beds[bed.id];
                 saveBeds();
                 closeBedPanel();

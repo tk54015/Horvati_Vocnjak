@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261123g">
+    <link rel="stylesheet" href="style.css?v=20261123h">
 </head>
 <body>
     <div id="map"></div>
@@ -81,9 +81,9 @@
       <button id="open-wallet" type="button" class="menu-view admin-only">💰 Novčanik</button>
       <button id="install-app" type="button" class="menu-view hidden">📲 Instaliraj aplikaciju</button>
       <div class="admin-only menu-admin">
+        <button id="open-add-bed" type="button" class="menu-view">🥕 Dodaj gredicu</button>
         <button id="open-add-tree" type="button" class="menu-view">➕🌳 Dodaj stablo</button>
         <button id="toggle-drag" type="button" class="menu-view" aria-pressed="false">✋ Premjesti stablo</button>
-        <button id="open-add-bed" type="button" class="menu-view">🥕 Dodaj gredicu</button>
       </div>
       <!-- Sakriveno: prikaz zalijevanja, backup i uvoz izmjena -->
       <div class="hidden">
@@ -251,6 +251,7 @@
           <ul id="bed-history" class="pp-harvest"></ul>
           <div class="pp-footer admin-only">
             <button type="button" class="pp-act" data-act="bed-move">📍 Premjesti</button>
+            <button type="button" class="pp-act" data-act="bed-rotate-reset" title="Vrati na 0°">⟲ Poravnaj</button>
             <button type="button" class="bed-del" data-act="bed-delete">🗑️ Izbriši gredicu</button>
           </div>
         </div>
@@ -531,6 +532,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261123g"></script>
+    <script src="script.js?v=20261123h"></script>
 </body>
 </html>

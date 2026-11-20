@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261122e">
+    <link rel="stylesheet" href="style.css?v=20261122f">
 </head>
 <body>
     <div id="map"></div>
@@ -144,11 +144,10 @@
             <div class="pp-title">
               <h2 id="pp-name">-</h2>
               <div class="pp-sub">
-                <span id="plant-type">-</span>
+                <button id="plant-open-encyclopedia" type="button" class="pp-species-link" title="Otvori u enciklopediji"><span id="plant-type">-</span></button>
                 <span class="pp-dot">·</span>
                 <span id="plant-id" class="pp-id">-</span>
               </div>
-              <button id="plant-open-encyclopedia" type="button" class="link-btn" title="Otvori u enciklopediji">📖 O vrsti</button>
             </div>
           </header>
           <div class="pp-chips">
@@ -166,6 +165,7 @@
 
           <section class="pp-pane" data-pane="pregled">
             <div id="pp-tasks"></div>
+            <div id="pp-upcoming"></div>
             <h4 class="pp-h">Zadnji radovi</h4>
             <div id="pp-last" class="pp-last"></div>
             <label for="status-napomena" class="pp-h">Napomena</label>
@@ -332,6 +332,10 @@
           <button id="tasks-next" type="button" title="Sljedeći mjesec" aria-label="Sljedeći mjesec">›</button>
           <button id="tasks-today" type="button" class="hidden">Danas</button>
         </div>
+        <div class="tasks-filter">
+          <label for="tasks-species">Vrsta:</label>
+          <select id="tasks-species"><option value="">Sve vrste</option></select>
+        </div>
         <div id="tasks-progress" class="tasks-progress"></div>
         <div id="tasks-list" class="tasks-list"></div>
       </div>
@@ -391,6 +395,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261122e"></script>
+    <script src="script.js?v=20261122f"></script>
 </body>
 </html>

@@ -2650,3 +2650,141 @@ body.placing-tree .leaflet-container {
     border-radius: 5px;
     font-size: 12px;
 }
+
+/* ---------- Naziv vrste kao link ---------- */
+.pp-species-link {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2f6b2f;
+    text-decoration: underline;
+    text-decoration-color: rgba(47, 107, 47, 0.4);
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.pp-species-link:hover {
+    color: #1f4f1f;
+    text-decoration-color: currentColor;
+}
+
+/* ---------- Sljedeći zadaci ---------- */
+.pp-upcoming {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+}
+
+.pp-upcoming li {
+    display: flex;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 11px;
+}
+
+.pp-up-month {
+    flex: 0 0 64px;
+    font-weight: 700;
+    color: #2f5d2f;
+}
+
+.pp-up-task {
+    display: block;
+    padding-left: 6px;
+    border-left: 3px solid #aaa;
+    margin-bottom: 2px;
+}
+
+.pp-up-task.prio-1 { border-left-color: #c33b3b; }
+.pp-up-task.prio-2 { border-left-color: #d8751b; }
+.pp-up-task.prio-3 { border-left-color: #3d8f56; }
+
+/* ---------- Raspored: filter po vrsti ---------- */
+.tasks-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 14px 6px;
+    font-size: 12px;
+}
+
+.tasks-filter select {
+    padding: 4px 6px;
+    border: 1px solid #bcd0b4;
+    border-radius: 5px;
+    background: #fff;
+    font-size: 12px;
+}
+
+/* ---------- Blago zelena tema za panele i prozore ---------- */
+:root {
+    --panel-bg: #eef6e9;
+    --panel-bg-solid: #f2f8ee;
+    --panel-border: #cfe0c5;
+    --panel-head: #e3f0dc;
+}
+
+.map-controls,
+#side-menu,
+#filter-panel,
+#login-panel,
+#plant-panel {
+    background: rgba(238, 246, 233, 0.97);
+    border-color: var(--panel-border);
+}
+
+.changes-modal-card,
+.yield-modal-card,
+.encyclopedia-card,
+.tasks-card,
+.add-tree-card,
+.confirm-card,
+#weather-panel {
+    background: var(--panel-bg-solid);
+    border-color: var(--panel-border);
+}
+
+.encyclopedia-header,
+.tasks-header,
+.add-tree-header,
+.changes-modal-header,
+.yield-modal-header {
+    background: var(--panel-head);
+}
+
+.enc-tab.active {
+    background: var(--panel-bg-solid);
+    border-bottom-color: var(--panel-bg-solid);
+}
+
+#encyclopedia-list {
+    background: #e6f1df;
+}
+
+.veg-table .veg-name-col {
+    background: var(--panel-bg-solid);
+}
+
+/* kartice unutar zelenih panela ostaju svjetlije radi kontrasta */
+.pp-task,
+.pp-last,
+.task,
+.pp-form,
+.add-tree-optional,
+.weather-score-card {
+    background: #fbfdf9;
+}
+
+.pp-task.done,
+.task.done,
+.away-group .task {
+    background: #f1f4ef;
+}
+
+.pp-icon {
+    background: #ffffff;
+}

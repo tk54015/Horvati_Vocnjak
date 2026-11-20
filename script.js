@@ -3108,7 +3108,7 @@ function renderTasks() {
     document.getElementById('tasks-season').textContent = seasonName(tasksView.month) + (isCurrent ? ' · ovaj mjesec' : '');
     document.getElementById('tasks-today').classList.toggle('hidden', isCurrent);
 
-    var view = tasksForView();
+    var view = filterTasksBySpecies(tasksForView());
     var rows = view.active;
     var doneCount = rows.filter(function (r) { return r.done; }).length;
     var progressEl = document.getElementById('tasks-progress');
@@ -3176,7 +3176,8 @@ function shiftTasksMonth(delta) {
     renderTasks();
 }
 
-function openTasks() {
+function openTasks(speciesFilter) {
+    tasksSpeciesFilter = speciesFilter ? normalizeType(speciesFilter) : '';
     if (!tasksModal) return;
     var now = new Date();
     tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
@@ -3184,7 +3185,7 @@ function openTasks() {
     tasksModal.classList.remove('hidden');
     document.getElementById('tasks-list').innerHTML = '<p class="tasks-empty">Učitavanje...</p>';
     loadTasks()
-        .then(renderTasks)
+        .then(function () { renderTasksSpeciesSelect(); renderTasks(); })
         .catch(function (error) {
             console.error(error);
             document.getElementById('tasks-list').innerHTML = '<p class="tasks-empty">Ne mogu učitati raspored.</p>';
@@ -3756,7 +3757,7 @@ function renderPlantTasks(item) {
             '<div class="pp-task-desc">' + escapeHtml(task.opis || '') + '</div>' +
             '<div class="pp-task-status">' + status + '</div></li>';
     });
-    html += '</ul><button type="button" class="link-btn" data-act="open-tasks">🗓️ Otvori raspored radova</button>';
+    html += '</ul>';
     el.innerHTML = html;
 }
 
@@ -3851,6 +3852,7 @@ function renderPlantExtras(item) {
     if (!item) return;
     renderPlantHeader(item);
     renderPlantTasks(item);
+    renderPlantUpcoming(item);
     renderPlantLast(item);
     renderPlantLegacy(item);
     renderPlantLog(item);
@@ -3887,7 +3889,7 @@ if (plantFormEl) {
         var act = btn.getAttribute('data-act');
 
         if (act === 'open-tasks') {
-            openTasks();
+            openTasks(item.treeType);
         } else if (act === 'task-done' && canEdit()) {
             var key = btn.getAttribute('data-key');
             var rows = currentMonthTaskRows() || [];
@@ -4129,3 +4131,77 @@ if (filterPanelEl) {
 function onTasksChanged() {
     afterPlantDataChange();
 }
+
+// ---------------------------------------------------------------------------
+// Raspored: filter po vrsti + budući zadaci u panelu stabla
+// ---------------------------------------------------------------------------
+var tasksSpeciesFilter = '';
+
+function filterTasksBySpecies(view) {
+    if (!tasksSpeciesFilter) return view;
+    var keep = function (r) { return (r.task.vrste || []).indexOf(tasksSpeciesFilter) !== -1; };
+    return { active: view.active.filter(keep), away: view.away.filter(keep) };
+}
+
+function renderTasksSpeciesSelect() {
+    var sel = document.getElementById('tasks-species');
+    if (!sel) return;
+    var counts = countTreesByType();
+    var types = Object.keys(counts).filter(function (t) {
+        return tasksData && tasksData.zadaci.some(function (z) { return (z.vrste || []).indexOf(t) !== -1; });
+    }).sort(function (a, b) { return speciesName(a).localeCompare(speciesName(b), 'hr'); });
+    sel.innerHTML = '<option value="">Sve vrste</option>' + types.map(function (t) {
+        return '<option value="' + escapeHtml(t) + '"' + (t === tasksSpeciesFilter ? ' selected' : '') + '>' +
+            escapeHtml(speciesName(t)) + ' (' + counts[t] + ')</option>';
+    }).join('');
+}
+
+var tasksSpeciesSelect = document.getElementById('tasks-species');
+if (tasksSpeciesSelect) {
+    tasksSpeciesSelect.addEventListener('change', function () {
+        tasksSpeciesFilter = tasksSpeciesSelect.value;
+        renderTasks();
+    });
+}
+
+// Zadaci za vrstu stabla u idućih 12 mjeseci (bez tekućeg), po mjesecima
+function renderPlantUpcoming(item) {
+    var el = document.getElementById('pp-upcoming');
+    if (!el) return;
+    if (!tasksData) { el.innerHTML = ''; return; }
+    var type = normalizeType(item.treeType);
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var groups = [];
+    for (var i = 1; i <= 12; i++) {
+        var m = ((month - 1 + i) % 12) + 1;
+        var tasks = tasksData.zadaci.filter(function (z) {
+            if ((z.vrste || []).indexOf(type) === -1) return false;
+            if ((z.mjeseci || []).indexOf(m) === -1) return false;
+            // zadatak koji traje i ovaj mjesec ne ponavljaj u idućem
+            var prev = m === 1 ? 12 : m - 1;
+            return i === 1 ? z.mjeseci.indexOf(month) === -1 : z.mjeseci.indexOf(prev) === -1;
+        });
+        if (tasks.length) groups.push({ month: m, tasks: tasks });
+    }
+    if (!groups.length) { el.innerHTML = ''; return; }
+    var limit = 4;
+    var html = '<h4 class="pp-h">📅 Sljedeći zadaci</h4><ul class="pp-upcoming">';
+    groups.forEach(function (g, idx) {
+        html += '<li class="' + (idx >= limit ? 'pp-more hidden' : '') + '"><span class="pp-up-month">' + escapeHtml(MONTH_NAMES[g.month - 1]) + '</span><span>' +
+            g.tasks.map(function (z) {
+                return '<span class="pp-up-task prio-' + z.prioritet + '">' + (CATEGORY_ICONS[z.kategorija] || '📝') + ' ' + escapeHtml(z.naslov) + '</span>';
+            }).join('') + '</span></li>';
+    });
+    html += '</ul>';
+    if (groups.length > limit) html += '<button type="button" class="link-btn" data-act="upcoming-more">Prikaži cijelu godinu (' + groups.length + ' mj.)</button> · ';
+    html += '<button type="button" class="link-btn" data-act="open-tasks">🗓️ Raspored za ovu vrstu</button>';
+    el.innerHTML = html;
+}
+
+document.addEventListener('click', function (event) {
+    var btn = event.target.closest('[data-act="upcoming-more"]');
+    if (!btn) return;
+    document.querySelectorAll('#pp-upcoming .pp-more').forEach(function (li) { li.classList.remove('hidden'); });
+    btn.remove();
+});

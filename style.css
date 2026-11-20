@@ -895,3 +895,239 @@ body:not(.is-admin) .admin-only {
         grid-template-columns: repeat(2, minmax(110px, 1fr));
     }
 }
+/* ---------- Gumb "Premjesti stablo" (aktivan) ---------- */
+#side-menu button.menu-view.active {
+    background: #c07a10;
+    border-color: #a06510;
+    color: #fff;
+}
+
+/* ---------- Status spremanja (u boxu prijave) ---------- */
+#sync-status {
+    display: block;
+    color: #555;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+#sync-status[data-state="error"] {
+    color: #b3261e;
+    font-weight: 600;
+}
+
+/* ---------- Prozor "Dodaj stablo" ---------- */
+#add-tree-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+#add-tree-modal.hidden {
+    display: none;
+}
+
+.add-tree-card {
+    width: min(420px, 100%);
+    max-height: calc(100vh - 24px);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #b5b5b5;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    font-size: 13px;
+}
+
+.add-tree-header,
+.add-tree-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 14px;
+}
+
+.add-tree-header {
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.add-tree-footer {
+    border-top: 1px solid #ddd;
+    justify-content: flex-end;
+}
+
+#close-add-tree {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background: #888;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-tree-body {
+    padding: 12px 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.add-tree-body label {
+    font-size: 12px;
+    color: #333;
+}
+
+.add-tree-body .req {
+    color: #b3261e;
+}
+
+.add-tree-body select,
+.add-tree-body input,
+.add-tree-body textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 7px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.add-tree-optional {
+    margin-top: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 6px 10px 10px;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.add-tree-optional[open] {
+    padding-bottom: 10px;
+}
+
+.add-tree-optional summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #2f5f96;
+    padding: 2px 0;
+}
+
+.add-tree-optional > label,
+.add-tree-optional > input,
+.add-tree-optional > textarea {
+    margin-top: 6px;
+}
+
+.add-tree-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 6px 10px;
+    margin-top: 8px;
+}
+
+.add-tree-error {
+    color: #b3261e;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary {
+    border: 1px solid #356b35;
+    background: #4f8f4f;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #417941;
+}
+
+.btn-secondary {
+    border: 1px solid #aaa;
+    background: #fff;
+    color: #333;
+}
+
+/* ---------- Postavljanje stabla na kartu ---------- */
+body.placing-tree #map,
+body.placing-tree .leaflet-container {
+    cursor: crosshair;
+}
+
+#placement-hint {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    padding: 8px 10px 8px 14px;
+    background: #fff;
+    border: 2px solid #4f8f4f;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#placement-hint.hidden {
+    display: none;
+}
+
+#cancel-placement {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 999px;
+    background: #f4f4f4;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#cursor-tree {
+    position: fixed;
+    z-index: 1450;
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    opacity: 0.85;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35));
+}
+
+#cursor-tree img {
+    display: block;
+    width: 36px;
+    height: 36px;
+}
+
+#cursor-tree span {
+    display: block;
+    font-size: 30px;
+    line-height: 1;
+}

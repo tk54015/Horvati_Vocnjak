@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventar Stabala</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261120a">
+    <link rel="stylesheet" href="style.css?v=20261120b">
 </head>
 <body>
     <div id="map"></div>
@@ -66,27 +66,8 @@
       <button id="open-weather" type="button" class="menu-view">🌦️ Prognoza</button>
       <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
       <div class="admin-only menu-admin">
-        <label for="tree-type">Vrsta stabla:</label>
-        <select id="tree-type">
-          <option value="jabuka">Jabuka 🍎</option>
-          <option value="kruska">Kruška 🍐</option>
-          <option value="sljiva">Šljiva 🍇</option>
-          <option value="smokva">Smokva 🫠</option>
-          <option value="breskva">Breskva 🍑</option>
-          <option value="tresnja">Trešnja 🍒</option>
-          <option value="visnja">Višnja 🍒</option>
-          <option value="glog">Glog 🌳</option>
-          <option value="drenak">Drenak 🌳</option>
-          <option value="kupina">Kupina 🫐</option>
-          <option value="ribizl">Ribizl 🍓</option>
-          <option value="dud2">Dud 🌳</option>
-          <option value="vinova_loza">Vinova loza 🍇</option>
-        </select>
-        <button id="toggle-placement" type="button" class="placement-locked">🔒 Postavljanje stabala zaključano</button>
-        <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
-        <button id="toggle-changes" type="button">Prikaži izmjene podataka</button>
-        <button id="export-json" type="button">Preuzmi JSON</button>
-        <small id="sync-status">Učitavanje podataka...</small>
+        <button id="open-add-tree" type="button" class="menu-view">➕🌳 Dodaj stablo</button>
+        <button id="toggle-drag" type="button" class="menu-view" aria-pressed="false">✋ Premjesti stablo</button>
       </div>
       <!-- Sakriveno: prikaz zalijevanja, backup i uvoz izmjena -->
       <div class="hidden">
@@ -109,6 +90,7 @@
           <span>👤 Prijavljen: <b>admin</b></span>
           <button id="logout-btn" type="button">Odjava</button>
         </div>
+        <small id="sync-status" class="admin-only">Učitavanje podataka...</small>
       </div>
       <div id="plant-panel">
         <div class="plant-panel-header">
@@ -148,6 +130,92 @@
       </div>
     </div>
 
+    <div id="add-tree-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="add-tree-title">
+      <form id="add-tree-form" class="add-tree-card" novalidate>
+        <div class="add-tree-header">
+          <b id="add-tree-title">➕🌳 Novo stablo</b>
+          <button id="close-add-tree" type="button" title="Zatvori">x</button>
+        </div>
+        <div class="add-tree-body">
+          <label for="new-tree-type">Vrsta stabla <span class="req">*</span></label>
+          <select id="new-tree-type" required>
+            <option value="">-- odaberi --</option>
+              <option value="jabuka">Jabuka 🍎</option>
+              <option value="kruska">Kruška 🍐</option>
+              <option value="sljiva">Šljiva 🍇</option>
+              <option value="smokva">Smokva 🫠</option>
+              <option value="breskva">Breskva 🍑</option>
+              <option value="tresnja">Trešnja 🍒</option>
+              <option value="visnja">Višnja 🍒</option>
+              <option value="glog">Glog 🌳</option>
+              <option value="drenak">Drenak 🌳</option>
+              <option value="kupina">Kupina 🫐</option>
+              <option value="ribizl">Ribizl 🍓</option>
+              <option value="dud2">Dud 🌳</option>
+              <option value="vinova_loza">Vinova loza 🍇</option>
+          </select>
+
+          <label for="new-tree-name">Ime / oznaka <span class="req">*</span></label>
+          <input id="new-tree-name" type="text" maxlength="80" required placeholder="npr. Jabuka kod ulaza">
+
+          <details class="add-tree-optional">
+            <summary>Ostali podaci (nije obavezno)</summary>
+            <div class="add-tree-grid">
+              <label for="new-tree-height">Visina (m)</label>
+              <input id="new-tree-height" type="number" min="0" max="40" step="0.1" inputmode="decimal">
+
+              <label for="new-tree-stage">Stadij razvoja</label>
+              <select id="new-tree-stage">
+                <option value="">Nepoznato</option>
+                <option value="mlado">Mlado</option>
+                <option value="odraslo">Odraslo</option>
+              </select>
+
+              <label for="new-tree-density">Gustoća krošnje</label>
+              <select id="new-tree-density">
+                <option value="">Nepoznato</option>
+                <option value="mala">Mala</option>
+                <option value="srednja">Srednja</option>
+                <option value="velika">Velika</option>
+              </select>
+
+              <label for="new-tree-orezano">Orezano</label>
+              <select id="new-tree-orezano">
+                <option value="nepoznato">Nepoznato</option>
+                <option value="da">Da</option>
+                <option value="ne">Ne</option>
+              </select>
+
+              <label for="new-tree-gnojeno">Gnojeno</label>
+              <select id="new-tree-gnojeno">
+                <option value="nepoznato">Nepoznato</option>
+                <option value="da">Da</option>
+                <option value="ne">Ne</option>
+              </select>
+            </div>
+
+            <label for="new-tree-spricano">Špricano (komentari)</label>
+            <textarea id="new-tree-spricano" rows="2" placeholder="Primjer: da, modro ulje 4.3.2025"></textarea>
+
+            <label for="new-tree-notes">Napomena</label>
+            <input id="new-tree-notes" type="text" maxlength="300">
+          </details>
+
+          <div id="add-tree-error" class="add-tree-error hidden" role="alert"></div>
+        </div>
+        <div class="add-tree-footer">
+          <button id="cancel-add-tree" type="button" class="btn-secondary">Odustani</button>
+          <button id="confirm-add-tree" type="submit" class="btn-primary">🌳 Dodaj stablo</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="placement-hint" class="hidden" role="status">
+      <span id="placement-hint-text">Klikni na kartu gdje želiš postaviti stablo</span>
+      <button id="cancel-placement" type="button">Odustani (Esc)</button>
+    </div>
+    <div id="cursor-tree" class="hidden" aria-hidden="true"></div>
+
     <div id="changes-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Izmjene podataka">
       <div class="changes-modal-card">
         <div class="changes-modal-header">
@@ -181,6 +249,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261120a"></script>
+    <script src="script.js?v=20261120b"></script>
 </body>
 </html>

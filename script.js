@@ -2102,8 +2102,14 @@ document.addEventListener('keydown', function (e) {
         closeChangesModal();
         closeYieldModal();
         setMenuOpen(false);
+        closeAddTreeModal();
+        setPlacementEnabled(false);
         return;
     }
+
+    // Dok se piše u polje (forma, napomena, prijava), tipke ne pomiču kartu.
+    var tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
     if (e.key === '+' || e.key === '=' || e.code === 'Equal') {
         map.zoomIn();
@@ -2159,22 +2165,183 @@ if (toggleWaterFilterBtn) {
     });
 }
 
-var togglePlacementBtn = document.getElementById('toggle-placement');
-if (togglePlacementBtn) {
-    togglePlacementBtn.addEventListener('click', function () {
-        setPlacementEnabled(!placementEnabled);
-    });
+// ---------------------------------------------------------------------------
+// Dodavanje stabla: prozor s podacima -> klik na kartu postavlja stablo
+// ---------------------------------------------------------------------------
+var addTreeModal = document.getElementById('add-tree-modal');
+var addTreeForm = document.getElementById('add-tree-form');
+var addTreeErrorEl = document.getElementById('add-tree-error');
+var placementHintEl = document.getElementById('placement-hint');
+var cursorTreeEl = document.getElementById('cursor-tree');
+var pendingNewTree = null;
+
+function treeEmoji(type) {
+    var label = getTypeWithEmoji(type);
+    var idx = label.indexOf(' ');
+    return idx === -1 ? '🌳' : label.slice(idx + 1);
+}
+
+function showAddTreeError(message) {
+    if (!addTreeErrorEl) return;
+    addTreeErrorEl.textContent = message || '';
+    addTreeErrorEl.classList.toggle('hidden', !message);
+}
+
+function openAddTreeModal() {
+    if (!canEdit() || !addTreeModal) return;
+    setPlacementEnabled(false);
+    setDragEnabled(false);
+    addTreeForm.reset();
+    showAddTreeError('');
+    var optional = addTreeForm.querySelector('details');
+    if (optional) optional.open = false;
+    addTreeModal.classList.remove('hidden');
+    document.getElementById('new-tree-type').focus();
+}
+
+function closeAddTreeModal() {
+    if (addTreeModal) addTreeModal.classList.add('hidden');
+}
+
+function readNewTreeForm() {
+    var type = document.getElementById('new-tree-type').value;
+    var name = document.getElementById('new-tree-name').value.trim();
+    if (!type) return { error: 'Odaberi vrstu stabla.', focus: 'new-tree-type' };
+    if (!name) return { error: 'Upiši ime / oznaku stabla.', focus: 'new-tree-name' };
+
+    var heightRaw = document.getElementById('new-tree-height').value;
+    var height = heightRaw === '' ? null : Number(heightRaw);
+    if (height !== null && (!isFinite(height) || height < 0)) {
+        return { error: 'Visina mora biti broj (npr. 2.5).', focus: 'new-tree-height' };
+    }
+
+    return {
+        tree: {
+            type: normalizeType(type),
+            name: name,
+            heightM: height,
+            growthStage: document.getElementById('new-tree-stage').value,
+            canopyDensity: document.getElementById('new-tree-density').value,
+            notes: document.getElementById('new-tree-notes').value.trim(),
+            orezano: document.getElementById('new-tree-orezano').value,
+            gnojeno: document.getElementById('new-tree-gnojeno').value,
+            spricano: document.getElementById('new-tree-spricano').value.trim()
+        }
+    };
+}
+
+function moveCursorTree(event) {
+    if (!cursorTreeEl || !pendingNewTree) return;
+    cursorTreeEl.style.left = event.clientX + 'px';
+    cursorTreeEl.style.top = event.clientY + 'px';
+    cursorTreeEl.classList.remove('hidden');
 }
 
 function setPlacementEnabled(enabled) {
-    placementEnabled = !!enabled && canEdit();
-    if (togglePlacementBtn) {
-        togglePlacementBtn.textContent = placementEnabled ? '✅ Postavljanje stabala uključeno' : '🔒 Postavljanje stabala zaključano';
-        togglePlacementBtn.classList.toggle('placement-active', placementEnabled);
-        togglePlacementBtn.classList.toggle('placement-locked', !placementEnabled);
+    placementEnabled = !!enabled && canEdit() && !!pendingNewTree;
+    if (!placementEnabled) pendingNewTree = null;
+
+    document.body.classList.toggle('placing-tree', placementEnabled);
+    if (placementHintEl) placementHintEl.classList.toggle('hidden', !placementEnabled);
+    if (!placementEnabled && cursorTreeEl) cursorTreeEl.classList.add('hidden');
+
+    if (placementEnabled) {
+        document.addEventListener('mousemove', moveCursorTree);
+    } else {
+        document.removeEventListener('mousemove', moveCursorTree);
     }
 }
 
+function startPlacement(tree) {
+    pendingNewTree = tree;
+    var icon = iconByType(tree.type);
+    if (cursorTreeEl) {
+        cursorTreeEl.innerHTML = icon
+            ? '<img src="' + icon + '" alt="">'
+            : '<span>' + treeEmoji(tree.type) + '</span>';
+        cursorTreeEl.classList.add('hidden');
+    }
+    var hintText = document.getElementById('placement-hint-text');
+    if (hintText) {
+        hintText.textContent = treeEmoji(tree.type) + ' Klikni na kartu gdje želiš postaviti: ' + tree.name;
+    }
+    setPlacementEnabled(true);
+}
+
+function placePendingTree(latlng) {
+    var tree = pendingNewTree;
+    if (!tree) return;
+
+    var newItem = {
+        id: tree.type + String(nextGlobalIdNumber()).padStart(3, '0'),
+        name: tree.name,
+        treeType: tree.type,
+        lat: latlng.lat,
+        lng: latlng.lng,
+        notes: tree.notes,
+        iconUrl: iconByType(tree.type)
+    };
+    if (tree.heightM !== null) newItem.heightM = tree.heightM;
+    if (tree.growthStage) newItem.growthStage = tree.growthStage;
+    if (tree.canopyDensity) newItem.canopyDensity = tree.canopyDensity;
+
+    userItems.push(newItem);
+    allItemsById[newItem.id] = newItem;
+    saveUserItems();
+
+    if (tree.orezano !== 'nepoznato' || tree.gnojeno !== 'nepoznato' || tree.spricano) {
+        plantDetails[newItem.id] = {
+            orezano: tree.orezano,
+            gnojeno: tree.gnojeno,
+            spricano: tree.spricano,
+            napomena: tree.notes
+        };
+        savePlantDetails();
+    }
+
+    createMarker(newItem, { isUserItem: true });
+    renderChangeList();
+    setPlacementEnabled(false);
+    openPlantPanel(newItem, true);
+}
+
+if (addTreeForm) {
+    document.getElementById('open-add-tree').addEventListener('click', function () {
+        setMenuOpen(false);
+        openAddTreeModal();
+    });
+    document.getElementById('close-add-tree').addEventListener('click', closeAddTreeModal);
+    document.getElementById('cancel-add-tree').addEventListener('click', closeAddTreeModal);
+    addTreeModal.addEventListener('click', function (event) {
+        if (event.target === addTreeModal) closeAddTreeModal();
+    });
+    addTreeForm.addEventListener('input', function () { showAddTreeError(''); });
+    addTreeForm.addEventListener('change', function () { showAddTreeError(''); });
+    addTreeForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var result = readNewTreeForm();
+        if (result.error) {
+            showAddTreeError(result.error);
+            var field = document.getElementById(result.focus);
+            if (field) {
+                if (result.focus === 'new-tree-height') field.closest('details').open = true;
+                field.focus();
+            }
+            return;
+        }
+        closeAddTreeModal();
+        startPlacement(result.tree);
+    });
+}
+
+var cancelPlacementBtn = document.getElementById('cancel-placement');
+if (cancelPlacementBtn) {
+    cancelPlacementBtn.addEventListener('click', function () { setPlacementEnabled(false); });
+}
+
+// ---------------------------------------------------------------------------
+// Premještanje stabala (povlačenje markera)
+// ---------------------------------------------------------------------------
 var toggleDragBtn = document.getElementById('toggle-drag');
 if (toggleDragBtn) {
     toggleDragBtn.addEventListener('click', function () {
@@ -2184,49 +2351,25 @@ if (toggleDragBtn) {
 
 function setDragEnabled(enabled) {
     dragEnabled = !!enabled && canEdit();
+    if (dragEnabled) setPlacementEnabled(false);
     Object.keys(allMarkersById).forEach(function (id) {
-            var marker = allMarkersById[id];
-            if (!marker.dragging) return;
-            if (dragEnabled) marker.dragging.enable();
-            else marker.dragging.disable();
-        });
+        var marker = allMarkersById[id];
+        if (!marker.dragging) return;
+        if (dragEnabled) marker.dragging.enable();
+        else marker.dragging.disable();
+    });
 
     if (toggleDragBtn) {
-        toggleDragBtn.textContent = dragEnabled ? '✏️ Uređivanje uključeno' : '🔒 Markeri zaključani';
-        toggleDragBtn.classList.toggle('drag-active', dragEnabled);
-        toggleDragBtn.classList.toggle('drag-locked', !dragEnabled);
+        toggleDragBtn.textContent = dragEnabled ? '✅ Premještanje uključeno' : '✋ Premjesti stablo';
+        toggleDragBtn.classList.toggle('active', dragEnabled);
+        toggleDragBtn.setAttribute('aria-pressed', dragEnabled ? 'true' : 'false');
     }
 }
 
-// Klik na mapu: dodaj novo stablo
+// Klik na mapu: postavi stablo iz prozora "Dodaj stablo"
 map.on('click', function (e) {
-    if (!placementEnabled || !canEdit()) return;
-
-    var coords = e.latlng;
-    var treeTypeEl = document.getElementById('tree-type');
-    var treeTypeRaw = treeTypeEl ? treeTypeEl.value : 'stablo';
-    var treeType = normalizeType(treeTypeRaw);
-    var nextId = nextGlobalIdNumber();
-
-    var name = prompt('Ime/oznaka stabla? (vrsta: ' + treeType + ')', treeType);
-    if (name === null) return;
-
-    var newItem = {
-        id: treeType + String(nextId).padStart(3, '0'),
-        name: (name || treeType),
-        treeType: treeType,
-        lat: coords.lat,
-        lng: coords.lng,
-        notes: '',
-        iconUrl: iconByType(treeType)
-    };
-
-    userItems.push(newItem);
-    allItemsById[newItem.id] = newItem;
-    saveUserItems();
-
-    createMarker(newItem, { isUserItem: true });
-    renderChangeList();
+    if (!placementEnabled || !canEdit() || !pendingNewTree) return;
+    placePendingTree(e.latlng);
 });
 
 // ---------------------------------------------------------------------------

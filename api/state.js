@@ -13,7 +13,8 @@ import { isAdmin } from '../lib/auth.js';
 const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 const sql = DATABASE_URL ? neon(DATABASE_URL) : null;
 
-const OVERRIDE_KINDS = { note: true, details: true, position: true };
+// deleted = stablo izbrisano s karte (original ostaje u base_items, može se vratiti)
+const OVERRIDE_KINDS = { note: true, details: true, position: true, deleted: true };
 const DATASET_NAMES = ['stabla', 'loza'];
 const MAX_CHANGES_PER_REQUEST = 5000;
 
@@ -77,7 +78,8 @@ async function readState() {
         userItems: userRows.map((row) => row.data),
         noteOverrides: {},
         plantDetails: {},
-        positionOverrides: {}
+        positionOverrides: {},
+        deletedIds: {}
     };
 
     datasets.forEach((row) => {
@@ -90,6 +92,7 @@ async function readState() {
         if (row.kind === 'note') state.noteOverrides[row.plant_id] = row.value;
         else if (row.kind === 'details') state.plantDetails[row.plant_id] = row.value;
         else if (row.kind === 'position') state.positionOverrides[row.plant_id] = row.value;
+        else if (row.kind === 'deleted') state.deletedIds[row.plant_id] = row.value;
     });
 
     return state;

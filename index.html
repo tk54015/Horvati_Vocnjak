@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventar Stabala</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261120b">
+    <link rel="stylesheet" href="style.css?v=20261120c">
 </head>
 <body>
     <div id="map"></div>
@@ -126,6 +126,7 @@
           <input id="status-napomena" type="text" readonly placeholder="Klikni ovdje za unos napomene" />
 
           <button id="save-plant-status" type="button" class="admin-only">Spremi podatke biljke</button>
+          <button id="delete-tree" type="button" class="admin-only">🗑️ Izbriši stablo</button>
         </div>
       </div>
     </div>
@@ -210,6 +211,17 @@
       </form>
     </div>
 
+    <div id="confirm-modal" class="hidden" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+      <div class="confirm-card">
+        <b id="confirm-title">Jesi li siguran?</b>
+        <p id="confirm-message"></p>
+        <div class="confirm-actions">
+          <button id="confirm-cancel" type="button" class="btn-secondary">Odustani</button>
+          <button id="confirm-ok" type="button" class="btn-danger">Izbriši</button>
+        </div>
+      </div>
+    </div>
+
     <div id="placement-hint" class="hidden" role="status">
       <span id="placement-hint-text">Klikni na kartu gdje želiš postaviti stablo</span>
       <button id="cancel-placement" type="button">Odustani (Esc)</button>
@@ -249,6 +261,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261120b"></script>
+    <script src="script.js?v=20261120c"></script>
 </body>
 </html>

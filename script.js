@@ -55,7 +55,8 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {} };
+var deletedIds = {}; // izbrisana originalna stabla: id -> { deletedAt, name, treeType }
 var pendingChanges = {};
 var syncInFlight = false;
 var syncRetryTimer = null;
@@ -296,13 +297,15 @@ function applyServerState(state) {
     noteOverrides = asPlainObject(state.noteOverrides);
     plantDetails = asPlainObject(state.plantDetails);
     positionOverrides = asPlainObject(state.positionOverrides);
+    deletedIds = asPlainObject(state.deletedIds);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
         user: buildSnapshotFromMap(userItemsAsMap(serverUserItemsRaw)),
         note: buildSnapshotFromMap(noteOverrides),
         details: buildSnapshotFromMap(plantDetails),
-        position: buildSnapshotFromMap(positionOverrides)
+        position: buildSnapshotFromMap(positionOverrides),
+        deleted: buildSnapshotFromMap(deletedIds)
     };
     pendingChanges = {};
 }
@@ -799,7 +802,8 @@ function renderYieldTable() {
 
 function nextGlobalIdNumber() {
     var maxNumber = 0;
-    var all = baseItems.concat(userItems);
+    // Uključi i izbrisana stabla, da novo stablo nikad ne dobije ID izbrisanog.
+    var all = baseItems.concat(userItems).concat(Object.keys(deletedIds).map(function (id) { return { id: id }; }));
     all.forEach(function (item) {
         var match = String(item.id || '').match(/(\d+)$/);
         if (!match) return;
@@ -1598,7 +1602,8 @@ function loadInventory() {
 
             return ensureServerSeeded(state).then(function (seededState) {
                 applyServerState(seededState);
-                baseItems = normalizeItems(seededState.stabla).concat(normalizeItems(seededState.loza));
+                baseItems = normalizeItems(seededState.stabla).concat(normalizeItems(seededState.loza))
+                    .filter(function (item) { return !deletedIds[item.id]; });
                 computeVisibleBaseVineIds(baseItems);
                 applyStoredPositionsToBaseItems();
                 applyStoredNotesToBaseItems();
@@ -2263,7 +2268,10 @@ function startPlacement(tree) {
     }
     var hintText = document.getElementById('placement-hint-text');
     if (hintText) {
-        hintText.textContent = treeEmoji(tree.type) + ' Klikni na kartu gdje želiš postaviti: ' + tree.name;
+        var isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        hintText.textContent = treeEmoji(tree.type) + (isTouch ? ' Dodirni kartu gdje želiš postaviti: ' : ' Klikni na kartu gdje želiš postaviti: ') + tree.name;
+        var cancelBtnEl = document.getElementById('cancel-placement');
+        if (cancelBtnEl) cancelBtnEl.textContent = isTouch ? 'Odustani' : 'Odustani (Esc)';
     }
     setPlacementEnabled(true);
 }
@@ -2511,5 +2519,117 @@ if (logoutBtn) {
         fetch(AUTH_API_URL, { method: 'DELETE' })
             .catch(function () {})
             .then(function () { setAdminMode(false); });
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Potvrdni prozor ("Jesi li siguran?")
+// ---------------------------------------------------------------------------
+var confirmModalEl = document.getElementById('confirm-modal');
+
+function askConfirm(title, message, okLabel) {
+    return new Promise(function (resolve) {
+        if (!confirmModalEl) {
+            resolve(window.confirm(message));
+            return;
+        }
+        var okBtn = document.getElementById('confirm-ok');
+        var cancelBtn = document.getElementById('confirm-cancel');
+        document.getElementById('confirm-title').textContent = title;
+        document.getElementById('confirm-message').textContent = message;
+        okBtn.textContent = okLabel || 'U redu';
+
+        function finish(result) {
+            confirmModalEl.classList.add('hidden');
+            okBtn.removeEventListener('click', onOk);
+            cancelBtn.removeEventListener('click', onCancel);
+            confirmModalEl.removeEventListener('click', onBackdrop);
+            document.removeEventListener('keydown', onKey, true);
+            resolve(result);
+        }
+        function onOk() { finish(true); }
+        function onCancel() { finish(false); }
+        function onBackdrop(event) { if (event.target === confirmModalEl) finish(false); }
+        function onKey(event) {
+            if (event.key === 'Escape') {
+                event.stopPropagation();
+                finish(false);
+            }
+        }
+
+        okBtn.addEventListener('click', onOk);
+        cancelBtn.addEventListener('click', onCancel);
+        confirmModalEl.addEventListener('click', onBackdrop);
+        document.addEventListener('keydown', onKey, true);
+        confirmModalEl.classList.remove('hidden');
+        cancelBtn.focus();
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Brisanje stabla
+// Originalna stabla se samo označe kao izbrisana (mogu se vratiti),
+// dodana stabla se brišu iz baze. Sve ostaje zapisano u povijesti izmjena.
+// ---------------------------------------------------------------------------
+function closePlantPanelSelection() {
+    selectedPlant = null;
+    var emptyEl = document.getElementById('plant-empty');
+    var formEl = document.getElementById('plant-form');
+    if (emptyEl) emptyEl.classList.remove('hidden');
+    if (formEl) formEl.classList.add('hidden');
+}
+
+function deleteTree(itemId) {
+    var item = allItemsById[itemId];
+    if (!item || !canEdit()) return;
+
+    var isUserItem = userItems.some(function (u) { return u.id === itemId; });
+    if (isUserItem) {
+        removeUserItem(itemId);
+    } else {
+        deletedIds[itemId] = {
+            deletedAt: new Date().toISOString(),
+            name: item.name || '',
+            treeType: item.treeType || ''
+        };
+        saveDeletedIds();
+
+        var marker = allMarkersById[itemId];
+        if (marker) map.removeLayer(marker);
+        delete allMarkersById[itemId];
+        delete allItemsById[itemId];
+        baseItems = baseItems.filter(function (b) { return b.id !== itemId; });
+    }
+
+    closePlantPanelSelection();
+    renderChangeList();
+}
+
+function saveDeletedIds() {
+    if (storageMode === 'server') queueServerSync('deleted', deletedIds);
+}
+
+var deleteTreeBtn = document.getElementById('delete-tree');
+if (deleteTreeBtn) {
+    deleteTreeBtn.addEventListener('click', function () {
+        if (!selectedPlant || !canEdit()) return;
+        if (storageMode !== 'server') {
+            alert('Brisanje radi samo na Vercel verziji stranice.');
+            return;
+        }
+        var item = allItemsById[selectedPlant.itemId];
+        if (!item) return;
+        var itemId = item.id;
+
+        // Prvo spremi eventualne nespremljene izmjene u formi.
+        flushPlantPanelAutosave();
+
+        askConfirm(
+            'Izbrisati stablo?',
+            'Jesi li siguran da želiš izbrisati "' + (item.name || itemId) + '" (' + getTypeWithEmoji(item.treeType) + ', ID ' + itemId + ')? Stablo će nestati s karte.',
+            '🗑️ Izbriši'
+        ).then(function (ok) {
+            if (ok) deleteTree(itemId);
+        });
     });
 }

@@ -1,299 +1,655 @@
 {
   "meta": {
     "naziv": "Povrće",
-    "napomena": "Okvirni rokovi za kontinentalnu Hrvatsku (okolica Zagreba). Toploljubivo povrće (rajčica, paprika, patlidžan, krastavci, tikve, lubenica, grah, kukuruz) sadi se van tek kad prođe opasnost od mraza, obično nakon ledenih svetih (sredina svibnja). Plodored: istu porodicu ne saditi na isto mjesto 3–4 godine.",
+    "napomena": "Kalendar je okviran za kontinentalnu Hrvatsku (okolica Zagreba): stvarni rok ovisi o temperaturi tla, vremenu, sorti i tome sije li se izravno ili sade presadnice. Ledeni sveci (sredina svibnja) dobar su orijentir za toploljubivo povrće, ali ne jamstvo da više neće biti mraza: saditi kad su i noći dovoljno tople. Glinasto tlo u proljeće se sporije zagrijava i ne smije se obrađivati dok je mokro.",
     "legenda": {
       "unutra": "Sjetva u zatvorenom (presadnice)",
       "sadnja": "Sadnja / sjetva vani",
       "berba": "Berba"
-    }
+    },
+    "savjeti": [
+      {
+        "naslov": "🟫 Glinasto tlo",
+        "tekst": "Ne obrađivati tlo dok je mokro (ako se zemlja lijepi i mijesi u kuglu, pričekati), jer se tako stvara zbijen sloj. Svake godine dodati zreli kompost i postupno poboljšavati strukturu; povišene gredice brže se prosuše i zagriju u proljeće. Rano proljetne kulture saditi na dijelove vrta koji se najprije suše."
+      },
+      {
+        "naslov": "🔄 Plodored",
+        "tekst": "Istu ili srodnu porodicu ne saditi na istu gredicu 3–4 godine; nije dovoljno samo pomaknuti biljku na drugi kraj iste gredice. Glavne skupine: pomoćnice (rajčica, paprika, patlidžan, krumpir), tikvenjače (krastavac, tikvica, bundeva, lubenica), kupusnjače (kupus, rotkvica), lukovi (luk, češnjak, poriluk), štitarke (mrkva, peršin), mahunarke (grah, grašak), lobode (cikla, blitva, špinat), salata i kukuruz."
+      },
+      {
+        "naslov": "🌤️ Kalenje presadnica",
+        "tekst": "Presadnice iz kuće 7–10 dana prije sadnje postupno privikavati na vanjske uvjete: prvih dana nekoliko sati u hladu i zavjetrini, pa sve dulje i na suncu, a noću unijeti. Bez kalenja biljke često dobiju ožegotine od sunca i zastanu u rastu."
+      },
+      {
+        "naslov": "💧 Zalijevanje",
+        "tekst": "Ne zalijevati po fiksnom rasporedu, nego provjeriti vlagu tla prstom na 5–10 cm. Mlade biljke i tek posijane gredice trebaju češće, ali manje vode; u cvatnji i razvoju plodova najvažnija je ravnomjerna vlaga. Zalijevati ujutro, uz korijen, ne po listu. Na glinastom tlu voda se dugo zadržava, pa je prelijevanje česta greška."
+      },
+      {
+        "naslov": "🍂 Malčiranje",
+        "tekst": "Najviše koristi imaju rajčica, paprika, tikvenjače, krumpir i lisnato povrće ljeti. Malč (slama, pokošena osušena trava) postaviti kad se tlo ugrije (krajem svibnja–lipnja), ne prerano u proljeće jer hladi tlo. Na mjestima s puževima malč im pruža skrovište."
+      },
+      {
+        "naslov": "📦 Skladištenje",
+        "tekst": "Luk i češnjak: dobro osušiti, čuvati suho i prozračno. Krumpir: u mraku, hladno (4–8 °C) i ne uz jabuke. Bundeva: nakon dozrijevanja na suncu čuvati na 10–15 °C, suho. Mrkva, cikla, peršin: u vlažnom pijesku u hladnom podrumu ili u zemlji pod malčem."
+      }
+    ]
   },
   "vrste": [
     {
-      "id": "mrkva", "naziv": "Mrkva", "latinski": "Daucus carota", "emoji": "🥕",
-      "unutra": [], "sadnja": [3, 4, 5, 6, 7], "berba": [6, 7, 8, 9, 10, 11],
-      "opis": "Korjenasto povrće koje se sije izravno na gredicu. Za stalnu berbu sijati u nekoliko navrata; kasna sjetva (lipanj–srpanj) daje mrkvu za zimsko čuvanje.",
+      "id": "mrkva",
+      "naziv": "Mrkva",
+      "latinski": "Daucus carota",
+      "emoji": "🥕",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "berba": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "opis": "Korjenasto povrće koje se sije izravno na gredicu. Rana sjetva ožujak–prva polovica travnja; za zimsko čuvanje najpouzdanija je sjetva od druge polovice travnja do svibnja. Lipanjska sjetva samo za sorte kraće vegetacije.",
       "sjetva": "Izravno na gredicu, plitko (1–2 cm), u redove 20–25 cm. Klija sporo (2–3 tjedna), tlo držati vlažnim. Biljke prorijediti na 3–5 cm.",
       "polozaj": "Sunce; rahlo, duboko tlo bez kamenja. Ne gnojiti svježim stajskim gnojem (korijen se grana).",
       "voda": "Ravnomjerno; nagla izmjena suše i obilnog zalijevanja uzrokuje pucanje korijena.",
       "njega": "Prorjeđivanje, plijevljenje dok su biljke male.",
-      "problemi": "Mrkvina muha (tamni hodnici u korijenu): pomaže sjetva uz luk ili poriluk i pokrivanje gredice mrežom.",
-      "dobriSusjedi": "luk, poriluk, salata, rotkvica, rajčica",
-      "losiSusjedi": "kopar",
-      "berbaOpis": "Od lipnja (rana) do studenog. Za zimu ostaviti u zemlji pod malčem ili čuvati u pijesku."
+      "problemi": "Mrkvina muha (tamni hodnici u korijenu): najpouzdanija zaštita je mreža sitnih okaca preko gredice odmah nakon sjetve; sjetva uz luk nije zajamčena zaštita.",
+      "berbaOpis": "Od lipnja (rana) do studenog. Za zimu ostaviti u zemlji pod malčem ili čuvati u pijesku.",
+      "kombinacije": "rotkvica u istom redu (brzo nikne i označi red), salata između redova",
+      "pazi": "peršin i druge štitarke: ista porodica i ista mrkvina muha; plodored"
     },
     {
-      "id": "luk", "naziv": "Luk (crveni)", "latinski": "Allium cepa", "emoji": "🧅",
-      "unutra": [], "sadnja": [3, 4, 9, 10], "berba": [6, 7, 8],
-      "opis": "Najjednostavnije se uzgaja iz lučice. Proljetna sadnja daje luk za čuvanje, a ozimi luk posađen u jesen bere se ranije.",
+      "id": "luk",
+      "naziv": "Luk (crveni)",
+      "latinski": "Allium cepa",
+      "emoji": "🧅",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "berba": [
+        6,
+        7,
+        8
+      ],
+      "opis": "Najjednostavnije se uzgaja iz lučice. Proljetna sadnja daje luk za čuvanje; za jesensku sadnju (rujan–listopad) koristiti lučicu sorti namijenjenih ozimom uzgoju.",
       "sjetva": "Lučicu saditi plitko (vrh viri), 8–10 cm u redu, 25–30 cm između redova. Ozimi luk rujan–listopad.",
       "polozaj": "Sunce, rahlo tlo bez svježeg gnoja.",
-      "voda": "Umjereno u proljeće; pred berbu prestati zalijevati.",
+      "voda": "Umjereno dok luk raste; zalijevanje smanjiti tek kad se lišće počne prirodno sušiti.",
       "njega": "Redovito plijevljenje (luk ne podnosi korov).",
-      "problemi": "Plamenjača luka u vlažnim godinama, lukova muha. Ne saditi luk na isto mjesto svake godine.",
-      "dobriSusjedi": "mrkva, cikla, salata, rajčica, jagoda",
-      "losiSusjedi": "grah, grašak",
-      "berbaOpis": "Kad lišće polegne i požuti (srpanj–kolovoz; ozimi u lipnju). Osušiti na suncu ili pod krovom pa spremiti."
+      "problemi": "Plamenjača luka u vlažnim godinama, hrđa, tripsi (srebrnaste pjege na listu) i lukova muha. Ne saditi luk na isto mjesto svake godine.",
+      "berbaOpis": "Kad lišće polegne i požuti (srpanj–kolovoz; ozimi u lipnju). Osušiti na suncu ili pod krovom pa spremiti.",
+      "kombinacije": "mrkva, cikla, salata (različito korijenje i oblik rasta)",
+      "pazi": "češnjak i poriluk: ista porodica i iste bolesti; luk ne podnosi zasjenjivanje i korov"
     },
     {
-      "id": "cesnjak", "naziv": "Češnjak", "latinski": "Allium sativum", "emoji": "🧄",
-      "unutra": [], "sadnja": [2, 3, 10, 11], "berba": [6, 7],
-      "opis": "Najbolje glavice daje jesenska sadnja (listopad–studeni). Proljetna sadnja (veljača–ožujak) moguća je, ali su glavice manje.",
-      "sjetva": "Češnjeve saditi vrhom prema gore, 3–5 cm duboko, 10–15 cm razmaka, redovi 25–30 cm.",
+      "id": "cesnjak",
+      "naziv": "Češnjak",
+      "latinski": "Allium sativum",
+      "emoji": "🧄",
+      "unutra": [],
+      "sadnja": [
+        2,
+        3,
+        10,
+        11
+      ],
+      "berba": [
+        6,
+        7
+      ],
+      "opis": "Glavni termin je jesenska sadnja (listopad–studeni). Proljetna sadnja (veljača–ožujak) je moguća; veličina glavica ovisi o sorti i o tome je li češnjak prošao dovoljno hladnoće.",
+      "sjetva": "Češnjeve saditi vrhom prema gore, s otprilike 5–7 cm zemlje iznad češnja (prilagoditi veličini češnja i tlu), 10–15 cm razmaka, redovi 25–30 cm.",
       "polozaj": "Sunce, ocjedito tlo (na mokrom trune).",
-      "voda": "Malo; u proljeće samo u dužoj suši, pred berbu nikako.",
-      "njega": "Plijevljenje; kod sorti koje tjeraju cvjetnu stapku, stapku otkinuti za veće glavice.",
+      "voda": "Dovoljno vlage tijekom aktivnog rasta i formiranja glavice (travanj–svibanj) u sušnom proljeću; zalijevanje smanjiti 2–3 tjedna pred vađenje.",
+      "njega": "Plijevljenje. Kod sorti koje razvijaju cvjetnu stapku, ukloniti je kad se počne savijati (glavice budu veće).",
       "problemi": "Hrđa na lišću u vlažnom proljeću.",
-      "dobriSusjedi": "mrkva, rajčica, jagoda, cikla",
-      "losiSusjedi": "grah, grašak",
-      "berbaOpis": "Lipanj–srpanj, kad donja trećina lišća požuti. Osušiti u hladu i prozračno."
+      "berbaOpis": "Lipanj–srpanj, kad donja trećina lišća požuti. Osušiti u hladu i prozračno.",
+      "kombinacije": "mrkva, rajčica, jagoda (malo prostora, nizak rast)",
+      "pazi": "luk i poriluk: ista porodica i iste bolesti (hrđa); mokro tlo"
     },
     {
-      "id": "krumpir", "naziv": "Krumpir", "latinski": "Solanum tuberosum", "emoji": "🥔",
-      "unutra": [], "sadnja": [3, 4], "berba": [6, 7, 8, 9],
+      "id": "krumpir",
+      "naziv": "Krumpir",
+      "latinski": "Solanum tuberosum",
+      "emoji": "🥔",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4
+      ],
+      "berba": [
+        6,
+        7,
+        8,
+        9
+      ],
       "opis": "Sadi se od gomolja (najbolje prethodno naklijanih na svjetlu 3–4 tjedna). Rane sorte beru se od lipnja, kasne kad cima uvene.",
-      "sjetva": "Kad se tlo ugrije na oko 8 °C (kraj ožujka–travanj): 10 cm duboko, 30–35 cm u redu, 60–70 cm između redova.",
+      "sjetva": "Kad se tlo ugrije na oko 8 °C i dovoljno prosuši (na glinastom tlu ne saditi u mokru, zbijenu zemlju): 10 cm duboko, 30–35 cm u redu, 60–70 cm između redova.",
       "polozaj": "Sunce, rahlo tlo; dobro mu odgovara kompost.",
       "voda": "Najvažnije u vrijeme cvatnje i stvaranja gomolja.",
-      "njega": "Ogrtanje (nagrtanje zemlje oko stabljika) 2–3 puta, da gomolji ne pozelene.",
-      "problemi": "Krumpirova zlatica (skupljati ručno, odrasle i narančaste ličinke), plamenjača krumpira u kišnim ljetima.",
-      "dobriSusjedi": "grah, kupus, kukuruz, hren",
-      "losiSusjedi": "rajčica, paprika, patlidžan, bundeva, krastavac",
-      "berbaOpis": "Rani lipanj–srpanj; kasni kolovoz–rujan, 2–3 tjedna nakon što se cima osuši. Čuvati u mraku i hladnom."
+      "njega": "Ogrnuti kad biljke narastu 15–20 cm, a po potrebi ponoviti, da gomolji ne pozelene.",
+      "problemi": "Krumpirova plamenjača (smeđe mrlje na lišću i trulež gomolja) ozbiljna je u kišnim ljetima: pratiti vrijeme i lišće, saditi otpornije sorte. Krumpirova zlatica: skupljati ručno odrasle i narančaste ličinke.",
+      "berbaOpis": "Rani lipanj–srpanj; kasni kolovoz–rujan, 2–3 tjedna nakon što se cima osuši, kad pokožica gomolja očvrsne (ne guli se trljanjem). Prije spremanja kratko prosušiti u hladu; čuvati u mraku i hladnom.",
+      "kombinacije": "grah (različita visina), kupus u susjednom redu",
+      "pazi": "rajčica, paprika i patlidžan: ista porodica (pomoćnice) i iste bolesti, posebno plamenjača; plodored"
     },
     {
-      "id": "rajcica", "naziv": "Rajčica", "latinski": "Solanum lycopersicum", "emoji": "🍅",
-      "unutra": [2, 3], "sadnja": [5], "berba": [7, 8, 9, 10],
+      "id": "rajcica",
+      "naziv": "Rajčica",
+      "latinski": "Solanum lycopersicum",
+      "emoji": "🍅",
+      "unutra": [
+        3
+      ],
+      "sadnja": [
+        5
+      ],
+      "berba": [
+        7,
+        8,
+        9,
+        10
+      ],
       "opis": "Najomiljenije povrće iz vrta. Presadnice se uzgajaju u toplom, a van sade kad prođu mrazevi.",
-      "sjetva": "Sjeme u zatvorenom (20–25 °C) krajem veljače–ožujka. Van saditi sredinom svibnja, dublje nego što je raslo (razvije dodatno korijenje), 50–60 cm razmaka, uz kolac.",
+      "sjetva": "Sjeme u zatvorenom (20–25 °C) od sredine ožujka; ako nema dovoljno svjetla, ranija sjetva daje izdužene presadnice. Prije sadnje 7–10 dana kaliti. Van saditi kad su i noći tople (obično druga polovica svibnja), dublje nego što je raslo (razvije dodatno korijenje), 50–60 cm razmaka, uz kolac.",
       "polozaj": "Puno sunca, zaštićeno od kiše ako je moguće (manje plamenjače).",
       "voda": "Redovito i ravnomjerno, uz korijen, ne po listu. Neravnomjerno zalijevanje uzrokuje pucanje plodova i vršnu trulež.",
-      "njega": "Vezati uz kolac; kod visokih sorti uklanjati zaperke; donje listove ukloniti kad se razvije biljka.",
-      "problemi": "Plamenjača (smeđe mrlje na listu i plodu u kišnom vremenu), vršna trulež (crni vrh ploda zbog neravnomjerne vode).",
-      "dobriSusjedi": "bosiljak, mrkva, peršin, češnjak, salata",
-      "losiSusjedi": "krumpir, komorač",
-      "berbaOpis": "Srpanj–listopad. Pred mraz zelene plodove ubrati i ostaviti da dozriju u kući."
+      "njega": "Vezati uz kolac. Kod visokih (indeterminantnih) sorti uklanjati zaperke; grmolike sorte ne zakidaju se. Donje listove uklanjati umjereno (one koji dodiruju tlo), ne previše jer plodovi mogu dobiti ožegotine.",
+      "problemi": "Plamenjača (smeđe mrlje na listu i plodu u kišnom vremenu), siva plijesan i alternarijska pjegavost; povremeno bakterijske i virusne bolesti. Vršna trulež (tamna mrlja na vrhu ploda) je fiziološki poremećaj: plod ne dobije dovoljno kalcija, najčešće zbog neravnomjerne vlage, a ne nužno zato što u tlu nema kalcija. Zaražene listove ukloniti; prskati tek ako se bolest širi.",
+      "berbaOpis": "Srpanj–listopad. Pred mraz zelene plodove ubrati i ostaviti da dozriju u kući.",
+      "kombinacije": "bosiljak, salata i peršin uz rub (nisko, ne zasjenjuju)",
+      "pazi": "krumpir, paprika i patlidžan: ista porodica i ista plamenjača; plodored. Kiša po lišću pogoduje plamenjači."
     },
     {
-      "id": "paprika", "naziv": "Paprika", "latinski": "Capsicum annuum", "emoji": "🌶️",
-      "unutra": [2, 3], "sadnja": [5], "berba": [7, 8, 9, 10],
+      "id": "paprika",
+      "naziv": "Paprika",
+      "latinski": "Capsicum annuum",
+      "emoji": "🌶️",
+      "unutra": [
+        2,
+        3
+      ],
+      "sadnja": [
+        5
+      ],
+      "berba": [
+        7,
+        8,
+        9,
+        10
+      ],
       "opis": "Toploljubiva, sporo klija i raste, pa se presadnice uzgajaju rano.",
-      "sjetva": "Sjeme u zatvorenom (22–28 °C) veljača–ožujak. Van krajem svibnja kad su noći tople, 40–50 cm razmaka.",
+      "sjetva": "Sjeme u zatvorenom (22–28 °C) veljača–ožujak. Kaliti 7–10 dana, van kad su noći tople (krajem svibnja), 40–50 cm razmaka ovisno o bujnosti sorte.",
       "polozaj": "Sunce, toplo i zaštićeno mjesto.",
       "voda": "Redovito i ravnomjerno; malč pomaže.",
       "njega": "Kod jakog roda poduprijeti kolcem.",
-      "problemi": "Lisne uši, vršna trulež kod neravnomjernog zalijevanja.",
-      "dobriSusjedi": "bosiljak, luk, mrkva",
-      "losiSusjedi": "komorač, krumpir",
-      "berbaOpis": "Srpanj–listopad, zelene ili potpuno obojene, do prvog mraza."
+      "problemi": "Lisne uši, tripsi, stjenice; povremeno bakterijske i virusne bolesti. Vršna trulež: kao kod rajčice, nedostatna opskrba ploda kalcijem, najčešće zbog neravnomjerne vlage.",
+      "berbaOpis": "Srpanj–listopad, zelene ili potpuno obojene, do prvog mraza.",
+      "kombinacije": "bosiljak, luk, mrkva uz rub gredice",
+      "pazi": "rajčica, krumpir i patlidžan: ista porodica; plodored"
     },
     {
-      "id": "patlidzan", "naziv": "Patlidžan", "latinski": "Solanum melongena", "emoji": "🍆",
-      "unutra": [2, 3], "sadnja": [5], "berba": [7, 8, 9],
+      "id": "patlidzan",
+      "naziv": "Patlidžan",
+      "latinski": "Solanum melongena",
+      "emoji": "🍆",
+      "unutra": [
+        2,
+        3
+      ],
+      "sadnja": [
+        5
+      ],
+      "berba": [
+        7,
+        8,
+        9
+      ],
       "opis": "Najtoploljubiviji od plodovitog povrća; u hladnijim ljetima slabije rodi.",
-      "sjetva": "Sjeme u zatvorenom (25 °C) veljača–ožujak. Van krajem svibnja, 50–60 cm razmaka.",
+      "sjetva": "Sjeme u zatvorenom (25 °C) veljača–ožujak. Kaliti 7–10 dana; van tek kad je vrijeme stabilno toplo (i noći), obično krajem svibnja ili početkom lipnja, 50–60 cm razmaka.",
       "polozaj": "Najtoplije, sunčano mjesto u vrtu.",
       "voda": "Redovito, ne smije se osušiti.",
-      "njega": "Poduprijeti kolcem; za veće plodove ostaviti 4–6 plodova po biljci.",
-      "problemi": "Krumpirova zlatica rado napada patlidžan; grinje u suhom ljetu.",
-      "dobriSusjedi": "grah, bosiljak",
-      "losiSusjedi": "krumpir",
-      "berbaOpis": "Srpanj–rujan, dok je kožica sjajna (mat kožica znači prezreo plod)."
+      "njega": "Poduprijeti kolcem. Na slabijoj biljci ili u hladnijem ljetu korisno je ograničiti broj plodova; zdrava biljka može nositi i više.",
+      "problemi": "Vrlo osjetljiv na hladnoću. Krumpirova zlatica rado napada patlidžan; lisne uši i grinje u suhom ljetu.",
+      "berbaOpis": "Srpanj–rujan, dok je kožica sjajna (mat kožica znači prezreo plod).",
+      "kombinacije": "grah, bosiljak",
+      "pazi": "krumpir, rajčica i paprika: ista porodica i zajednički štetnici (zlatica)"
     },
     {
-      "id": "krastavac", "naziv": "Krastavac", "latinski": "Cucumis sativus", "emoji": "🥒",
-      "unutra": [4], "sadnja": [5, 6], "berba": [7, 8, 9],
+      "id": "krastavac",
+      "naziv": "Krastavac",
+      "latinski": "Cucumis sativus",
+      "emoji": "🥒",
+      "unutra": [
+        4
+      ],
+      "sadnja": [
+        5,
+        6
+      ],
+      "berba": [
+        7,
+        8,
+        9
+      ],
       "opis": "Brzo raste i obilno rodi. Za salatu i kiseljenje postoje posebne sorte.",
-      "sjetva": "Izravno van sredinom svibnja–lipanj (tlo toplije od 15 °C) ili presadnice u travnju. Penjače voditi na mrežu.",
+      "sjetva": "Izravno van sredinom svibnja–lipanj (tlo toplije od 15 °C) ili presadnice u travnju, svaka u zasebnoj posudici jer ne voli oštećivanje korijena; pažljivo presaditi i prije toga kaliti. Penjače voditi na mrežu.",
       "polozaj": "Sunce, zaštićeno od vjetra, tlo bogato kompostom.",
-      "voda": "Puno i redovito, po mogućnosti ujutro uz korijen; od suše plodovi postaju gorki.",
+      "voda": "Puno i redovito, po mogućnosti ujutro uz korijen. Gorčina plodova ovisi o sorti i stresu biljke (suša, vrućina).",
       "njega": "Brati redovito, inače biljka prestaje roditi.",
-      "problemi": "Plamenjača krastavca (žute uglate pjege na listu), pepelnica krajem ljeta.",
-      "dobriSusjedi": "grah, grašak, kukuruz, kopar, salata",
-      "losiSusjedi": "krumpir",
-      "berbaOpis": "Srpanj–rujan, svaka 2–3 dana."
+      "problemi": "Plamenjača krastavca (žute uglate pjege na listu), pepelnica krajem ljeta, lisne uši i paukove grinje u suhom vremenu.",
+      "berbaOpis": "Srpanj–rujan, svaka 2–3 dana.",
+      "kombinacije": "grah, kukuruz (krastavac se penje), kopar, salata",
+      "pazi": "tikvica, bundeva i lubenica: ista porodica i iste bolesti (pepelnica, plamenjača); plodored"
     },
     {
-      "id": "tikvica", "naziv": "Tikvica", "latinski": "Cucurbita pepo", "emoji": "🟢",
-      "unutra": [4], "sadnja": [5, 6], "berba": [6, 7, 8, 9],
-      "opis": "Vrlo rodna; za obitelj su obično dovoljne 2–3 biljke.",
-      "sjetva": "Izravno van u svibnju ili presadnice u travnju, oko 1 m razmaka.",
+      "id": "tikvica",
+      "naziv": "Tikvica",
+      "latinski": "Cucurbita pepo",
+      "emoji": "🟢",
+      "unutra": [
+        4
+      ],
+      "sadnja": [
+        5,
+        6
+      ],
+      "berba": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "opis": "Vrlo rodna; za obitelj su obično dovoljne 2–4 biljke, ovisno o tome koliko se tikvica jede.",
+      "sjetva": "Izravno van u svibnju ili presadnice u travnju; oko 1 m razmaka za grmolike sorte, bujnije trebaju više.",
       "polozaj": "Sunce, tlo bogato kompostom.",
       "voda": "Redovito i obilno uz korijen, ne po listu.",
       "njega": "Brati mlade plodove, tako biljka dulje rodi.",
-      "problemi": "Pepelnica na lišću od kasnog ljeta; zaraženo lišće ukloniti.",
-      "dobriSusjedi": "grah, kukuruz, luk",
-      "losiSusjedi": "krumpir",
-      "berbaOpis": "Lipanj–rujan, plodovi duljine 15–20 cm."
+      "problemi": "Pepelnica na lišću od kasnog ljeta. Na početku zaražene listove ukloniti; kad je biljka pri kraju vegetacije, to nema velikog smisla.",
+      "berbaOpis": "Lipanj–rujan, plodovi duljine 15–20 cm.",
+      "kombinacije": "kukuruz, grah, luk",
+      "pazi": "krastavac, bundeva i lubenica: ista porodica i ista pepelnica; tikvica treba puno prostora"
     },
     {
-      "id": "bundeva", "naziv": "Bundeva", "latinski": "Cucurbita maxima / C. pepo", "emoji": "🎃",
-      "unutra": [4], "sadnja": [5, 6], "berba": [9, 10],
+      "id": "bundeva",
+      "naziv": "Bundeva",
+      "latinski": "Cucurbita maxima / C. pepo",
+      "emoji": "🎃",
+      "unutra": [
+        4
+      ],
+      "sadnja": [
+        5,
+        6
+      ],
+      "berba": [
+        9,
+        10
+      ],
       "opis": "Treba puno prostora i hrane; odlično uspijeva na rubu kompostišta.",
-      "sjetva": "Izravno van nakon mrazeva (svibanj) ili presadnice u travnju, 1,5–2 m razmaka.",
+      "sjetva": "Izravno van nakon mrazeva (svibanj) ili presadnice u travnju. Razmak ovisi o sorti: 1,5–2 m, a za bujne puzave sorte i više.",
       "polozaj": "Sunce, puno komposta.",
       "voda": "Obilno u ljetu dok plodovi rastu.",
       "njega": "Ispod plodova staviti dasku ili slamu da ne trunu.",
-      "problemi": "Pepelnica krajem ljeta (bezopasnija kad su plodovi već razvijeni).",
-      "dobriSusjedi": "kukuruz, grah",
-      "losiSusjedi": "krumpir",
-      "berbaOpis": "Rujan–listopad, prije mraza, kad se peteljka osuši i kora otvrdne. Ostaviti 1–2 tjedna na suncu pa čuvati na suhom."
+      "problemi": "Pepelnica krajem ljeta: manje utječe na već formirane plodove, ali slabi biljku i može smanjiti kvalitetu dozrijevanja.",
+      "berbaOpis": "Rujan–listopad, prije mraza, kad se peteljka osuši i kora otvrdne. Ostaviti 1–2 tjedna na suncu pa čuvati na suhom.",
+      "kombinacije": "kukuruz i grah (bundeva pokriva tlo ispod njih)",
+      "pazi": "krastavac, tikvica i lubenica: ista porodica; bundeva zasjenjuje sve oko sebe"
     },
     {
-      "id": "lubenica", "naziv": "Lubenica", "latinski": "Citrullus lanatus", "emoji": "🍉",
-      "unutra": [4], "sadnja": [5], "berba": [8, 9],
+      "id": "lubenica",
+      "naziv": "Lubenica",
+      "latinski": "Citrullus lanatus",
+      "emoji": "🍉",
+      "unutra": [
+        4
+      ],
+      "sadnja": [
+        5
+      ],
+      "berba": [
+        8,
+        9
+      ],
       "opis": "Traži puno topline i dugo ljeto; u kontinentu uspijeva na najtoplijem mjestu, po mogućnosti na crnoj foliji.",
-      "sjetva": "Presadnice u travnju (u posudicama, ne voli presađivanje korijena) ili izravno van krajem svibnja kad je tlo toplo (iznad 15 °C). Razmak 1–1,5 m.",
+      "sjetva": "Presadnice u travnju u posudicama iz kojih se sade bez oštećivanja korijena, ili izravno van krajem svibnja kad je tlo toplo (iznad 15 °C). Razmak 1–1,5 m.",
       "polozaj": "Puno sunca, toplo, rahlo tlo.",
-      "voda": "Redovito dok plodovi rastu; pred zrenje manje zalijevati, plodovi su slađi.",
-      "njega": "Na biljci ostaviti 2–3 ploda; ispod ploda staviti dasku ili slamu.",
+      "voda": "Umjerena i stabilna vlaga, posebno dok plodovi rastu. Jako uskraćivanje vode pred zrenje ne jamči slađe plodove, a može smanjiti veličinu i kvalitetu.",
+      "njega": "U kraćoj sezoni korisno je ostaviti manje plodova (npr. 2–3) za krupnije plodove, ovisno o sorti i snazi biljke. Ispod ploda staviti dasku ili slamu.",
       "problemi": "Pepelnica, fuzarijsko venuće (ne saditi tikvenjače na isto mjesto).",
-      "dobriSusjedi": "kukuruz, rotkvica",
-      "losiSusjedi": "krumpir",
-      "berbaOpis": "Kolovoz–rujan: zrela je kad se vitica uz plod osuši, mrlja na kojoj leži požuti, a na kucanje zvuči šuplje."
+      "berbaOpis": "Kolovoz–rujan. Znakovi zrelosti: osušena vitica uz plod, žuta mrlja na kojoj leži, mukao zvuk na kucanje. Nijedan znak nije potpuno pouzdan sam za sebe, pa gledati sve zajedno.",
+      "kombinacije": "kukuruz (vjetrobran), rotkvica kao brza međukultura",
+      "pazi": "krastavac, tikvica i bundeva: ista porodica; fuzarijsko venuće (ne saditi tikvenjače na isto mjesto)"
     },
     {
-      "id": "grah", "naziv": "Grah", "latinski": "Phaseolus vulgaris", "emoji": "🟤",
-      "unutra": [], "sadnja": [5, 6], "berba": [7, 8, 9],
-      "opis": "Niski grah (mahunar) ne treba potporu; visoki (penjač) treba kolce ili mrežu. Obogaćuje tlo dušikom.",
+      "id": "grah",
+      "naziv": "Grah",
+      "latinski": "Phaseolus vulgaris",
+      "emoji": "🟤",
+      "unutra": [],
+      "sadnja": [
+        5,
+        6
+      ],
+      "berba": [
+        7,
+        8,
+        9
+      ],
+      "opis": "Niski grah (mahunar) ne treba potporu; visoki (penjač) treba kolce ili mrežu. U simbiozi s bakterijama veže dušik iz zraka, pa ne treba dušično gnojivo (previše dušika daje lišće na štetu mahuna); to ne znači da tlo poslije njega automatski ostaje bogato dušikom.",
       "sjetva": "Izravno van kad je tlo toplije od 12 °C (svibanj–lipanj), 3–4 cm duboko. Niski 5–10 cm u redu, visoki 4–6 zrna oko kolca.",
-      "polozaj": "Sunce; ne treba dodatno gnojenje dušikom.",
+      "polozaj": "Sunce; bez dodatnog dušičnog gnojenja.",
       "voda": "Umjereno, više u cvatnji i kad se pune mahune.",
       "njega": "Visoki grah voditi uz potporu.",
-      "problemi": "Lisne uši, grahov žižak u spremljenom zrnu (zrno zamrznuti nekoliko dana prije spremanja).",
-      "dobriSusjedi": "krastavac, kukuruz, krumpir, tikve",
-      "losiSusjedi": "luk, češnjak, poriluk",
-      "berbaOpis": "Mahune srpanj–rujan dok su mlade; zrno kad se mahune osuše (rujan)."
+      "problemi": "Lisne uši, antraknoza i bakterijske pjegavosti u vlažnom vremenu. Grahov žižak u spremljenom zrnu: dobro osušeno zrno zamrznuti nekoliko dana pa čuvati suho.",
+      "berbaOpis": "Mahune srpanj–rujan dok su mlade; zrno kad se mahune osuše (rujan).",
+      "kombinacije": "kukuruz (visoki grah se penje uz njega), tikve, krastavac",
+      "pazi": "grašak: ista porodica (mahunarke); plodored"
     },
     {
-      "id": "grasak", "naziv": "Grašak", "latinski": "Pisum sativum", "emoji": "🟩",
-      "unutra": [], "sadnja": [3, 4], "berba": [5, 6],
-      "opis": "Jedno od prvih proljetnih povrća; podnosi slabi mraz, a ne voli vrućinu.",
-      "sjetva": "Izravno van čim se tlo može obrađivati (ožujak–travanj), 3–4 cm duboko, 5 cm u redu.",
-      "polozaj": "Sunce do polusjena; viši grašak uz mrežu ili granje.",
+      "id": "grasak",
+      "naziv": "Grašak",
+      "latinski": "Pisum sativum",
+      "emoji": "🟩",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4
+      ],
+      "berba": [
+        5,
+        6
+      ],
+      "opis": "Jedno od prvih proljetnih povrća; podnosi slabi mraz, a ne voli vrućinu. Za odgovarajuće sorte i povoljan položaj moguća je i jesenska sjetva.",
+      "sjetva": "Izravno van čim se tlo može obrađivati (u toplijem proljeću i krajem veljače, inače ožujak–travanj), 3–4 cm duboko, 5 cm u redu.",
+      "polozaj": "Sunce do polusjena; visoke sorte uz mrežu ili granje, niske ne trebaju potporu.",
       "voda": "Umjereno; više u cvatnji.",
-      "njega": "Potpora za penjanje.",
+      "njega": "Potpora za visoke sorte.",
       "problemi": "Ptice na mladim biljkama, graškov savijač (crvljiva zrna).",
-      "dobriSusjedi": "mrkva, rotkvica, salata, krastavac",
-      "losiSusjedi": "luk, češnjak",
-      "berbaOpis": "Svibanj–lipanj, dok su zrna slatka i mahune pune."
+      "berbaOpis": "Svibanj–lipanj, dok su zrna slatka i mahune pune.",
+      "kombinacije": "mrkva, rotkvica, salata (rano proljeće, malo prostora)",
+      "pazi": "grah: ista porodica (mahunarke); plodored"
     },
     {
-      "id": "salata", "naziv": "Salata", "latinski": "Lactuca sativa", "emoji": "🥗",
-      "unutra": [2], "sadnja": [3, 4, 5, 8, 9], "berba": [4, 5, 6, 7, 9, 10],
+      "id": "salata",
+      "naziv": "Salata",
+      "latinski": "Lactuca sativa",
+      "emoji": "🥗",
+      "unutra": [
+        2
+      ],
+      "sadnja": [
+        3,
+        4,
+        5,
+        8,
+        9
+      ],
+      "berba": [
+        4,
+        5,
+        6,
+        7,
+        9,
+        10
+      ],
       "opis": "Brzo raste; za stalnu berbu sijati malo, ali svakih 2–3 tjedna. Za ljeto birati sorte otporne na vrućinu.",
-      "sjetva": "Presadnice od veljače ili izravno van od ožujka; plitko (salata klija na svjetlu), 25–30 cm razmaka.",
+      "sjetva": "Presadnice od veljače ili izravno van od ožujka. Sjeme sijati vrlo plitko (jedva pokriti); neke sorte slabije niču na visokim temperaturama, pa ljeti sijati u hladnijem dijelu dana ili u polusjeni. Razmak 25–30 cm.",
       "polozaj": "Sunce u proljeće i jesen, ljeti polusjena.",
       "voda": "Redovito, osobito ljeti; u vrućini i suši brzo potjera u cvat.",
       "njega": "Plijevljenje; ljeti malč.",
-      "problemi": "Puževi (skupljati navečer, pivske zamke), lisne uši.",
-      "dobriSusjedi": "mrkva, rotkvica, luk, krastavac, jagoda",
-      "losiSusjedi": "peršin",
-      "berbaOpis": "Travanj–srpanj i rujan–listopad, prije nego potjera u cvat."
+      "problemi": "Puževi: ručno skupljati navečer, ukloniti skrovišta (daske, gust korov), zaštititi mlade biljke. Lisne uši. Za ljeto birati sorte otporne na prorastanje u cvat.",
+      "berbaOpis": "Travanj–srpanj i rujan–listopad, prije nego potjera u cvat.",
+      "kombinacije": "mrkva, rotkvica, luk, krastavac (salata brzo raste između sporijih kultura)",
+      "pazi": "ljeti joj treba djelomična sjena; ne saditi tamo gdje se puževi skrivaju"
     },
     {
-      "id": "kupus", "naziv": "Kupus", "latinski": "Brassica oleracea var. capitata", "emoji": "🥬",
-      "unutra": [2, 3, 4, 5], "sadnja": [4, 5, 6, 7], "berba": [6, 7, 8, 9, 10, 11],
-      "opis": "Rani kupus (presadnice od veljače) bere se ljeti, a kasni (za kiseljenje i zimu) sadi se početkom ljeta i bere u jesen.",
+      "id": "kupus",
+      "naziv": "Kupus",
+      "latinski": "Brassica oleracea var. capitata",
+      "emoji": "🥬",
+      "unutra": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "sadnja": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "berba": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "opis": "Rani kupus (presadnice od veljače) bere se ljeti, a kasni (za kiseljenje i zimu) sadi se početkom ljeta i bere u jesen. Rokovi ovise o sorti.",
       "sjetva": "Rani: presadnice veljača–ožujak, van u travnju. Kasni: presadnice travanj–svibanj, van lipanj–srpanj. Razmak 40–60 cm.",
       "polozaj": "Sunce, tlo bogato kompostom (kupus puno troši).",
       "voda": "Redovito; glavice pucaju nakon obilne kiše poslije suše.",
       "njega": "Okopavanje i lagano nagrtanje.",
-      "problemi": "Gusjenice kupusova bijelca (pregledavati naličje lista, mreža protiv leptira), buhači na mladim biljkama.",
-      "dobriSusjedi": "celer, kopar, luk, krumpir, salata",
-      "losiSusjedi": "jagoda",
-      "berbaOpis": "Rani lipanj–kolovoz; kasni rujan–studeni, podnosi slabe mrazeve."
+      "problemi": "Gusjenice kupusova bijelca (pregledavati naličje lista), kupusna muha (vene mlada biljka), buhači na mladim biljkama. Mreža je dobra preventivna mjera, ali je postaviti odmah nakon sadnje, da štetnici ne ostanu ispod nje.",
+      "berbaOpis": "Rani lipanj–kolovoz; kasni rujan–studeni. Podnosi slabije mrazeve, a otpornost ovisi o sorti i razvijenosti glavice.",
+      "kombinacije": "celer, kopar, luk, salata",
+      "pazi": "rotkvica i druge kupusnjače: ista porodica i isti štetnici (buhači, kupusna muha); plodored"
     },
     {
-      "id": "blitva", "naziv": "Blitva", "latinski": "Beta vulgaris var. cicla", "emoji": "🌿",
-      "unutra": [], "sadnja": [4, 5, 6, 7], "berba": [6, 7, 8, 9, 10, 11],
+      "id": "blitva",
+      "naziv": "Blitva",
+      "latinski": "Beta vulgaris var. cicla",
+      "emoji": "🌿",
+      "unutra": [],
+      "sadnja": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "berba": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
       "opis": "Najzahvalnije lisnato povrće: jedna sjetva daje list od ljeta do mraza.",
-      "sjetva": "Izravno van travanj–srpanj, 2–3 cm duboko, prorijediti na 25–30 cm.",
+      "sjetva": "Izravno van travanj–srpanj (kasnija sjetva za jesensku berbu), 2–3 cm duboko, prorijediti na 25–30 cm.",
       "polozaj": "Sunce ili polusjena.",
       "voda": "Redovito u suši.",
-      "njega": "Brati vanjske listove, srce ostaviti da raste dalje.",
+      "njega": "Brati vanjske listove, srce ostaviti da raste dalje. U blažim zimama može prezimiti, ali na jačem mrazu ne preživi svaka biljka.",
       "problemi": "Rijetko; lisni mineri i puževi.",
-      "dobriSusjedi": "grah, luk, kupus, salata",
-      "losiSusjedi": "",
-      "berbaOpis": "Lipanj–studeni, list po list."
+      "berbaOpis": "Lipanj–studeni, list po list.",
+      "kombinacije": "grah, luk, kupus, salata",
+      "pazi": "cikla i špinat: ista porodica (lobode); plodored"
     },
     {
-      "id": "spinat", "naziv": "Špinat", "latinski": "Spinacia oleracea", "emoji": "🍃",
-      "unutra": [], "sadnja": [3, 4, 8, 9], "berba": [4, 5, 6, 10, 11],
-      "opis": "Povrće hladnijeg dijela godine; u dugim i vrućim danima brzo potjera u cvat. Jesenska sjetva može prezimiti.",
-      "sjetva": "Izravno van ožujak–travanj i kolovoz–rujan, 2–3 cm duboko, redovi 20–25 cm.",
+      "id": "spinat",
+      "naziv": "Špinat",
+      "latinski": "Spinacia oleracea",
+      "emoji": "🍃",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4,
+        8,
+        9,
+        10
+      ],
+      "berba": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "opis": "Povrće hladnijeg dijela godine; u dugim i vrućim danima brzo potjera u cvat. Jesenska sjetva često je zahvalnija od proljetne i daje kvalitetniji list; može i prezimiti.",
+      "sjetva": "Izravno van ožujak–travanj i kolovoz–listopad (ovisno o sorti i vremenu), 2–3 cm duboko, redovi 20–25 cm.",
       "polozaj": "Sunce do polusjena.",
       "voda": "Redovito.",
       "njega": "Plijevljenje.",
       "problemi": "Plamenjača špinata u vlažnom vremenu, lisne uši.",
-      "dobriSusjedi": "rotkvica, salata, grašak",
-      "losiSusjedi": "",
-      "berbaOpis": "Travanj–lipanj i listopad–studeni (prezimljeni i u ožujku)."
+      "berbaOpis": "Proljetni travanj–svibanj (u toplom proljeću brzo ide u cvat); jesenski listopad–studeni, prezimljeni u ožujku.",
+      "kombinacije": "rotkvica, salata, grašak",
+      "pazi": "cikla i blitva: ista porodica (lobode); vrućina i dugi dan"
     },
     {
-      "id": "rotkvica", "naziv": "Rotkvica", "latinski": "Raphanus sativus", "emoji": "🔴",
-      "unutra": [], "sadnja": [3, 4, 5, 8, 9], "berba": [4, 5, 6, 9, 10],
-      "opis": "Najbrže povrće: berba već 4–6 tjedana nakon sjetve. Odlična kao međukultura.",
+      "id": "rotkvica",
+      "naziv": "Rotkvica",
+      "latinski": "Raphanus sativus",
+      "emoji": "🔴",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4,
+        5,
+        8,
+        9
+      ],
+      "berba": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "opis": "Najbrže povrće: berba već 4–6 tjedana nakon sjetve, pa je odlična međukultura između sporijih kultura.",
       "sjetva": "Izravno van, 1 cm duboko, svaka 2 tjedna malo. Ljeti postaje ljuta i šupljikava.",
       "polozaj": "Sunce, rahlo tlo.",
       "voda": "Ravnomjerno, inače puca i postaje drvenasta.",
       "njega": "Prorijediti na 3–5 cm.",
-      "problemi": "Buhači (rupičasto lišće) u suhom vremenu; pomaže zalijevanje i mreža.",
-      "dobriSusjedi": "mrkva, salata, grašak, špinat",
-      "losiSusjedi": "",
-      "berbaOpis": "Travanj–lipanj i rujan–listopad, dok su mlade i hrskave."
+      "problemi": "Buhači (rupičasto lišće) u suhom vremenu; pomaže zalijevanje i mreža postavljena odmah nakon sjetve.",
+      "berbaOpis": "Travanj–lipanj i rujan–listopad, dok su mlade i hrskave.",
+      "kombinacije": "mrkva, salata, grašak, špinat (rotkvica se izvadi prije nego oni narastu)",
+      "pazi": "kupus i druge kupusnjače: ista porodica i isti buhači; plodored"
     },
     {
-      "id": "cikla", "naziv": "Cikla", "latinski": "Beta vulgaris", "emoji": "🟣",
-      "unutra": [], "sadnja": [4, 5, 6], "berba": [7, 8, 9, 10],
+      "id": "cikla",
+      "naziv": "Cikla",
+      "latinski": "Beta vulgaris",
+      "emoji": "🟣",
+      "unutra": [],
+      "sadnja": [
+        4,
+        5,
+        6
+      ],
+      "berba": [
+        7,
+        8,
+        9,
+        10
+      ],
       "opis": "Jednostavna za uzgoj i dobro se čuva preko zime.",
-      "sjetva": "Izravno van kad se tlo ugrije (travanj–lipanj), 2–3 cm duboko. Iz jednog „sjemena” niče više biljčica, pa prorijediti na 8–10 cm.",
+      "sjetva": "Izravno van kad se tlo ugrije (travanj–lipanj), 2–3 cm duboko. „Sjeme” je zapravo plodna jedinica s više sjemenki, pa niče više biljčica; prorijediti na 8–10 cm (mladi listovi mogu u salatu).",
       "polozaj": "Sunce, rahlo tlo.",
       "voda": "Ravnomjerno.",
       "njega": "Prorjeđivanje i plijevljenje.",
       "problemi": "Pjegavost lista u vlažnim godinama.",
-      "dobriSusjedi": "luk, salata, kupus, češnjak",
-      "losiSusjedi": "",
-      "berbaOpis": "Srpanj–listopad; za zimu izvaditi prije jačeg mraza i čuvati u pijesku."
+      "berbaOpis": "Srpanj–listopad; za zimu izvaditi prije jačeg mraza i čuvati u pijesku.",
+      "kombinacije": "luk, salata, kupus, češnjak",
+      "pazi": "blitva i špinat: ista porodica (lobode); plodored"
     },
     {
-      "id": "kukuruz", "naziv": "Kukuruz šećerac", "latinski": "Zea mays", "emoji": "🌽",
-      "unutra": [], "sadnja": [5], "berba": [8, 9],
+      "id": "kukuruz",
+      "naziv": "Kukuruz šećerac",
+      "latinski": "Zea mays",
+      "emoji": "🌽",
+      "unutra": [],
+      "sadnja": [
+        5
+      ],
+      "berba": [
+        8,
+        9
+      ],
       "opis": "Oprašuje se vjetrom, pa ga treba sijati u bloku (više kraćih redova), a ne u jednom dugom redu.",
-      "sjetva": "Izravno van kad je tlo toplije od 12 °C (svibanj), 4–5 cm duboko, 25–30 cm u redu, redovi 60–70 cm.",
+      "sjetva": "Izravno van kad se tlo dobro ugrije (sigurnije oko 15 °C, najranije 12 °C), obično svibanj, 4–5 cm duboko, 25–30 cm u redu, redovi 60–70 cm. Sijati u bloku (više kraćih redova) zbog oprašivanja vjetrom.",
       "polozaj": "Puno sunca, tlo bogato kompostom.",
-      "voda": "Najvažnije u vrijeme metličanja i svilanja.",
+      "voda": "Najvažnije u vrijeme svilanja i nalijevanja zrna.",
       "njega": "Okopavanje i lagano nagrtanje.",
-      "problemi": "Kukuruzni moljac, ptice i jazavci na zrelim klipovima.",
-      "dobriSusjedi": "grah, bundeva, tikvica, krastavac",
-      "losiSusjedi": "rajčica",
-      "berbaOpis": "Kolovoz–rujan, kad svila posmeđi, a zrno pod noktom pusti mliječni sok."
+      "problemi": "Ptice i glodavci na zrelim klipovima; kukuruzni moljac može se pojaviti, ali u malom vrtu nije pravilo.",
+      "berbaOpis": "Kolovoz–rujan, kad svila posmeđi, a zrno pod noktom pusti mliječni sok.",
+      "kombinacije": "grah (penje se uz kukuruz), bundeva, tikvica, krastavac",
+      "pazi": "visok je i zasjenjuje niže povrće: saditi na sjevernu stranu vrta"
     },
     {
-      "id": "persin", "naziv": "Peršin", "latinski": "Petroselinum crispum", "emoji": "🌱",
-      "unutra": [], "sadnja": [3, 4, 5], "berba": [5, 6, 7, 8, 9, 10, 11],
+      "id": "persin",
+      "naziv": "Peršin",
+      "latinski": "Petroselinum crispum",
+      "emoji": "🌱",
+      "unutra": [],
+      "sadnja": [
+        3,
+        4,
+        5
+      ],
+      "berba": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
       "opis": "Lisni peršin za list, korjenasti za korijen. Dvogodišnja biljka: u drugoj godini cvate.",
       "sjetva": "Izravno van ožujak–svibanj, plitko. Klija vrlo sporo (3–4 tjedna); pomaže namakanje sjemena dan prije sjetve.",
       "polozaj": "Sunce do polusjena.",
       "voda": "Redovito.",
       "njega": "Plijevljenje dok niče (lako ga preraste korov).",
       "problemi": "Mrkvina muha na korjenastom peršinu.",
-      "dobriSusjedi": "rajčica, luk, poriluk",
-      "losiSusjedi": "salata",
-      "berbaOpis": "List od svibnja do mraza; korijen rujan–studeni."
+      "berbaOpis": "List od svibnja do mraza; korijen rujan–studeni.",
+      "kombinacije": "rajčica, luk, poriluk",
+      "pazi": "mrkva: ista porodica (štitarke) i ista mrkvina muha; plodored"
     },
     {
-      "id": "poriluk", "naziv": "Poriluk", "latinski": "Allium porrum", "emoji": "🧅",
-      "unutra": [2, 3], "sadnja": [5, 6], "berba": [9, 10, 11, 12, 1, 2, 3],
-      "opis": "Otporan na mraz: može ostati u vrtu cijelu zimu i brati se po potrebi.",
-      "sjetva": "Presadnice veljača–ožujak (ili rasadnik vani u travnju). Van svibanj–lipanj u duboke rupe (15 cm), da donji dio ostane bijel.",
+      "id": "poriluk",
+      "naziv": "Poriluk",
+      "latinski": "Allium porrum",
+      "emoji": "🧅",
+      "unutra": [
+        2,
+        3
+      ],
+      "sadnja": [
+        5,
+        6
+      ],
+      "berba": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "opis": "Otporan na hladnoću i obično može ostati u vrtu preko zime i brati se po potrebi, ali otpornost ovisi o sorti i jačini zime.",
+      "sjetva": "Presadnice veljača–ožujak (ili rasadnik vani u travnju). Van svibanj–lipanj u rupe duboke oko 15 cm, bez zatrpavanja do vrha: zemlja se postupno dodaje ili se poriluk nagrće tijekom rasta, da donji dio ostane bijel.",
       "polozaj": "Sunce, tlo bogato kompostom.",
       "voda": "Redovito ljeti.",
       "njega": "Postupno nagrtati zemlju oko stabljike (dulji bijeli dio).",
-      "problemi": "Lukov moljac i lukova muha, hrđa u vlažnoj jeseni.",
-      "dobriSusjedi": "mrkva, celer, peršin",
-      "losiSusjedi": "grah, grašak",
-      "berbaOpis": "Rujan do ožujka, po potrebi."
+      "problemi": "Miner poriluka (hodnici u listu, posebno u jesen), lukov moljac, hrđa u vlažnoj jeseni.",
+      "berbaOpis": "Rujan do ožujka, po potrebi.",
+      "kombinacije": "mrkva, celer, peršin",
+      "pazi": "luk i češnjak: ista porodica i iste bolesti; plodored"
     }
   ]
 }

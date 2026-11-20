@@ -3379,7 +3379,7 @@ var VEG_COLORS = { unutra: 'var(--veg-unutra)', sadnja: 'var(--veg-sadnja)', ber
 function loadVegetables() {
     if (vegData) return Promise.resolve(vegData);
     if (!vegLoading) {
-        vegLoading = fetchJsonFile('data/povrce.json?v=20261121f')
+        vegLoading = fetchJsonFile('data/povrce.json?v=20261121g')
             .then(function (data) {
                 vegData = data;
                 return data;
@@ -3433,7 +3433,7 @@ function vegLegendHtml() {
 
 function renderVegList() {
     if (!vegData || !encyclopediaListEl) return;
-    var items = [{ id: 'kalendar', naziv: 'Kalendar (sve)', emoji: '📅' }].concat(vegData.vrste);
+    var items = [{ id: 'kalendar', naziv: 'Kalendar (sve)', emoji: '📅' }, { id: 'savjeti', naziv: 'Opći savjeti', emoji: '📋' }].concat(vegData.vrste);
     encyclopediaListEl.innerHTML = items.map(function (entry) {
         var active = entry.id === vegSelectedId;
         return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
@@ -3457,6 +3457,12 @@ function renderVegArticle() {
                     escapeHtml(v.emoji) + ' ' + escapeHtml(v.naziv) + '</button></th>' +
                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(function (m) { return vegCellHtml(v, m); }).join('') + '</tr>';
             }).join('') + '</tbody></table></div>';
+    } else if (vegSelectedId === 'savjeti') {
+        html += '<header class="enc-head"><span class="enc-emoji" style="font-size:36px">📋</span>' +
+            '<div><h2>Opći savjeti za povrtnjak</h2><div class="enc-onmap">Tlo, plodored, presadnice, voda, malč, skladištenje</div></div></header>';
+        (vegData.meta.savjeti || []).forEach(function (s) {
+            html += '<section><h3>' + escapeHtml(s.naslov) + '</h3><p>' + escapeHtml(s.tekst) + '</p></section>';
+        });
     } else {
         var v = vegData.vrste.find(function (x) { return x.id === vegSelectedId; });
         if (!v) {
@@ -3474,12 +3480,12 @@ function renderVegArticle() {
         html += '<section><h3>🌱 Sjetva / sadnja</h3><p>' + escapeHtml(v.sjetva) + '</p></section>';
         html += '<section><h3>☀️ Položaj</h3><p>' + escapeHtml(v.polozaj) + '</p></section>';
         html += '<section><h3>💧 Voda</h3><p>' + escapeHtml(v.voda) + '</p></section>';
-        html += '<section><h3>🧑‍🌾 Njega</h3><p>' + escapeHtml(v.njega) + '</p></section>';
+        html += '<section><h3>🌿 Njega</h3><p>' + escapeHtml(v.njega) + '</p></section>';
         html += '<section><h3>🐛 Česti problemi</h3><p>' + escapeHtml(v.problemi) + '</p></section>';
-        if (v.dobriSusjedi || v.losiSusjedi) {
-            html += '<section><h3>🤝 Susjedi u vrtu</h3>' +
-                (v.dobriSusjedi ? '<p><b>Dobro uz:</b> ' + escapeHtml(v.dobriSusjedi) + '</p>' : '') +
-                (v.losiSusjedi ? '<p><b>Ne saditi uz:</b> ' + escapeHtml(v.losiSusjedi) + '</p>' : '') + '</section>';
+        if (v.kombinacije || v.pazi) {
+            html += '<section><h3>🤝 Gredica i plodored</h3>' +
+                (v.kombinacije ? '<p><b>Pogodne kombinacije:</b> ' + escapeHtml(v.kombinacije) + '</p>' : '') +
+                (v.pazi ? '<p><b>Na što paziti:</b> ' + escapeHtml(v.pazi) + '</p>' : '') + '</section>';
         }
         html += '<section><h3>🧺 Berba</h3><p>' + escapeHtml(v.berbaOpis) + '</p></section>';
     }

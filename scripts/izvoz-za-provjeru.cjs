@@ -66,13 +66,14 @@ for (let m = 1; m <= 12; m++) {
 const pov = JSON.parse(fs.readFileSync(path.join(root, 'data/povrce.json'), 'utf8'));
 const mj = (arr) => (arr && arr.length ? arr.map(m => MONTHS[m - 1].slice(0, 3)).join(', ') : '–');
 L.push('---', '', '# Dio 3 – Povrće', '', '_' + pov.meta.napomena + '_', '');
+(pov.meta.savjeti || []).forEach(s => L.push('**' + s.naslov + ':** ' + s.tekst, ''));
 L.push('| Povrće | Sjetva u zatvorenom | Sadnja / sjetva vani | Berba |', '|---|---|---|---|');
 pov.vrste.forEach(v => L.push('| ' + v.naziv + ' (`' + v.id + '`) | ' + mj(v.unutra) + ' | ' + mj(v.sadnja) + ' | ' + mj(v.berba) + ' |'));
 L.push('');
 pov.vrste.forEach(v => {
   L.push('## ' + v.naziv + (v.latinski ? ' (*' + v.latinski + '*)' : ''), '', v.opis, '');
   [['Sjetva / sadnja', v.sjetva], ['Položaj', v.polozaj], ['Voda', v.voda], ['Njega', v.njega], ['Česti problemi', v.problemi],
-   ['Dobri susjedi', v.dobriSusjedi], ['Loši susjedi', v.losiSusjedi], ['Berba', v.berbaOpis]]
+   ['Pogodne kombinacije', v.kombinacije], ['Na što paziti', v.pazi], ['Berba', v.berbaOpis]]
     .filter(x => x[1]).forEach(x => L.push('**' + x[0] + ':** ' + x[1], ''));
 });
 

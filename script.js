@@ -55,7 +55,8 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {}, ttask: {} };
+var treeTaskStates = {}; // stanje zadatka po stablu: id -> { ključZadatka: { status: 'postponed'|'skipped', to?, from? } }
 var plantLogs = {}; // dnevnik po stablu: id -> [{ id, date, type, text, taskKey? }]
 var plantHarvests = {}; // berba po stablu: id -> { godina: { kg, note } }
 var taskDone = {}; // obavljeni zadaci iz rasporeda: 'godina:zadatak' -> { done, at }
@@ -311,6 +312,7 @@ function applyServerState(state) {
     taskDone = asPlainObject(state.taskDone);
     plantLogs = asPlainObject(state.plantLogs);
     plantHarvests = asPlainObject(state.plantHarvests);
+    treeTaskStates = asPlainObject(state.treeTaskStates);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
@@ -321,7 +323,8 @@ function applyServerState(state) {
         deleted: buildSnapshotFromMap(deletedIds),
         task: buildSnapshotFromMap(taskDone),
         log: buildSnapshotFromMap(plantLogs),
-        harvest: buildSnapshotFromMap(plantHarvests)
+        harvest: buildSnapshotFromMap(plantHarvests),
+        ttask: buildSnapshotFromMap(treeTaskStates)
     };
     pendingChanges = {};
 }
@@ -3081,6 +3084,7 @@ function taskRowHtml(r, editable) {
         '<div class="task-title">' + (CATEGORY_ICONS[t.kategorija] || '📝') + ' ' + escapeHtml(t.naslov) + badges + '</div>' +
         (t.opis ? '<div class="task-desc">' + escapeHtml(t.opis) + '</div>' : '') +
         (chips ? '<div class="task-chips">' + chips + '</div>' : '') +
+        taskProgressHtml(r) +
         taskActionsHtml(r, editable) +
         '</div></li>';
 }
@@ -3622,6 +3626,7 @@ function removePlantLog(itemId, logId) {
 }
 
 function afterPlantDataChange() {
+    reconcileSpeciesTasks();
     if (selectedPlant && allItemsById[selectedPlant.itemId]) renderPlantExtras(allItemsById[selectedPlant.itemId]);
     scheduleMapRefresh();
 }
@@ -3670,16 +3675,37 @@ function treeTasks(item) {
     var rows = currentMonthTaskRows();
     if (!rows) return null;
     var type = normalizeType(item.treeType);
-    return rows
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = now.getMonth() + 1;
+    var list = rows
         .filter(function (r) { return (r.task.vrste || []).indexOf(type) !== -1; })
-        .map(function (r) {
-            return { row: r, handled: r.done ? null : treeTaskHandledEntry(item.id, r) };
-        })
-        .sort(function (a, b) {
-            var ao = a.row.done || a.handled ? 1 : 0;
-            var bo = b.row.done || b.handled ? 1 : 0;
-            return ao - bo || a.row.task.prioritet - b.row.task.prioritet;
-        });
+        .map(function (r) { return { row: r }; });
+
+    // zadaci koje je samo ovo stablo odgodilo na ovaj mjesec
+    var states = treeTaskStates[item.id] || {};
+    Object.keys(states).forEach(function (key) {
+        var st = states[key];
+        if (!st || st.status !== 'postponed' || !sameMonth(st.to, y, m)) return;
+        if (list.some(function (x) { return x.row.key === key; })) return;
+        var task = tasksData.zadaci.find(function (t) { return t.id === taskIdFromKey(key); });
+        if (!task) return;
+        var sp = getTaskState(key);
+        list.push({ row: { task: task, key: key, done: !!sp && sp.status === 'done', isLast: false, isFirst: false, movedHere: true }, movedIn: true });
+    });
+
+    list.forEach(function (t) {
+        t.handled = treeTaskHandledEntry(item.id, t.row);
+        var st = getTreeTaskState(item.id, t.row.key);
+        t.treeState = st;
+        t.skipped = !!st && st.status === 'skipped';
+        t.postponedAway = !!st && st.status === 'postponed' && !sameMonth(st.to, y, m);
+        t.resolved = !!t.handled || t.skipped || t.row.done;
+        t.open = !t.resolved && !t.postponedAway;
+    });
+    return list.sort(function (a, b) {
+        return (a.open ? 0 : 1) - (b.open ? 0 : 1) || a.row.task.prioritet - b.row.task.prioritet;
+    });
 }
 
 // 1 = važno, 2 = redovno, 0 = ništa otvoreno
@@ -3688,11 +3714,70 @@ function treeAlertLevel(item) {
     if (!list) return 0;
     var level = 0;
     list.forEach(function (t) {
-        if (t.row.done || t.handled) return;
+        if (!t.open) return;
         var p = t.row.task.prioritet;
         if (p <= 2 && (level === 0 || p < level)) level = p;
     });
     return level;
+}
+
+function getTreeTaskState(itemId, key) {
+    var map = treeTaskStates[itemId];
+    return map && map[key] ? map[key] : null;
+}
+
+function setTreeTaskState(itemId, key, value) {
+    if (!canEdit()) return;
+    var map = Object.assign({}, treeTaskStates[itemId] || {});
+    if (value) map[key] = value;
+    else delete map[key];
+    if (Object.keys(map).length) treeTaskStates[itemId] = map;
+    else delete treeTaskStates[itemId];
+    if (storageMode === 'server') queueServerSync('ttask', treeTaskStates);
+    afterPlantDataChange();
+}
+
+// Zadatak vrste se sam označi obavljenim kad su sva stabla te vrste napravljena ili preskočena
+// (i opet otvori ako se to poništi, ali samo ako ga je aplikacija sama zatvorila).
+var reconcilingTasks = false;
+function reconcileSpeciesTasks() {
+    if (reconcilingTasks || !tasksData || !canEdit()) return;
+    reconcilingTasks = true;
+    try {
+        (currentMonthTaskRows() || []).forEach(function (r) {
+            var progress = speciesTreeProgress(r);
+            if (!progress || !progress.total) return;
+            var allResolved = progress.handled + progress.skipped === progress.total;
+            var st = getTaskState(r.key);
+            var at = new Date().toISOString();
+            if (allResolved && !(st && st.status === 'done')) {
+                var doneState = { status: 'done', auto: true, at: at };
+                if (st && st.to) { doneState.to = st.to; doneState.from = st.from; }
+                setTaskState(r.key, doneState);
+            } else if (!allResolved && st && st.status === 'done' && st.auto) {
+                setTaskState(r.key, st.to ? { status: 'postponed', to: st.to, from: st.from, at: at } : null);
+            }
+        });
+    } finally {
+        reconcilingTasks = false;
+    }
+}
+
+// Koliko je stabla vrste/vrsta zadatka napravljeno / preskočeno / odgođeno (za tekući mjesec)
+function speciesTreeProgress(row) {
+    var species = row.species || (row.task.vrste || []);
+    if (!species.length) return null;
+    var now = new Date();
+    var res = { total: 0, handled: 0, skipped: 0, postponed: 0 };
+    allMapItems().forEach(function (item) {
+        if (species.indexOf(normalizeType(item.treeType)) === -1) return;
+        res.total++;
+        var st = getTreeTaskState(item.id, row.key);
+        if (treeTaskHandledEntry(item.id, row)) res.handled++;
+        else if (st && st.status === 'skipped') res.skipped++;
+        else if (st && st.status === 'postponed' && !sameMonth(st.to, now.getFullYear(), now.getMonth() + 1)) res.postponed++;
+    });
+    return res;
 }
 
 // ----- prikaz panela ----------------------------------------------------------
@@ -3723,6 +3808,20 @@ function renderPlantHeader(item) {
     }
 }
 
+var treePostponingKey = null;
+
+function nextMonthsOptions(count) {
+    var now = new Date();
+    var html = '';
+    for (var i = 1; i <= count; i++) {
+        var m = now.getMonth() + 1 + i;
+        var y = now.getFullYear();
+        while (m > 12) { m -= 12; y += 1; }
+        html += '<option value="' + y + '-' + m + '">' + MONTH_NAMES[m - 1] + ' ' + y + '</option>';
+    }
+    return html;
+}
+
 function renderPlantTasks(item) {
     var el = document.getElementById('pp-tasks');
     if (!el) return;
@@ -3742,20 +3841,38 @@ function renderPlantTasks(item) {
     html += '<ul class="pp-tasklist">';
     list.forEach(function (t) {
         var task = t.row.task;
+        var key = escapeHtml(t.row.key);
+        var undo = function (act, extra) {
+            return editable ? ' <button type="button" class="pp-undo" data-act="' + act + '" data-key="' + key + '"' + (extra || '') + ' title="Poništi">↩</button>' : '';
+        };
         var status = '';
-        if (t.row.done) {
-            status = '<span class="pp-ok">✅ obavljeno za cijelu vrstu</span>';
-        } else if (t.handled) {
-            status = '<span class="pp-ok">✅ napravljeno na ovom stablu ' + escapeHtml(formatHrDate(t.handled.date)) + '</span>';
+        if (t.handled) {
+            status = '<span class="pp-ok">✓ Napravljeno ' + escapeHtml(formatHrDate(t.handled.date)) + '</span>' +
+                (t.handled.taskKey === t.row.key ? undo('tree-undo-log', ' data-log="' + escapeHtml(t.handled.id) + '"') : '');
+        } else if (t.skipped) {
+            status = '<span class="pp-skip">⊘ Preskočeno ove sezone</span>' + undo('tree-undo-state');
+        } else if (t.postponedAway) {
+            status = '<span class="pp-post">⇄ Odgođeno na ' + escapeHtml(monthLabel(t.treeState.to)) + '</span>' + undo('tree-undo-state');
+        } else if (t.row.done) {
+            status = '<span class="pp-ok">✓ Obavljeno za cijelu vrstu</span>';
+        } else if (editable && treePostponingKey === t.row.key) {
+            status = '<span class="pp-postpone-picker"><select class="pp-postpone-month">' + nextMonthsOptions(6) + '</select>' +
+                '<button type="button" class="pp-act" data-act="tree-postpone-ok" data-key="' + key + '">Odgodi</button>' +
+                '<button type="button" class="pp-undo" data-act="tree-postpone-cancel" title="Odustani">✕</button></span>';
         } else if (editable) {
-            status = '<button type="button" class="pp-act" data-act="task-done" data-key="' + escapeHtml(t.row.key) + '">✓ Napravljeno na ovom stablu</button>';
+            status = '<span class="pp-tri">' +
+                '<button type="button" class="pp-tri-btn ok" data-act="task-done" data-key="' + key + '" title="Napravljeno na ovom stablu" aria-label="Napravljeno na ovom stablu">✓</button>' +
+                '<button type="button" class="pp-tri-btn post" data-act="tree-postpone" data-key="' + key + '" title="Odgodi za ovo stablo" aria-label="Odgodi za ovo stablo">⇄</button>' +
+                '<button type="button" class="pp-tri-btn skip" data-act="tree-skip" data-key="' + key + '" title="Preskoči ove sezone za ovo stablo" aria-label="Preskoči ove sezone za ovo stablo">⊘</button>' +
+                '</span>';
         }
         var badge = task.poPotrebi ? ' <span class="task-badge cond">🔎 po potrebi</span>' : '';
-        if (t.row.isLast && !t.row.done && !t.handled) badge += ' <span class="task-badge last">⏳ zadnji mjesec</span>';
-        html += '<li class="pp-task prio-' + task.prioritet + (t.row.done || t.handled ? ' done' : '') + '">' +
-            '<div class="pp-task-title">' + (CATEGORY_ICONS[task.kategorija] || '📝') + ' ' + escapeHtml(task.naslov) + badge + '</div>' +
-            '<div class="pp-task-desc">' + escapeHtml(task.opis || '') + '</div>' +
-            '<div class="pp-task-status">' + status + '</div></li>';
+        if (t.movedIn) badge += ' <span class="task-badge moved">↪ odgođeno</span>';
+        if (t.row.isLast && t.open) badge += ' <span class="task-badge last">⏳ zadnji mjesec</span>';
+        html += '<li class="pp-task prio-' + task.prioritet + (t.open ? '' : ' done') + '">' +
+            '<div class="pp-task-head"><div class="pp-task-title">' + (CATEGORY_ICONS[task.kategorija] || '📝') + ' ' + escapeHtml(task.naslov) + badge + '</div>' +
+            '<div class="pp-task-status">' + status + '</div></div>' +
+            '<div class="pp-task-desc">' + escapeHtml(task.opis || '') + '</div></li>';
     });
     html += '</ul>';
     el.innerHTML = html;
@@ -3890,10 +4007,33 @@ if (plantFormEl) {
 
         if (act === 'open-tasks') {
             openTasks(item.treeType);
+        } else if (act === 'tree-postpone' && canEdit()) {
+            treePostponingKey = btn.getAttribute('data-key');
+            renderPlantTasks(item);
+        } else if (act === 'tree-postpone-cancel') {
+            treePostponingKey = null;
+            renderPlantTasks(item);
+        } else if (act === 'tree-postpone-ok' && canEdit()) {
+            var pk = btn.getAttribute('data-key');
+            var sel = btn.parentElement.querySelector('.pp-postpone-month');
+            var parts = sel.value.split('-');
+            var nowP = new Date();
+            treePostponingKey = null;
+            setTreeTaskState(item.id, pk, {
+                status: 'postponed',
+                to: { year: Number(parts[0]), month: Number(parts[1]) },
+                from: { year: nowP.getFullYear(), month: nowP.getMonth() + 1 },
+                at: nowP.toISOString()
+            });
+        } else if (act === 'tree-skip' && canEdit()) {
+            setTreeTaskState(item.id, btn.getAttribute('data-key'), { status: 'skipped', at: new Date().toISOString() });
+        } else if (act === 'tree-undo-state' && canEdit()) {
+            setTreeTaskState(item.id, btn.getAttribute('data-key'), null);
+        } else if (act === 'tree-undo-log' && canEdit()) {
+            removePlantLog(item.id, btn.getAttribute('data-log'));
         } else if (act === 'task-done' && canEdit()) {
             var key = btn.getAttribute('data-key');
-            var rows = currentMonthTaskRows() || [];
-            var row = rows.find(function (r) { return r.key === key; });
+            var row = (treeTasks(item) || []).map(function (t) { return t.row; }).find(function (r) { return r.key === key; });
             if (!row) return;
             addPlantLog(item.id, {
                 date: todayIso(),
@@ -4205,3 +4345,16 @@ document.addEventListener('click', function (event) {
     document.querySelectorAll('#pp-upcoming .pp-more').forEach(function (li) { li.classList.remove('hidden'); });
     btn.remove();
 });
+
+// Napredak zadatka po stablima (samo za tekući mjesec)
+function taskProgressHtml(r) {
+    var now = new Date();
+    if (!tasksView || tasksView.year !== now.getFullYear() || tasksView.month !== now.getMonth() + 1) return '';
+    if (!r.species || !r.species.length || typeof speciesTreeProgress !== 'function') return '';
+    var p = speciesTreeProgress(r);
+    if (!p || !p.total) return '';
+    var parts = ['🌳 ' + p.handled + '/' + p.total + ' stabla napravljeno'];
+    if (p.skipped) parts.push(p.skipped + ' preskočeno');
+    if (p.postponed) parts.push(p.postponed + ' odgođeno');
+    return '<div class="task-progress">' + escapeHtml(parts.join(' · ')) + '</div>';
+}

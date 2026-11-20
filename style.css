@@ -2788,3 +2788,122 @@ body.placing-tree .leaflet-container {
 .pp-icon {
     background: #ffffff;
 }
+
+/* ---------- Zadaci po stablu: ✓ / ⇄ / ⊘ ---------- */
+.pp-task-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 4px 6px;
+}
+
+.pp-task-head .pp-task-title {
+    flex: 1 1 150px;
+    min-width: 0;
+}
+
+.pp-task-head .pp-task-status {
+    margin-top: 0;
+    margin-left: auto;
+    text-align: right;
+}
+
+.pp-tri {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.pp-tri-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.pp-tri-btn.ok { background: #3d9a4a; }
+.pp-tri-btn.post { background: #f2b705; color: #3d2f00; }
+.pp-tri-btn.skip { background: #d64545; }
+
+.pp-tri-btn:hover {
+    filter: brightness(1.1);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.pp-skip {
+    color: #b3261e;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.pp-post {
+    color: #8a6a00;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.pp-undo {
+    padding: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    background: #fff;
+    color: #555;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.pp-postpone-picker {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.pp-postpone-picker select {
+    padding: 2px 4px;
+    border: 1px solid #c8d4c2;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.task-progress {
+    margin-top: 5px;
+    font-size: 11px;
+    color: #2e6f41;
+    font-weight: 600;
+}
+
+/* ---------- Jača zelena ---------- */
+:root {
+    --panel-bg-solid: #e5f1dc;
+    --panel-border: #b7d3a6;
+    --panel-head: #d2e7c3;
+}
+
+.map-controls,
+#side-menu,
+#filter-panel,
+#login-panel,
+#plant-panel {
+    background: rgba(226, 239, 216, 0.97);
+}
+
+#encyclopedia-list {
+    background: #d8ebcc;
+}
+
+.pp-task,
+.pp-last,
+.task,
+.pp-form,
+.add-tree-optional,
+.weather-score-card {
+    background: #f6fbf2;
+}

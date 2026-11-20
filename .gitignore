@@ -17,3 +17,6 @@ desktop.ini
 node_modules/
 .vercel/
 .env*
+
+# Generirano za provjeru (scripts/izvoz-za-provjeru.cjs)
+sadrzaj-za-provjeru.md

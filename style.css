@@ -1793,3 +1793,59 @@ body.placing-tree .leaflet-container {
         margin: 2px 0 0;
     }
 }
+
+/* ---------- Raspored: odgoda / preskakanje ---------- */
+.task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.task-act {
+    padding: 3px 9px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    background: #fff;
+    color: #444;
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.task-act:hover {
+    background: #f1f1f1;
+}
+
+.task-act.primary {
+    border-color: #356b35;
+    background: #4f8f4f;
+    color: #fff;
+}
+
+.postpone-picker label {
+    font-size: 12px;
+}
+
+.postpone-picker select {
+    margin-left: 4px;
+    padding: 3px 6px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.task-badge.moved {
+    background: #e7eefb;
+    color: #2f5f96;
+}
+
+.away-group .task {
+    border-left-color: #b0b0b0;
+    background: #fafafa;
+}
+
+.away-group .task-title {
+    color: #666;
+}

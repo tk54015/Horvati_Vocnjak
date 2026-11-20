@@ -3,9 +3,21 @@
     "naziv": "Raspored radova u voćnjaku",
     "napomena": "Okvirni rokovi za kontinentalnu Hrvatsku. Točno vrijeme ovisi o vremenu u godini (rana ili kasna proljeća), pa prati prognozu i stanje pupova.",
     "prioriteti": {
-      "1": { "naziv": "Važno", "oznaka": "🔴", "opis": "Rok ne čeka, kasnije više nema smisla" },
-      "2": { "naziv": "Redovno", "oznaka": "🟠", "opis": "Treba napraviti ovaj mjesec" },
-      "3": { "naziv": "Kad stigneš", "oznaka": "🟢", "opis": "Korisno, ali nije hitno" }
+      "1": {
+        "naziv": "Važno",
+        "oznaka": "🔴",
+        "opis": "Rok ne čeka, kasnije više nema smisla"
+      },
+      "2": {
+        "naziv": "Redovno",
+        "oznaka": "🟠",
+        "opis": "Treba napraviti ovaj mjesec"
+      },
+      "3": {
+        "naziv": "Kad stigneš",
+        "oznaka": "🟢",
+        "opis": "Korisno, ali nije hitno"
+      }
     }
   },
   "zadaci": [
@@ -22,7 +34,7 @@
     { "id": "breskva-rez", "mjeseci": [3], "prioritet": 1, "kategorija": "orezivanje", "vrste": ["breskva"], "naslov": "Rezidba breskve", "opis": "U vrijeme ili neposredno prije cvatnje, kad se vide cvjetni pupovi. Obnoviti rodno drvo (jednogodišnji izbojci)." },
     { "id": "loza-bubrenje", "mjeseci": [3, 4], "prioritet": 2, "kategorija": "zaštita", "vrste": ["vinova_loza"], "naslov": "Prskanje loze u bubrenju", "opis": "Bakar s uljem ili sumporni pripravak protiv crne pjegavosti i grinja." },
     { "id": "sljiva-rez", "mjeseci": [3, 4], "prioritet": 2, "kategorija": "orezivanje", "vrste": ["sljiva"], "naslov": "Rezidba šljive", "opis": "Kad krene vegetacija. Veće rane premazati voćarskim voskom." },
-    { "id": "gnojidba-proljece", "mjeseci": [3], "prioritet": 2, "kategorija": "gnojidba", "vrste": ["jabuka", "kruska", "sljiva", "breskva", "tresnja", "visnja"], "naslov": "Proljetna gnojidba", "opis": "NPK gnojivo po projekciji krošnje (ne uz samo deblo). Breskvi nešto više." },
+    { "id": "gnojidba-proljece", "mjeseci": [3], "prioritet": 3, "kategorija": "gnojidba", "vrste": [], "naslov": "Kompost oko voćaka (proljeće)", "opis": "Ako imaš kompost: tanak sloj po projekciji krošnje (ne uz samo deblo), plitko unijeti ili ostaviti kao malč. Breskve i mlada stabla imaju prednost." },
     { "id": "kupina-bocni", "mjeseci": [3], "prioritet": 2, "kategorija": "orezivanje", "vrste": ["kupina"], "naslov": "Skratiti bočne izboje kupine", "opis": "Bočne izboje na rodnim mladicama skratiti na 30–40 cm, mladice vezati na žicu." },
     { "id": "mraz-cvatnja", "mjeseci": [3, 4], "prioritet": 2, "kategorija": "vrijeme", "vrste": ["breskva", "tresnja", "visnja", "kruska", "jabuka", "sljiva"], "naslov": "Pratiti proljetne mrazeve u cvatnji", "opis": "Ispod −2 °C u cvatnji strada cvijet. Pratiti prognozu; mlada stabla po potrebi prekriti agrotekstilom." },
     { "id": "drenak-rez", "mjeseci": [3, 4], "prioritet": 3, "kategorija": "orezivanje", "vrste": ["drenak"], "naslov": "Prorijediti drenak nakon cvatnje", "opis": "Samo suhe grane i one koje se križaju." },
@@ -63,7 +75,7 @@
     { "id": "berba-loza", "mjeseci": [9, 10], "prioritet": 1, "kategorija": "berba", "vrste": ["vinova_loza"], "naslov": "Berba grožđa", "opis": "Ovisno o sorti i namjeni." },
     { "id": "berba-orah", "mjeseci": [9, 10], "prioritet": 1, "kategorija": "berba", "vrste": ["orah"], "naslov": "Berba oraha", "opis": "Kad zelena ljuska pukne. Osušiti na prozračnom mjestu." },
     { "id": "berba-glog", "mjeseci": [9, 10], "prioritet": 3, "kategorija": "berba", "vrste": ["glog"], "naslov": "Brati plodove gloga", "opis": "" },
-    { "id": "gnojidba-jesen", "mjeseci": [10, 11], "prioritet": 2, "kategorija": "gnojidba", "vrste": [], "naslov": "Jesenska gnojidba organskim gnojivom", "opis": "Zreli stajski gnoj ili kompost po projekciji krošnje, plitko unijeti u tlo." },
+    { "id": "gnojidba-jesen", "mjeseci": [10, 11], "prioritet": 3, "kategorija": "gnojidba", "vrste": [], "naslov": "Kompost oko voćaka (jesen)", "opis": "Ako imaš kompost ili zreli stajski gnoj: rasporediti po projekciji krošnje. Nije obavezno svake godine." },
     { "id": "lisce", "mjeseci": [10, 11], "prioritet": 2, "kategorija": "higijena", "vrste": ["jabuka", "kruska", "tresnja", "visnja", "orah", "ribizl"], "naslov": "Pograbiti i ukloniti otpalo lišće", "opis": "Na lišću prezimljuju krastavost, kozičavost i antraknoza. Kompostirati ga daleko od voćaka ili ukloniti." },
     { "id": "bakar-jesen", "mjeseci": [11], "prioritet": 1, "kategorija": "zaštita", "vrste": ["breskva", "sljiva", "tresnja", "visnja"], "naslov": "Bakar pri opadanju lišća", "opis": "Kad otpadne većina lišća. Za breskvu ključno protiv kovrčavosti, za ostale protiv bakterijskog raka i šupljikavosti." },
     { "id": "sadnja", "mjeseci": [10, 11], "prioritet": 3, "kategorija": "ostalo", "vrste": [], "naslov": "Sadnja novih voćaka", "opis": "Jesen je najbolje vrijeme za sadnju golih sadnica. Dodaj ih odmah na kartu (Dodaj stablo)." },

@@ -2701,12 +2701,11 @@ function encyclopediaIconHtml(entry, size) {
 function waterDropsHtml(typeId) {
     var t = normalizeType(typeId);
     var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
-    var labels = ['minimalna', 'niska', 'srednja', 'povišena', 'visoka'];
     var drops = '';
     for (var i = 0; i < 4; i++) {
         drops += i < level ? '💧' : '<span class="drop-off">💧</span>';
     }
-    return '<span class="enc-drops" title="Potreba za vodom: ' + labels[level] + '">' + drops + '</span> <small>(' + labels[level] + ')</small>';
+    return '<span class="enc-drops" title="Potreba za vodom: ' + level + '/4">' + drops + '</span> <small>(' + level + '/4)</small>';
 }
 
 function renderEncyclopediaList() {
@@ -2834,14 +2833,23 @@ if (plantEncyclopediaBtn) {
 }
 
 // ---------------------------------------------------------------------------
-// Raspored radova (podaci u data/raspored.json, kvačice u bazi kao 'task')
+// Raspored radova (podaci u data/raspored.json, stanje zadataka u bazi kao 'task')
+//
+// Stanje zadatka (taskDone[ključ]):
+//   { status: 'done' }                       obavljeno
+//   { status: 'postponed', to: {year,month} } odgođeno na drugi mjesec
+//   { status: 'skipped' }                    preskočeno ove sezone
+//   { status: 'done', to: {...} }            odgođeno pa obavljeno
+// Stari zapisi { done: true } znače obavljeno.
 // ---------------------------------------------------------------------------
 var MONTH_NAMES = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
+var MONTH_NAMES_GEN = ['siječnja', 'veljače', 'ožujka', 'travnja', 'svibnja', 'lipnja', 'srpnja', 'kolovoza', 'rujna', 'listopada', 'studenog', 'prosinca'];
 var CATEGORY_ICONS = { orezivanje: '✂️', 'zaštita': '🧴', gnojidba: '🌱', berba: '🧺', voda: '💧', higijena: '🧹', vrijeme: '🌡️', ostalo: '📝' };
 var tasksModal = document.getElementById('tasks-modal');
 var tasksData = null;
 var tasksLoading = null;
 var tasksView = null; // { year, month }
+var postponingKey = null; // zadatak za koji je otvoren odabir mjeseca
 
 function seasonName(month) {
     if (month === 12 || month <= 2) return '❄️ Zima';
@@ -2853,7 +2861,7 @@ function seasonName(month) {
 function loadTasks() {
     if (tasksData) return Promise.resolve(tasksData);
     if (!tasksLoading) {
-        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120e'), loadEncyclopedia().catch(function () { return null; })])
+        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120f'), loadEncyclopedia().catch(function () { return null; })])
             .then(function (results) {
                 tasksData = results[0];
                 return tasksData;
@@ -2872,6 +2880,25 @@ function taskKey(task, year, month) {
     var wraps = m.indexOf(12) !== -1 && m.indexOf(1) !== -1;
     var seasonYear = wraps && month >= 9 ? year + 1 : year;
     return seasonYear + ':' + task.id;
+}
+
+function taskIdFromKey(key) {
+    return String(key).slice(String(key).indexOf(':') + 1);
+}
+
+function getTaskState(key) {
+    var s = taskDone[key];
+    if (!s) return null;
+    if (!s.status && s.done) return { status: 'done', at: s.at };
+    return s;
+}
+
+function sameMonth(to, year, month) {
+    return !!to && to.year === year && to.month === month;
+}
+
+function monthLabel(to) {
+    return MONTH_NAMES[to.month - 1] + ' ' + to.year;
 }
 
 function speciesName(typeId) {
@@ -2893,26 +2920,130 @@ function speciesIconHtml(typeId) {
     return '<span>' + emoji + '</span>';
 }
 
+function buildTaskRow(task, key, counts, month, movedHere) {
+    var species = (task.vrste || []).filter(function (v) { return counts[v] > 0; });
+    if (task.vrste && task.vrste.length && !species.length) return null;
+    var m = task.mjeseci || [];
+    var state = getTaskState(key);
+    return {
+        task: task,
+        key: key,
+        species: species,
+        trees: species.reduce(function (sum, v) { return sum + counts[v]; }, 0),
+        state: state,
+        done: !!state && state.status === 'done',
+        movedHere: !!movedHere,
+        isLast: !movedHere && m.length > 1 && m[m.length - 1] === month,
+        isFirst: !movedHere && m.length > 1 && m[0] === month
+    };
+}
+
+// Vraća { active: [...], away: [...] }: aktivni zadaci ovog mjeseca i oni odgođeni/preskočeni.
 function tasksForView() {
     var counts = countTreesByType();
+    var year = tasksView.year;
     var month = tasksView.month;
-    return tasksData.zadaci
-        .filter(function (task) { return (task.mjeseci || []).indexOf(month) !== -1; })
-        .map(function (task) {
-            var species = (task.vrste || []).filter(function (v) { return counts[v] > 0; });
-            var key = taskKey(task, tasksView.year, month);
-            var m = task.mjeseci;
-            return {
-                task: task,
-                key: key,
-                species: species,
-                trees: species.reduce(function (sum, v) { return sum + counts[v]; }, 0),
-                done: !!taskDone[key],
-                isLast: m.length > 1 && m[m.length - 1] === month,
-                isFirst: m.length > 1 && m[0] === month
-            };
-        })
-        .filter(function (row) { return !row.task.vrste.length || row.species.length > 0; });
+    var active = [];
+    var away = [];
+    var seen = {};
+
+    tasksData.zadaci.forEach(function (task) {
+        if ((task.mjeseci || []).indexOf(month) === -1) return;
+        var key = taskKey(task, year, month);
+        var row = buildTaskRow(task, key, counts, month, false);
+        if (!row) return;
+        seen[key] = true;
+        var s = row.state;
+        if (s && s.status === 'skipped') {
+            away.push(row);
+        } else if (s && s.to && !sameMonth(s.to, year, month)) {
+            away.push(row); // odgođeno na drugi mjesec
+        } else {
+            if (s && s.to) row.movedHere = true;
+            active.push(row);
+        }
+    });
+
+    // Zadaci odgođeni na ovaj mjesec iz nekog drugog
+    Object.keys(taskDone).forEach(function (key) {
+        if (seen[key]) return;
+        var s = getTaskState(key);
+        if (!s || !sameMonth(s.to, year, month)) return;
+        var task = tasksData.zadaci.find(function (t) { return t.id === taskIdFromKey(key); });
+        if (!task) return;
+        var row = buildTaskRow(task, key, counts, month, true);
+        if (row) active.push(row);
+    });
+
+    return { active: active, away: away };
+}
+
+function postponeOptions(key) {
+    // Sljedećih 6 mjeseci od mjeseca koji se gleda
+    var html = '';
+    for (var i = 1; i <= 6; i++) {
+        var m = tasksView.month + i;
+        var y = tasksView.year;
+        while (m > 12) { m -= 12; y += 1; }
+        html += '<option value="' + y + '-' + m + '">' + MONTH_NAMES[m - 1] + ' ' + y + '</option>';
+    }
+    return html;
+}
+
+function taskActionsHtml(r, editable) {
+    if (!editable || r.done) return '';
+    if (postponingKey === r.key) {
+        return '<div class="task-actions postpone-picker">' +
+            '<label>Odgodi na: <select class="postpone-month" data-key="' + escapeHtml(r.key) + '">' + postponeOptions(r.key) + '</select></label>' +
+            '<button type="button" class="task-act primary" data-act="postpone-ok" data-key="' + escapeHtml(r.key) + '">Odgodi</button>' +
+            '<button type="button" class="task-act" data-act="postpone-cancel">Odustani</button>' +
+            '</div>';
+    }
+    return '<div class="task-actions">' +
+        '<button type="button" class="task-act" data-act="postpone" data-key="' + escapeHtml(r.key) + '">⏭️ Odgodi</button>' +
+        '<button type="button" class="task-act" data-act="skip" data-key="' + escapeHtml(r.key) + '">🚫 Preskoči ove sezone</button>' +
+        '</div>';
+}
+
+function taskRowHtml(r, editable) {
+    var t = r.task;
+    var badges = '';
+    if (r.movedHere && r.state && r.state.from) {
+        badges += '<span class="task-badge moved">↪ odgođeno iz ' + escapeHtml(MONTH_NAMES_GEN[r.state.from.month - 1]) + '</span>';
+    } else if (r.movedHere) {
+        badges += '<span class="task-badge moved">↪ odgođeno</span>';
+    }
+    if (r.isLast && !r.done) badges += '<span class="task-badge last">⏳ zadnji mjesec</span>';
+    if (r.isFirst && !r.done) badges += '<span class="task-badge first">počinje</span>';
+    var counts = countTreesByType();
+    var chips = r.species.map(function (v) {
+        return '<button type="button" class="task-chip" data-species="' + escapeHtml(v) + '" title="Otvori u enciklopediji">' +
+            speciesIconHtml(v) + escapeHtml(speciesName(v)) + ' <b>' + counts[v] + '</b></button>';
+    }).join('');
+    return '<li class="task' + (r.done ? ' done' : '') + '">' +
+        '<label class="task-check"><input type="checkbox" data-key="' + escapeHtml(r.key) + '"' +
+        (r.done ? ' checked' : '') + (editable ? '' : ' disabled') + ' aria-label="Obavljeno"></label>' +
+        '<div class="task-main">' +
+        '<div class="task-title">' + (CATEGORY_ICONS[t.kategorija] || '📝') + ' ' + escapeHtml(t.naslov) + badges + '</div>' +
+        (t.opis ? '<div class="task-desc">' + escapeHtml(t.opis) + '</div>' : '') +
+        (chips ? '<div class="task-chips">' + chips + '</div>' : '') +
+        taskActionsHtml(r, editable) +
+        '</div></li>';
+}
+
+function awayRowHtml(r, editable) {
+    var s = r.state;
+    var what = s.status === 'skipped'
+        ? '🚫 Preskočeno ove sezone'
+        : (s.status === 'done' ? '✅ Obavljeno u ' : '⏭️ Odgođeno na ') + escapeHtml(monthLabel(s.to));
+    return '<li class="task away">' +
+        '<div class="task-main">' +
+        '<div class="task-title">' + (CATEGORY_ICONS[r.task.kategorija] || '📝') + ' ' + escapeHtml(r.task.naslov) + '</div>' +
+        '<div class="task-desc">' + what + '</div>' +
+        (editable && s.status !== 'done'
+            ? '<div class="task-actions"><button type="button" class="task-act" data-act="undo" data-key="' + escapeHtml(r.key) + '">↩ Poništi</button></div>'
+            : '') +
+        '</div></li>';
 }
 
 function renderTasks() {
@@ -2923,7 +3054,8 @@ function renderTasks() {
     document.getElementById('tasks-season').textContent = seasonName(tasksView.month) + (isCurrent ? ' · ovaj mjesec' : '');
     document.getElementById('tasks-today').classList.toggle('hidden', isCurrent);
 
-    var rows = tasksForView();
+    var view = tasksForView();
+    var rows = view.active;
     var doneCount = rows.filter(function (r) { return r.done; }).length;
     var progressEl = document.getElementById('tasks-progress');
     progressEl.innerHTML = rows.length
@@ -2932,14 +3064,18 @@ function renderTasks() {
         : '';
 
     var listEl = document.getElementById('tasks-list');
-    if (!rows.length) {
-        listEl.innerHTML = '<p class="tasks-empty">Za ovaj mjesec nema posebnih radova za vrste koje imaš na karti. 🌿</p>';
-        return;
-    }
-
     var editable = isAdminUser || storageMode === 'local';
     var prios = tasksData.meta.prioriteti;
     var html = '';
+
+    if (!rows.length && !view.away.length) {
+        listEl.innerHTML = '<p class="tasks-empty">Za ovaj mjesec nema posebnih radova za vrste koje imaš na karti. 🌿</p>';
+        return;
+    }
+    if (!rows.length) {
+        html += '<p class="tasks-empty">Za ovaj mjesec nema otvorenih radova. 🌿</p>';
+    }
+
     [1, 2, 3].forEach(function (p) {
         var group = rows.filter(function (r) { return r.task.prioritet === p; });
         if (!group.length) return;
@@ -2951,31 +3087,28 @@ function renderTasks() {
         var info = prios[String(p)];
         html += '<section class="tasks-group prio-' + p + '"><h3>' + info.oznaka + ' ' + escapeHtml(info.naziv) +
             ' <small>' + escapeHtml(info.opis) + '</small></h3><ul>';
-        group.forEach(function (r) {
-            var t = r.task;
-            var badges = '';
-            if (r.isLast && !r.done) badges += '<span class="task-badge last">⏳ zadnji mjesec</span>';
-            if (r.isFirst && !r.done) badges += '<span class="task-badge first">počinje</span>';
-            var chips = r.species.map(function (v) {
-                return '<button type="button" class="task-chip" data-species="' + escapeHtml(v) + '" title="Otvori u enciklopediji">' +
-                    speciesIconHtml(v) + escapeHtml(speciesName(v)) + ' <b>' + countTreesByType()[v] + '</b></button>';
-            }).join('');
-            html += '<li class="task' + (r.done ? ' done' : '') + '">' +
-                '<label class="task-check"><input type="checkbox" data-key="' + escapeHtml(r.key) + '"' +
-                (r.done ? ' checked' : '') + (editable ? '' : ' disabled') + ' aria-label="Obavljeno"></label>' +
-                '<div class="task-main">' +
-                '<div class="task-title">' + (CATEGORY_ICONS[t.kategorija] || '📝') + ' ' + escapeHtml(t.naslov) + badges + '</div>' +
-                (t.opis ? '<div class="task-desc">' + escapeHtml(t.opis) + '</div>' : '') +
-                (chips ? '<div class="task-chips">' + chips + '</div>' : '') +
-                '</div></li>';
-        });
+        group.forEach(function (r) { html += taskRowHtml(r, editable); });
         html += '</ul></section>';
     });
+
+    if (view.away.length) {
+        html += '<section class="tasks-group away-group"><h3>⏭️ Odgođeno / preskočeno</h3><ul>';
+        view.away.forEach(function (r) { html += awayRowHtml(r, editable); });
+        html += '</ul></section>';
+    }
+
     if (tasksData.meta.napomena) {
         html += '<p class="enc-note">ℹ️ ' + escapeHtml(tasksData.meta.napomena) +
-            (editable ? '' : ' Kvačice može mijenjati samo admin.') + '</p>';
+            (editable ? '' : ' Kvačice i odgode može mijenjati samo admin.') + '</p>';
     }
     listEl.innerHTML = html;
+}
+
+function setTaskState(key, value) {
+    if (value) taskDone[key] = value;
+    else delete taskDone[key];
+    if (storageMode === 'server') queueServerSync('task', taskDone);
+    renderTasks();
 }
 
 function shiftTasksMonth(delta) {
@@ -2984,6 +3117,7 @@ function shiftTasksMonth(delta) {
     if (m < 1) { m = 12; y -= 1; }
     if (m > 12) { m = 1; y += 1; }
     tasksView = { year: y, month: m };
+    postponingKey = null;
     renderTasks();
 }
 
@@ -2991,6 +3125,7 @@ function openTasks() {
     if (!tasksModal) return;
     var now = new Date();
     tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
+    postponingKey = null;
     tasksModal.classList.remove('hidden');
     document.getElementById('tasks-list').innerHTML = '<p class="tasks-empty">Učitavanje...</p>';
     loadTasks()
@@ -3006,6 +3141,9 @@ function closeTasks() {
 }
 
 if (tasksModal) {
+    var tasksListEl = document.getElementById('tasks-list');
+    var canEditTasks = function () { return isAdminUser || storageMode === 'local'; };
+
     document.getElementById('open-tasks').addEventListener('click', function () {
         setMenuOpen(false);
         openTasks();
@@ -3016,30 +3154,66 @@ if (tasksModal) {
     document.getElementById('tasks-today').addEventListener('click', function () {
         var now = new Date();
         tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
+        postponingKey = null;
         renderTasks();
     });
     tasksModal.addEventListener('click', function (event) {
         if (event.target === tasksModal) closeTasks();
     });
-    document.getElementById('tasks-list').addEventListener('change', function (event) {
+
+    tasksListEl.addEventListener('change', function (event) {
         var box = event.target;
         if (!box || box.type !== 'checkbox') return;
-        if (!(isAdminUser || storageMode === 'local')) {
+        if (!canEditTasks()) {
             box.checked = !box.checked;
             return;
         }
         var key = box.getAttribute('data-key');
+        var prev = getTaskState(key);
+        var at = new Date().toISOString();
         if (box.checked) {
-            taskDone[key] = { done: true, at: new Date().toISOString() };
+            // Zadrži podatak o odgodi, da obavljeni zadatak ostane vidljiv u mjesecu na koji je odgođen.
+            setTaskState(key, prev && prev.to
+                ? { status: 'done', to: prev.to, from: prev.from, at: at }
+                : { status: 'done', at: at });
         } else {
-            delete taskDone[key];
+            setTaskState(key, prev && prev.to
+                ? { status: 'postponed', to: prev.to, from: prev.from, at: at }
+                : null);
         }
-        if (storageMode === 'server') queueServerSync('task', taskDone);
-        renderTasks();
     });
-    document.getElementById('tasks-list').addEventListener('click', function (event) {
+
+    tasksListEl.addEventListener('click', function (event) {
         var chip = event.target.closest('.task-chip');
-        if (!chip) return;
-        openEncyclopedia(chip.getAttribute('data-species'));
+        if (chip) {
+            openEncyclopedia(chip.getAttribute('data-species'));
+            return;
+        }
+        var btn = event.target.closest('.task-act');
+        if (!btn || !canEditTasks()) return;
+        var act = btn.getAttribute('data-act');
+        var key = btn.getAttribute('data-key');
+        var at = new Date().toISOString();
+
+        if (act === 'postpone') {
+            postponingKey = key;
+            renderTasks();
+        } else if (act === 'postpone-cancel') {
+            postponingKey = null;
+            renderTasks();
+        } else if (act === 'postpone-ok') {
+            var select = tasksListEl.querySelector('.postpone-month[data-key="' + key + '"]');
+            if (!select) return;
+            var parts = select.value.split('-');
+            var prev = getTaskState(key);
+            var from = prev && prev.from ? prev.from : { year: tasksView.year, month: tasksView.month };
+            postponingKey = null;
+            setTaskState(key, { status: 'postponed', to: { year: Number(parts[0]), month: Number(parts[1]) }, from: from, at: at });
+        } else if (act === 'skip') {
+            postponingKey = null;
+            setTaskState(key, { status: 'skipped', at: at });
+        } else if (act === 'undo') {
+            setTaskState(key, null);
+        }
     });
 }

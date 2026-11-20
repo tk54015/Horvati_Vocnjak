@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <!-- Drenak: duguljasti crveni plodovi na grančici (vlastiti crtež, stil kao ostale ikone) -->
+  <rect width="160" height="160" fill="#ffffff"/>
+  <!-- grančica -->
+  <path d="M30 34 C60 30 92 34 128 26" fill="none" stroke="#6b4423" stroke-width="6" stroke-linecap="round"/>
+  <!-- listovi -->
+  <path d="M104 30 C112 8 140 8 146 14 C138 30 118 36 104 30 Z" fill="#5cae4f"/>
+  <path d="M104 30 C120 22 132 18 146 14" fill="none" stroke="#3f8a37" stroke-width="2"/>
+  <path d="M40 33 C30 14 8 14 4 20 C12 34 30 38 40 33 Z" fill="#5cae4f"/>
+  <path d="M40 33 C28 26 16 22 4 20" fill="none" stroke="#3f8a37" stroke-width="2"/>
+  <!-- peteljke -->
+  <path d="M62 33 C60 46 56 56 52 66" fill="none" stroke="#6b4423" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M84 33 C88 50 96 60 102 72" fill="none" stroke="#6b4423" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- plodovi -->
+  <ellipse cx="50" cy="100" rx="21" ry="34" fill="#c8102e" transform="rotate(10 50 100)"/>
+  <ellipse cx="104" cy="106" rx="21" ry="34" fill="#b30d29" transform="rotate(-12 104 106)"/>
+  <!-- odsjaji -->
+  <ellipse cx="42" cy="88" rx="5" ry="12" fill="#ffffff" opacity="0.45" transform="rotate(10 42 88)"/>
+  <ellipse cx="96" cy="94" rx="5" ry="12" fill="#ffffff" opacity="0.4" transform="rotate(-12 96 94)"/>
+  <!-- vrhovi plodova -->
+  <circle cx="45" cy="134" r="2.5" fill="#5a0a16"/>
+  <circle cx="111" cy="139" r="2.5" fill="#5a0a16"/>
+</svg>

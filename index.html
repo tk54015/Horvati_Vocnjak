@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261121c">
+    <link rel="stylesheet" href="style.css?v=20261122e">
 </head>
 <body>
     <div id="map"></div>
@@ -75,6 +75,7 @@
       <button id="open-weather" type="button" class="menu-view">🌦️ Prognoza</button>
       <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
       <button id="open-encyclopedia" type="button" class="menu-view">📖 Enciklopedija</button>
+      <button id="open-filter" type="button" class="menu-view">🔍 Filter i pretraga</button>
       <button id="open-tasks" type="button" class="menu-view">🗓️ Raspored radova</button>
       <button id="install-app" type="button" class="menu-view hidden">📲 Instaliraj aplikaciju</button>
       <div class="admin-only menu-admin">
@@ -89,6 +90,34 @@
         <input id="import-backup-file" type="file" accept="application/json,.json" hidden>
       </div>
     </nav>
+    <div id="filter-panel" class="hidden" role="dialog" aria-label="Filter i pretraga">
+      <div class="fp-head">
+        <b>🔍 Filter i pretraga</b>
+        <button id="close-filter" type="button" title="Zatvori">x</button>
+      </div>
+      <input id="filter-search" type="search" placeholder="Traži po imenu ili ID-u (Enter)" autocomplete="off">
+      <div class="fp-label">Vrsta</div>
+      <div id="filter-types" class="fp-types"></div>
+      <div class="fp-label">Stanje</div>
+      <div class="fp-states">
+        <label><input type="radio" name="filter-state" value="all" checked> Sve</label>
+        <label><input type="radio" name="filter-state" value="tasks"> ❗ Ima otvoren zadatak ovaj mjesec</label>
+        <label><input type="radio" name="filter-state" value="notpruned"> ✂️ Nije orezano ove godine</label>
+        <label><input type="radio" name="filter-state" value="nolog"> 📭 Nema zapisa u dnevniku</label>
+      </div>
+      <label class="fp-toggle">Oznake zadataka na karti
+        <select id="filter-badges">
+          <option value="important" selected>🔴 Samo važni zadaci</option>
+          <option value="all">🔴🟠 Važni i redovni</option>
+          <option value="off">Isključeno</option>
+        </select>
+      </label>
+      <div class="fp-foot">
+        <span id="filter-count"></span>
+        <button id="filter-reset" type="button">Poništi</button>
+      </div>
+    </div>
+    <button id="filter-chip" type="button" class="hidden" title="Filter je uključen – klikni za uređivanje"></button>
     <div id="right-stack">
       <div id="login-panel" class="hidden">
         <button id="login-toggle" type="button" aria-expanded="false" aria-controls="login-form"><b>Prijava</b><span class="login-arrow"></span></button>
@@ -105,40 +134,84 @@
         <small id="sync-status" class="admin-only">Učitavanje podataka...</small>
       </div>
       <div id="plant-panel">
-        <div class="plant-panel-header">
-          <b>Podaci o biljci</b>
+        <div class="pp-top">
+          <div id="plant-empty" class="pp-empty">🌳 Klikni stablo na karti za podatke.</div>
           <button id="toggle-plant-panel" type="button" title="Minimiziraj panel">x</button>
         </div>
-        <div id="plant-empty">Klikni marker za otvaranje podataka.</div>
         <div id="plant-form" class="hidden">
-          <div class="plant-meta"><span>ID:</span><strong id="plant-id">-</strong></div>
-          <div class="plant-meta"><span>Vrsta:</span><span class="plant-type-wrap"><strong id="plant-type">-</strong> <button id="plant-open-encyclopedia" type="button" class="link-btn" title="Otvori u enciklopediji">📖 O vrsti</button></span></div>
-          <div class="plant-meta"><span>Visina:</span><strong id="plant-height">-</strong></div>
-          <div class="plant-meta"><span>Zalijevanje:</span><strong id="plant-water">-</strong></div>
-          <div class="plant-meta"><span>Koordinate:</span><strong id="plant-coords">-</strong></div>
+          <header class="pp-head">
+            <div id="pp-icon" class="pp-icon" aria-hidden="true"></div>
+            <div class="pp-title">
+              <h2 id="pp-name">-</h2>
+              <div class="pp-sub">
+                <span id="plant-type">-</span>
+                <span class="pp-dot">·</span>
+                <span id="plant-id" class="pp-id">-</span>
+              </div>
+              <button id="plant-open-encyclopedia" type="button" class="link-btn" title="Otvori u enciklopediji">📖 O vrsti</button>
+            </div>
+          </header>
+          <div class="pp-chips">
+            <span class="pp-chip" title="Visina">📏 <b id="plant-height">-</b></span>
+            <span class="pp-chip" title="Potreba za vodom"><span id="plant-water">-</span></span>
+            <span class="pp-chip hidden" id="pp-stage" title="Stadij razvoja"></span>
+            <span class="pp-chip hidden" id="pp-canopy" title="Gustoća krošnje"></span>
+          </div>
 
-          <label for="status-orezano">Orezano</label>
-          <select id="status-orezano">
-            <option value="nepoznato">Nepoznato</option>
-            <option value="da">Da</option>
-            <option value="ne">Ne</option>
-          </select>
+          <div class="pp-tabs" role="tablist">
+            <button type="button" class="pp-tab active" role="tab" aria-selected="true" data-tab="pregled">Pregled</button>
+            <button type="button" class="pp-tab" role="tab" aria-selected="false" data-tab="dnevnik">Dnevnik <span id="pp-log-count" class="pp-count"></span></button>
+            <button type="button" class="pp-tab" role="tab" aria-selected="false" data-tab="berba">Berba</button>
+          </div>
 
-          <label for="status-gnojeno">Gnojeno</label>
-          <select id="status-gnojeno">
-            <option value="nepoznato">Nepoznato</option>
-            <option value="da">Da</option>
-            <option value="ne">Ne</option>
-          </select>
+          <section class="pp-pane" data-pane="pregled">
+            <div id="pp-tasks"></div>
+            <h4 class="pp-h">Zadnji radovi</h4>
+            <div id="pp-last" class="pp-last"></div>
+            <label for="status-napomena" class="pp-h">Napomena</label>
+            <textarea id="status-napomena" rows="2" readonly placeholder="Klikni za unos napomene"></textarea>
+            <div id="pp-legacy" class="pp-legacy hidden"></div>
+          </section>
 
-          <label for="status-spricano">Spricano (komentari)</label>
-          <textarea id="status-spricano" rows="4" placeholder="Primjer: da, modro ulje 4.3.2025"></textarea>
+          <section class="pp-pane hidden" data-pane="dnevnik">
+            <form id="pp-log-form" class="pp-form admin-only" autocomplete="off">
+              <div class="pp-form-row">
+                <select id="pp-log-type" aria-label="Vrsta rada">
+                  <option value="orezivanje">✂️ Orezivanje</option>
+                  <option value="prskanje">🧴 Prskanje</option>
+                  <option value="gnojidba">🌱 Kompost / gnojidba</option>
+                  <option value="zalijevanje">💧 Zalijevanje</option>
+                  <option value="pregled">🔍 Pregled</option>
+                  <option value="bolest">🦠 Bolest / štetnik</option>
+                  <option value="ostalo">📝 Ostalo</option>
+                </select>
+                <input id="pp-log-date" type="date" aria-label="Datum" required>
+              </div>
+              <div class="pp-form-row">
+                <input id="pp-log-text" type="text" maxlength="200" placeholder="Opis (npr. bakar, modro ulje)">
+                <button type="submit" class="btn-primary">Dodaj</button>
+              </div>
+            </form>
+            <ul id="pp-log-list" class="pp-log"></ul>
+          </section>
 
-          <label for="status-napomena">Napomena</label>
-          <input id="status-napomena" type="text" readonly placeholder="Klikni ovdje za unos napomene" />
+          <section class="pp-pane hidden" data-pane="berba">
+            <div id="pp-harvest-est" class="pp-est"></div>
+            <form id="pp-harvest-form" class="pp-form admin-only" autocomplete="off">
+              <div class="pp-form-row">
+                <input id="pp-harvest-year" type="number" min="2000" max="2100" step="1" aria-label="Godina">
+                <input id="pp-harvest-kg" type="number" min="0" step="0.1" inputmode="decimal" placeholder="kg" aria-label="Kilograma">
+                <button type="submit" class="btn-primary">Spremi</button>
+              </div>
+              <input id="pp-harvest-note" type="text" maxlength="200" placeholder="Napomena (npr. sitni plodovi, mraz u cvatnji)">
+            </form>
+            <ul id="pp-harvest-list" class="pp-harvest"></ul>
+          </section>
 
-          <button id="save-plant-status" type="button" class="admin-only">Spremi podatke biljke</button>
-          <button id="delete-tree" type="button" class="admin-only">🗑️ Izbriši stablo</button>
+          <div class="pp-footer">
+            <small>📍 <span id="plant-coords">-</span></small>
+            <button id="delete-tree" type="button" class="admin-only">🗑️ Izbriši stablo</button>
+          </div>
         </div>
       </div>
     </div>
@@ -318,6 +391,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261122c"></script>
+    <script src="script.js?v=20261122e"></script>
 </body>
 </html>

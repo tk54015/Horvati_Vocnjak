@@ -15,7 +15,8 @@ const sql = DATABASE_URL ? neon(DATABASE_URL) : null;
 
 // deleted = stablo izbrisano s karte (original ostaje u base_items, može se vratiti)
 // task = obavljen zadatak iz rasporeda radova (id = 'godina:zadatak')
-const OVERRIDE_KINDS = { note: true, details: true, position: true, deleted: true, task: true };
+// log = dnevnik radova po stablu (niz zapisa), harvest = berba po godinama
+const OVERRIDE_KINDS = { note: true, details: true, position: true, deleted: true, task: true, log: true, harvest: true };
 const DATASET_NAMES = ['stabla', 'loza'];
 const MAX_CHANGES_PER_REQUEST = 5000;
 
@@ -81,7 +82,9 @@ async function readState() {
         plantDetails: {},
         positionOverrides: {},
         deletedIds: {},
-        taskDone: {}
+        taskDone: {},
+        plantLogs: {},
+        plantHarvests: {}
     };
 
     datasets.forEach((row) => {
@@ -96,6 +99,8 @@ async function readState() {
         else if (row.kind === 'position') state.positionOverrides[row.plant_id] = row.value;
         else if (row.kind === 'deleted') state.deletedIds[row.plant_id] = row.value;
         else if (row.kind === 'task') state.taskDone[row.plant_id] = row.value;
+        else if (row.kind === 'log') state.plantLogs[row.plant_id] = row.value;
+        else if (row.kind === 'harvest') state.plantHarvests[row.plant_id] = row.value;
     });
 
     return state;

@@ -2064,3 +2064,589 @@ body.placing-tree .leaflet-container {
         min-width: 26px;
     }
 }
+
+/* ---------- Podaci o biljci (novi panel) ---------- */
+#plant-panel {
+    padding: 10px 12px 12px;
+    font-size: 13px;
+}
+
+.pp-top {
+    padding-right: 30px;
+}
+
+.pp-empty {
+    color: #666;
+    font-size: 13px;
+    padding: 2px 0;
+}
+
+#plant-panel #plant-form {
+    gap: 0;
+    display: block;
+}
+
+#plant-panel #toggle-plant-panel {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+}
+
+#plant-panel.minimized {
+    min-height: 38px;
+}
+
+#plant-panel.minimized::before {
+    content: "🌳 Podaci o biljci";
+    font-weight: 700;
+    font-size: 13px;
+}
+
+#plant-panel #plant-form.hidden {
+    display: none !important;
+}
+
+.pp-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 30px;
+}
+
+.pp-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #f1f7ee;
+    border: 1px solid #dbe8d4;
+    overflow: hidden;
+}
+
+.pp-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.pp-icon span {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.pp-title {
+    min-width: 0;
+}
+
+.pp-title h2 {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.pp-sub {
+    color: #555;
+    font-size: 12px;
+}
+
+.pp-id {
+    font-family: monospace;
+    color: #777;
+}
+
+.pp-dot {
+    color: #aaa;
+    margin: 0 2px;
+}
+
+.pp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0 8px;
+}
+
+.pp-chip {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #f3f5f2;
+    border: 1px solid #e3e8e0;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.pp-chip .drop-off {
+    opacity: 0.25;
+}
+
+.pp-tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid #ddd;
+    margin: 4px 0 8px;
+}
+
+.pp-tab {
+    flex: 1;
+    padding: 6px 4px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    cursor: pointer;
+}
+
+.pp-tab.active {
+    color: #2f5d2f;
+    border-bottom-color: #4f8f4f;
+}
+
+.pp-count {
+    display: inline-block;
+    min-width: 16px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #e8f0e5;
+    color: #2f5d2f;
+    font-size: 10px;
+}
+
+.pp-count:empty {
+    display: none;
+}
+
+.pp-h {
+    display: block;
+    margin: 10px 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2f5d2f;
+}
+
+.pp-muted {
+    color: #888;
+    font-size: 12px;
+    list-style: none;
+}
+
+.pp-tasklist {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+}
+
+.pp-task {
+    padding: 6px 8px;
+    margin-bottom: 5px;
+    border: 1px solid #e6e6e6;
+    border-left: 4px solid #aaa;
+    border-radius: 6px;
+}
+
+.pp-task.prio-1 { border-left-color: #c33b3b; }
+.pp-task.prio-2 { border-left-color: #d8751b; }
+.pp-task.prio-3 { border-left-color: #3d8f56; }
+
+.pp-task.done {
+    opacity: 0.6;
+    background: #fafafa;
+}
+
+.pp-task-title {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.pp-task-desc {
+    color: #555;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 2px;
+}
+
+.pp-task-status {
+    margin-top: 4px;
+}
+
+.pp-ok {
+    color: #2e6f41;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.pp-act {
+    padding: 3px 9px;
+    border: 1px solid #356b35;
+    border-radius: 999px;
+    background: #fff;
+    color: #2f5d2f;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pp-act:hover {
+    background: #4f8f4f;
+    color: #fff;
+}
+
+.pp-last {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+.pp-last-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 12px;
+}
+
+.pp-last-row:last-child {
+    border-bottom: 0;
+}
+
+.pp-last-row b small {
+    font-weight: normal;
+    color: #777;
+}
+
+#plant-panel textarea#status-napomena {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font: inherit;
+    font-size: 12px;
+    resize: vertical;
+}
+
+#plant-panel textarea#status-napomena[readonly] {
+    background: #f6f6f6;
+    color: #555;
+}
+
+.pp-legacy {
+    margin-top: 6px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #f7f4ec;
+    color: #6a5a30;
+    font-size: 11px;
+}
+
+.pp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: #f4f8f2;
+    border: 1px solid #e0eadb;
+}
+
+.pp-form-row {
+    display: flex;
+    gap: 6px;
+}
+
+.pp-form select,
+.pp-form input {
+    min-width: 0;
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #c8d4c2;
+    border-radius: 5px;
+    font: inherit;
+    font-size: 12px;
+    background: #fff;
+}
+
+.pp-form .btn-primary {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+#pp-harvest-year {
+    flex: 0 0 76px;
+}
+
+.pp-log,
+.pp-harvest {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pp-log li,
+.pp-harvest li {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    padding: 6px 26px 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+}
+
+.pp-log-icon {
+    font-size: 15px;
+}
+
+.pp-log-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.pp-log-main small {
+    color: #777;
+}
+
+.pp-log-text {
+    width: 100%;
+    color: #555;
+    font-size: 11px;
+}
+
+.pp-x {
+    position: absolute;
+    right: 0;
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background: #fff;
+    color: #b3261e;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.pp-est {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.pp-year {
+    min-width: 40px;
+}
+
+.pp-kg {
+    font-weight: 700;
+}
+
+.pp-cmp {
+    padding: 0 6px;
+    border-radius: 999px;
+    font-size: 10px;
+}
+
+.pp-cmp.low { background: #fde7e7; color: #a33a3a; }
+.pp-cmp.ok { background: #e8f5eb; color: #2e6f41; }
+.pp-cmp.high { background: #e7eefb; color: #2f5f96; }
+
+.pp-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    color: #888;
+}
+
+.pp-footer #delete-tree {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 11px;
+}
+
+/* ---------- Oznake zadataka na karti ---------- */
+.task-flag-wrap {
+    background: transparent;
+    border: 0;
+    pointer-events: none;
+}
+
+.task-flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.task-flag.p1 { background: #d32f2f; }
+.task-flag.p2 { background: #ef8a17; }
+
+/* ---------- Filter i pretraga ---------- */
+#filter-panel {
+    position: absolute;
+    top: 62px;
+    left: 10px;
+    z-index: 1100;
+    width: min(320px, calc(100vw - 20px));
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    font-size: 12px;
+}
+
+#filter-panel.hidden {
+    display: none;
+}
+
+.fp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+#close-filter {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background: #888;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#filter-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 8px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.fp-label {
+    margin: 10px 0 4px;
+    font-weight: 700;
+    color: #2f5d2f;
+}
+
+.fp-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.fp-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px 2px 4px;
+    border: 1px solid #d5e2e7;
+    border-radius: 999px;
+    background: #fff;
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.fp-type img {
+    border-radius: 3px;
+}
+
+.fp-type.active {
+    background: #4f8f4f;
+    border-color: #356b35;
+    color: #fff;
+}
+
+.fp-states label,
+.fp-toggle {
+    display: block;
+    padding: 3px 0;
+    cursor: pointer;
+}
+
+.fp-toggle {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.fp-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #555;
+}
+
+#filter-reset {
+    padding: 4px 10px;
+    border: 1px solid #aaa;
+    border-radius: 999px;
+    background: #f4f4f4;
+    cursor: pointer;
+}
+
+#filter-chip {
+    position: absolute;
+    top: 62px;
+    left: 10px;
+    z-index: 1050;
+    padding: 5px 12px;
+    border: 2px solid #4f8f4f;
+    border-radius: 999px;
+    background: #fff;
+    color: #2f5d2f;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#filter-chip.hidden {
+    display: none;
+}
+
+#filter-badges {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 5px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-size: 12px;
+}

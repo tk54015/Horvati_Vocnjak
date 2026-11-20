@@ -55,7 +55,9 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {} };
+var plantLogs = {}; // dnevnik po stablu: id -> [{ id, date, type, text, taskKey? }]
+var plantHarvests = {}; // berba po stablu: id -> { godina: { kg, note } }
 var taskDone = {}; // obavljeni zadaci iz rasporeda: 'godina:zadatak' -> { done, at }
 var deletedIds = {}; // izbrisana originalna stabla: id -> { deletedAt, name, treeType }
 var pendingChanges = {};
@@ -307,6 +309,8 @@ function applyServerState(state) {
     positionOverrides = asPlainObject(state.positionOverrides);
     deletedIds = asPlainObject(state.deletedIds);
     taskDone = asPlainObject(state.taskDone);
+    plantLogs = asPlainObject(state.plantLogs);
+    plantHarvests = asPlainObject(state.plantHarvests);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
@@ -315,7 +319,9 @@ function applyServerState(state) {
         details: buildSnapshotFromMap(plantDetails),
         position: buildSnapshotFromMap(positionOverrides),
         deleted: buildSnapshotFromMap(deletedIds),
-        task: buildSnapshotFromMap(taskDone)
+        task: buildSnapshotFromMap(taskDone),
+        log: buildSnapshotFromMap(plantLogs),
+        harvest: buildSnapshotFromMap(plantHarvests)
     };
     pendingChanges = {};
 }
@@ -1386,7 +1392,6 @@ function openPlantPanel(item, isUserItem) {
     if (formEl) formEl.classList.remove('hidden');
 
     document.getElementById('plant-id').textContent = item.id || '-';
-    document.getElementById('plant-type').textContent = item.treeType || '-';
     document.getElementById('plant-height').textContent = formatMeters(item.heightM);
     document.getElementById('plant-coords').textContent = Number(item.lat).toFixed(2) + ', ' + Number(item.lng).toFixed(2);
 
@@ -1395,14 +1400,15 @@ function openPlantPanel(item, isUserItem) {
         var t = normalizeType(item.treeType);
         var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
         var drops = '';
-        for (var i = 0; i < 4; i++) { drops += i < level ? '\uD83D\uDCA7' : '\u25CB'; }
-        waterEl.textContent = drops;
+        for (var i = 0; i < 4; i++) { drops += i < level ? '\uD83D\uDCA7' : '<span class="drop-off">\uD83D\uDCA7</span>'; }
+        waterEl.innerHTML = drops;
     }
 
     var details = getPlantDetails(item.id);
-    document.getElementById('status-orezano').value = details.orezano || 'nepoznato';
-    document.getElementById('status-gnojeno').value = details.gnojeno || 'nepoznato';
-    document.getElementById('status-spricano').value = details.spricano || '';
+    var logDate = document.getElementById('pp-log-date');
+    if (logDate) logDate.value = todayIso();
+    setPlantPanelTab('pregled');
+    renderPlantExtras(item);
 
     var noteInput = document.getElementById('status-napomena');
     noteInput.value = details.napomena || item.notes || '';
@@ -1415,12 +1421,9 @@ function saveSelectedPlantPanel() {
     var item = allItemsById[selectedPlant.itemId];
     if (!item) return;
 
-    var details = {
-        orezano: document.getElementById('status-orezano').value,
-        gnojeno: document.getElementById('status-gnojeno').value,
-        spricano: document.getElementById('status-spricano').value.trim(),
+    var details = Object.assign({}, getPlantDetails(item.id), {
         napomena: document.getElementById('status-napomena').value.trim()
-    };
+    });
 
     plantDetails[item.id] = details;
     savePlantDetails();
@@ -1498,6 +1501,7 @@ function createMarker(item, options) {
         }
 
         renderChangeList();
+        scheduleMapRefresh();
     });
 
     return marker;
@@ -1673,6 +1677,7 @@ function loadInventory() {
                 saveUserItems();
                 renderChangeList();
                 if (!hasUnsavedChanges()) setSyncStatus('ok');
+                loadTasks().then(scheduleMapRefresh).catch(function () {});
             });
         })
         .catch(function (error) {
@@ -2017,7 +2022,7 @@ if (noteInputEl) {
         flushPlantPanelAutosave();
     });
     noteInputEl.addEventListener('keydown', function (event) {
-        if (event.key !== 'Enter') return;
+        if (event.key !== 'Enter' || noteInputEl.tagName === 'TEXTAREA') return;
         event.preventDefault();
         flushPlantPanelAutosave();
     });
@@ -2157,6 +2162,7 @@ document.addEventListener('keydown', function (e) {
         closeAddTreeModal();
         closeEncyclopedia();
         closeTasks();
+        closeFilterPanel();
         setPlacementEnabled(false);
         return;
     }
@@ -2360,6 +2366,7 @@ function placePendingTree(latlng) {
     renderChangeList();
     setPlacementEnabled(false);
     openPlantPanel(newItem, true);
+    scheduleMapRefresh();
 }
 
 if (addTreeForm) {
@@ -2473,6 +2480,9 @@ function fetchAdminStatus() {
 
 function updatePlantFormEditable() {
     var editable = canEdit();
+    if (selectedPlant && allItemsById[selectedPlant.itemId] && typeof renderPlantExtras === 'function') {
+        renderPlantExtras(allItemsById[selectedPlant.itemId]);
+    }
     ['status-orezano', 'status-gnojeno'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.disabled = !editable;
@@ -2660,6 +2670,7 @@ function deleteTree(itemId) {
 
     closePlantPanelSelection();
     renderChangeList();
+    scheduleMapRefresh();
 }
 
 function saveDeletedIds() {
@@ -3152,6 +3163,7 @@ function setTaskState(key, value) {
     else delete taskDone[key];
     if (storageMode === 'server') queueServerSync('task', taskDone);
     renderTasks();
+    onTasksChanged();
 }
 
 function shiftTasksMonth(delta) {
@@ -3529,4 +3541,591 @@ if (encyclopediaArticleEl) {
         var link = event.target.closest('.veg-link');
         if (link) selectEncyclopediaEntry(link.getAttribute('data-id'));
     });
+}
+
+// ---------------------------------------------------------------------------
+// Podaci o biljci: Pregled (zadaci, zadnji radovi, napomena), Dnevnik, Berba
+// + oznake zadataka (❗) na karti + filter i pretraga
+// ---------------------------------------------------------------------------
+var LOG_TYPES = {
+    orezivanje: { icon: '✂️', naziv: 'Orezivanje' },
+    prskanje: { icon: '🧴', naziv: 'Prskanje' },
+    gnojidba: { icon: '🌱', naziv: 'Kompost / gnojidba' },
+    zalijevanje: { icon: '💧', naziv: 'Zalijevanje' },
+    pregled: { icon: '🔍', naziv: 'Pregled' },
+    bolest: { icon: '🦠', naziv: 'Bolest / štetnik' },
+    ostalo: { icon: '📝', naziv: 'Ostalo' }
+};
+// Kategorija zadatka iz rasporeda -> vrsta zapisa u dnevniku
+var TASK_CATEGORY_TO_LOG = { orezivanje: 'orezivanje', 'zaštita': 'prskanje', gnojidba: 'gnojidba', voda: 'zalijevanje' };
+var STAGE_LABELS = { mlado: '🌱 Mlado', u_razvoju: '🌿 U razvoju', odraslo: '🌳 Odraslo' };
+var CANOPY_LABELS = { mala: 'Krošnja: mala', srednja: 'Krošnja: srednja', velika: 'Krošnja: velika' };
+var plantPanelTab = 'pregled';
+
+function todayIso() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function formatHrDate(iso) {
+    var p = String(iso || '').split('-');
+    if (p.length !== 3) return iso || '';
+    return Number(p[2]) + '.' + Number(p[1]) + '.' + p[0] + '.';
+}
+
+function daysAgoText(iso) {
+    var d = new Date(iso + 'T12:00:00');
+    var diff = Math.round((Date.now() - d.getTime()) / 86400000);
+    if (isNaN(diff)) return '';
+    if (diff <= 0) return 'danas';
+    if (diff === 1) return 'jučer';
+    if (diff < 60) return 'prije ' + diff + ' dana';
+    var months = Math.round(diff / 30);
+    if (months < 24) return 'prije ' + months + ' mj.';
+    return 'prije ' + Math.round(diff / 365) + ' god.';
+}
+
+function getPlantLogs(itemId) {
+    var list = plantLogs[itemId];
+    return Array.isArray(list) ? list.slice().sort(function (a, b) {
+        return String(b.date).localeCompare(String(a.date)) || String(b.id).localeCompare(String(a.id));
+    }) : [];
+}
+
+function savePlantLogs() {
+    if (storageMode === 'server') queueServerSync('log', plantLogs);
+}
+
+function savePlantHarvests() {
+    if (storageMode === 'server') queueServerSync('harvest', plantHarvests);
+}
+
+function addPlantLog(itemId, entry) {
+    if (!canEdit()) return;
+    var list = Array.isArray(plantLogs[itemId]) ? plantLogs[itemId].slice() : [];
+    entry.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    entry.at = new Date().toISOString();
+    list.push(entry);
+    plantLogs[itemId] = list;
+    savePlantLogs();
+    afterPlantDataChange();
+}
+
+function removePlantLog(itemId, logId) {
+    if (!canEdit()) return;
+    var list = (plantLogs[itemId] || []).filter(function (e) { return e.id !== logId; });
+    if (list.length) plantLogs[itemId] = list;
+    else delete plantLogs[itemId];
+    savePlantLogs();
+    afterPlantDataChange();
+}
+
+function afterPlantDataChange() {
+    if (selectedPlant && allItemsById[selectedPlant.itemId]) renderPlantExtras(allItemsById[selectedPlant.itemId]);
+    scheduleMapRefresh();
+}
+
+// ----- zadaci za stablo -------------------------------------------------------
+
+function currentMonthTaskRows() {
+    if (!tasksData) return null;
+    var saved = tasksView;
+    var now = new Date();
+    tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
+    var rows = tasksForView().active;
+    tasksView = saved;
+    return rows;
+}
+
+// Početak trenutnog "prozora" zadatka (npr. za zadatak veljača–ožujak u ožujku: 1. veljače)
+function taskWindowStartIso(task) {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = now.getMonth() + 1;
+    var steps = 0;
+    while (steps < 11) {
+        var prev = m - 1 < 1 ? 12 : m - 1;
+        if ((task.mjeseci || []).indexOf(prev) === -1) break;
+        m = prev;
+        if (m === 12) y -= 1;
+        steps++;
+    }
+    return y + '-' + String(m).padStart(2, '0') + '-01';
+}
+
+function treeTaskHandledEntry(itemId, row) {
+    var logType = TASK_CATEGORY_TO_LOG[row.task.kategorija];
+    var since = taskWindowStartIso(row.task);
+    var logs = getPlantLogs(itemId);
+    for (var i = 0; i < logs.length; i++) {
+        var e = logs[i];
+        if (e.taskKey === row.key) return e;
+        if (logType && e.type === logType && String(e.date) >= since) return e;
+    }
+    return null;
+}
+
+function treeTasks(item) {
+    var rows = currentMonthTaskRows();
+    if (!rows) return null;
+    var type = normalizeType(item.treeType);
+    return rows
+        .filter(function (r) { return (r.task.vrste || []).indexOf(type) !== -1; })
+        .map(function (r) {
+            return { row: r, handled: r.done ? null : treeTaskHandledEntry(item.id, r) };
+        })
+        .sort(function (a, b) {
+            var ao = a.row.done || a.handled ? 1 : 0;
+            var bo = b.row.done || b.handled ? 1 : 0;
+            return ao - bo || a.row.task.prioritet - b.row.task.prioritet;
+        });
+}
+
+// 1 = važno, 2 = redovno, 0 = ništa otvoreno
+function treeAlertLevel(item) {
+    var list = treeTasks(item);
+    if (!list) return 0;
+    var level = 0;
+    list.forEach(function (t) {
+        if (t.row.done || t.handled) return;
+        var p = t.row.task.prioritet;
+        if (p <= 2 && (level === 0 || p < level)) level = p;
+    });
+    return level;
+}
+
+// ----- prikaz panela ----------------------------------------------------------
+
+function renderPlantHeader(item) {
+    var type = normalizeType(item.treeType);
+    var icon = iconByType(item.treeType);
+    var iconEl = document.getElementById('pp-icon');
+    if (iconEl) {
+        var emoji = EMOJI_MARKERS[type] || (getTypeWithEmoji(item.treeType).split(' ')[1] || '🌳');
+        iconEl.innerHTML = icon ? '<img src="' + icon + '" alt="">' : '<span>' + escapeHtml(emoji) + '</span>';
+    }
+    var nameEl = document.getElementById('pp-name');
+    if (nameEl) nameEl.textContent = item.name || item.id;
+    document.getElementById('plant-type').textContent = speciesName(type) || item.treeType || '-';
+
+    var stageEl = document.getElementById('pp-stage');
+    var canopyEl = document.getElementById('pp-canopy');
+    if (stageEl) {
+        var stage = STAGE_LABELS[String(item.growthStage || '').toLowerCase()];
+        stageEl.textContent = stage || '';
+        stageEl.classList.toggle('hidden', !stage);
+    }
+    if (canopyEl) {
+        var canopy = CANOPY_LABELS[String(item.canopyDensity || '').toLowerCase()];
+        canopyEl.textContent = canopy || '';
+        canopyEl.classList.toggle('hidden', !canopy);
+    }
+}
+
+function renderPlantTasks(item) {
+    var el = document.getElementById('pp-tasks');
+    if (!el) return;
+    var list = treeTasks(item);
+    var monthName = MONTH_NAMES[new Date().getMonth()];
+    if (!list) {
+        el.innerHTML = '<p class="pp-muted">Učitavanje zadataka…</p>';
+        loadTasks().then(function () { if (selectedPlant && selectedPlant.itemId === item.id) renderPlantTasks(item); }).catch(function () {});
+        return;
+    }
+    var editable = canEdit();
+    var html = '<h4 class="pp-h">📋 Zadaci – ' + escapeHtml(monthName.toLowerCase()) + '</h4>';
+    if (!list.length) {
+        el.innerHTML = html + '<p class="pp-muted">Ovaj mjesec nema zadataka za ovu vrstu. 🌿</p>';
+        return;
+    }
+    html += '<ul class="pp-tasklist">';
+    list.forEach(function (t) {
+        var task = t.row.task;
+        var status = '';
+        if (t.row.done) {
+            status = '<span class="pp-ok">✅ obavljeno za cijelu vrstu</span>';
+        } else if (t.handled) {
+            status = '<span class="pp-ok">✅ napravljeno na ovom stablu ' + escapeHtml(formatHrDate(t.handled.date)) + '</span>';
+        } else if (editable) {
+            status = '<button type="button" class="pp-act" data-act="task-done" data-key="' + escapeHtml(t.row.key) + '">✓ Napravljeno na ovom stablu</button>';
+        }
+        var badge = task.poPotrebi ? ' <span class="task-badge cond">🔎 po potrebi</span>' : '';
+        if (t.row.isLast && !t.row.done && !t.handled) badge += ' <span class="task-badge last">⏳ zadnji mjesec</span>';
+        html += '<li class="pp-task prio-' + task.prioritet + (t.row.done || t.handled ? ' done' : '') + '">' +
+            '<div class="pp-task-title">' + (CATEGORY_ICONS[task.kategorija] || '📝') + ' ' + escapeHtml(task.naslov) + badge + '</div>' +
+            '<div class="pp-task-desc">' + escapeHtml(task.opis || '') + '</div>' +
+            '<div class="pp-task-status">' + status + '</div></li>';
+    });
+    html += '</ul><button type="button" class="link-btn" data-act="open-tasks">🗓️ Otvori raspored radova</button>';
+    el.innerHTML = html;
+}
+
+function renderPlantLast(item) {
+    var el = document.getElementById('pp-last');
+    if (!el) return;
+    var logs = getPlantLogs(item.id);
+    el.innerHTML = ['orezivanje', 'prskanje', 'gnojidba'].map(function (type) {
+        var e = logs.find(function (x) { return x.type === type; });
+        var info = LOG_TYPES[type];
+        return '<div class="pp-last-row"><span>' + info.icon + ' ' + info.naziv + '</span>' +
+            (e
+                ? '<b title="' + escapeHtml(e.text || '') + '">' + escapeHtml(formatHrDate(e.date)) + ' <small>(' + escapeHtml(daysAgoText(e.date)) + ')</small></b>'
+                : '<span class="pp-muted">nije zabilježeno</span>') +
+            '</div>';
+    }).join('');
+}
+
+function renderPlantLegacy(item) {
+    var el = document.getElementById('pp-legacy');
+    if (!el) return;
+    var d = plantDetails[item.id] || {};
+    var parts = [];
+    if (d.orezano && d.orezano !== 'nepoznato') parts.push('Orezano: ' + d.orezano);
+    if (d.gnojeno && d.gnojeno !== 'nepoznato') parts.push('Gnojeno: ' + d.gnojeno);
+    if (d.spricano) parts.push('Špricano: ' + d.spricano);
+    el.innerHTML = parts.length ? '🗂️ Raniji zapis: ' + escapeHtml(parts.join(' · ')) : '';
+    el.classList.toggle('hidden', !parts.length);
+}
+
+function renderPlantLog(item) {
+    var list = getPlantLogs(item.id);
+    var countEl = document.getElementById('pp-log-count');
+    if (countEl) countEl.textContent = list.length ? String(list.length) : '';
+    var ul = document.getElementById('pp-log-list');
+    if (!ul) return;
+    var editable = canEdit();
+    if (!list.length) {
+        ul.innerHTML = '<li class="pp-muted">Još nema zapisa.' + (editable ? ' Dodaj prvi rad iznad.' : '') + '</li>';
+        return;
+    }
+    ul.innerHTML = list.map(function (e) {
+        var info = LOG_TYPES[e.type] || LOG_TYPES.ostalo;
+        return '<li><span class="pp-log-icon">' + info.icon + '</span>' +
+            '<div class="pp-log-main"><div><b>' + escapeHtml(info.naziv) + '</b> <small>' + escapeHtml(formatHrDate(e.date)) + '</small></div>' +
+            (e.text ? '<div class="pp-log-text">' + escapeHtml(e.text) + '</div>' : '') + '</div>' +
+            (editable ? '<button type="button" class="pp-x" data-act="log-del" data-id="' + escapeHtml(e.id) + '" title="Obriši zapis">✕</button>' : '') +
+            '</li>';
+    }).join('');
+}
+
+function renderPlantHarvest(item) {
+    var estEl = document.getElementById('pp-harvest-est');
+    var ul = document.getElementById('pp-harvest-list');
+    if (!estEl || !ul) return;
+    var type = normalizeType(item.treeType);
+    var data = plantHarvests[item.id] || {};
+    var years = Object.keys(data).sort().reverse();
+    var est = type === 'ostalo' ? null : getYieldRangeKg(item);
+    var estText = est ? Math.round(est.min) + '–' + Math.round(est.max) + ' kg' : null;
+
+    var html = estText ? '<div>📊 Procjena za ovo stablo: <b>' + estText + '</b> godišnje</div>' : '<div class="pp-muted">Za ovu vrstu nema procjene uroda.</div>';
+    if (years.length) {
+        var total = years.reduce(function (s, y) { return s + Number(data[y].kg || 0); }, 0);
+        html += '<div>🧺 Ukupno zabilježeno: <b>' + (Math.round(total * 10) / 10) + ' kg</b> u ' + years.length +
+            (years.length === 1 ? ' godini' : ' godina') + ', prosjek <b>' + (Math.round(total / years.length * 10) / 10) + ' kg</b></div>';
+    }
+    estEl.innerHTML = html;
+
+    var editable = canEdit();
+    if (!years.length) {
+        ul.innerHTML = '<li class="pp-muted">Još nema zabilježene berbe.</li>';
+        return;
+    }
+    ul.innerHTML = years.map(function (y) {
+        var h = data[y];
+        var kg = Number(h.kg || 0);
+        var cmp = '';
+        if (est) {
+            if (kg < est.min) cmp = '<span class="pp-cmp low">ispod procjene</span>';
+            else if (kg > est.max) cmp = '<span class="pp-cmp high">iznad procjene</span>';
+            else cmp = '<span class="pp-cmp ok">u okviru procjene</span>';
+        }
+        return '<li><b class="pp-year">' + escapeHtml(y) + '</b><span class="pp-kg">' + (Math.round(kg * 10) / 10) + ' kg</span>' + cmp +
+            (h.note ? '<div class="pp-log-text">' + escapeHtml(h.note) + '</div>' : '') +
+            (editable ? '<button type="button" class="pp-x" data-act="harvest-del" data-year="' + escapeHtml(y) + '" title="Obriši">✕</button>' : '') +
+            '</li>';
+    }).join('');
+}
+
+function renderPlantExtras(item) {
+    if (!item) return;
+    renderPlantHeader(item);
+    renderPlantTasks(item);
+    renderPlantLast(item);
+    renderPlantLegacy(item);
+    renderPlantLog(item);
+    renderPlantHarvest(item);
+    var dateEl = document.getElementById('pp-log-date');
+    if (dateEl && !dateEl.value) dateEl.value = todayIso();
+    var yearEl = document.getElementById('pp-harvest-year');
+    if (yearEl && !yearEl.value) yearEl.value = String(new Date().getFullYear());
+}
+
+function setPlantPanelTab(tab) {
+    plantPanelTab = tab;
+    document.querySelectorAll('.pp-tab').forEach(function (b) {
+        var on = b.getAttribute('data-tab') === tab;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.pp-pane').forEach(function (p) {
+        p.classList.toggle('hidden', p.getAttribute('data-pane') !== tab);
+    });
+}
+
+document.querySelectorAll('.pp-tab').forEach(function (b) {
+    b.addEventListener('click', function () { setPlantPanelTab(b.getAttribute('data-tab')); });
+});
+
+var plantFormEl = document.getElementById('plant-form');
+if (plantFormEl) {
+    plantFormEl.addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-act]');
+        if (!btn || !selectedPlant) return;
+        var item = allItemsById[selectedPlant.itemId];
+        if (!item) return;
+        var act = btn.getAttribute('data-act');
+
+        if (act === 'open-tasks') {
+            openTasks();
+        } else if (act === 'task-done' && canEdit()) {
+            var key = btn.getAttribute('data-key');
+            var rows = currentMonthTaskRows() || [];
+            var row = rows.find(function (r) { return r.key === key; });
+            if (!row) return;
+            addPlantLog(item.id, {
+                date: todayIso(),
+                type: TASK_CATEGORY_TO_LOG[row.task.kategorija] || 'ostalo',
+                text: row.task.naslov,
+                taskKey: key
+            });
+        } else if (act === 'log-del' && canEdit()) {
+            var logId = btn.getAttribute('data-id');
+            askConfirm('Obrisati zapis?', 'Zapis će biti uklonjen iz dnevnika ovog stabla.', 'Obriši').then(function (ok) {
+                if (ok) removePlantLog(item.id, logId);
+            });
+        } else if (act === 'harvest-del' && canEdit()) {
+            var year = btn.getAttribute('data-year');
+            askConfirm('Obrisati berbu?', 'Obrisati zapis berbe za ' + year + '. godinu?', 'Obriši').then(function (ok) {
+                if (!ok) return;
+                var data = Object.assign({}, plantHarvests[item.id] || {});
+                delete data[year];
+                if (Object.keys(data).length) plantHarvests[item.id] = data;
+                else delete plantHarvests[item.id];
+                savePlantHarvests();
+                afterPlantDataChange();
+            });
+        }
+    });
+}
+
+var plantLogForm = document.getElementById('pp-log-form');
+if (plantLogForm) {
+    plantLogForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!selectedPlant || !canEdit()) return;
+        var date = document.getElementById('pp-log-date').value || todayIso();
+        var textEl = document.getElementById('pp-log-text');
+        addPlantLog(selectedPlant.itemId, {
+            date: date,
+            type: document.getElementById('pp-log-type').value,
+            text: textEl.value.trim()
+        });
+        textEl.value = '';
+    });
+}
+
+var plantHarvestForm = document.getElementById('pp-harvest-form');
+if (plantHarvestForm) {
+    plantHarvestForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!selectedPlant || !canEdit()) return;
+        var year = String(parseInt(document.getElementById('pp-harvest-year').value, 10) || new Date().getFullYear());
+        var kgRaw = document.getElementById('pp-harvest-kg').value;
+        var kg = Number(kgRaw);
+        if (kgRaw === '' || !isFinite(kg) || kg < 0) {
+            alert('Upiši količinu u kg (npr. 12.5).');
+            return;
+        }
+        var noteEl = document.getElementById('pp-harvest-note');
+        var id = selectedPlant.itemId;
+        var data = Object.assign({}, plantHarvests[id] || {});
+        data[year] = { kg: kg, note: noteEl.value.trim(), at: new Date().toISOString() };
+        plantHarvests[id] = data;
+        savePlantHarvests();
+        document.getElementById('pp-harvest-kg').value = '';
+        noteEl.value = '';
+        afterPlantDataChange();
+    });
+}
+
+// ----- oznake zadataka (❗) i filter na karti --------------------------------
+
+var taskBadgeLayer = L.layerGroup().addTo(map);
+var mapFilter = { types: {}, state: 'all', search: '', badges: 'important' }; // badges: important | all | off
+var mapRefreshTimer = null;
+
+function scheduleMapRefresh() {
+    if (mapRefreshTimer) clearTimeout(mapRefreshTimer);
+    mapRefreshTimer = setTimeout(function () {
+        mapRefreshTimer = null;
+        applyMapFilter();
+    }, 60);
+}
+
+function normalizeSearch(text) {
+    return String(text || '').toLowerCase()
+        .replace(/[šś]/g, 's').replace(/đ/g, 'd').replace(/[čć]/g, 'c').replace(/ž/g, 'z');
+}
+
+function filterActive() {
+    return Object.keys(mapFilter.types).length > 0 || mapFilter.state !== 'all' || !!mapFilter.search;
+}
+
+function itemMatchesFilter(item) {
+    var type = normalizeType(item.treeType);
+    if (Object.keys(mapFilter.types).length && !mapFilter.types[type]) return false;
+    if (mapFilter.search) {
+        var q = normalizeSearch(mapFilter.search);
+        if (normalizeSearch(item.name).indexOf(q) === -1 && normalizeSearch(item.id).indexOf(q) === -1) return false;
+    }
+    if (mapFilter.state === 'tasks' && !treeAlertLevel(item)) return false;
+    if (mapFilter.state === 'notpruned') {
+        var year = String(new Date().getFullYear());
+        var pruned = getPlantLogs(item.id).some(function (e) { return e.type === 'orezivanje' && String(e.date).slice(0, 4) === year; });
+        if (pruned) return false;
+    }
+    if (mapFilter.state === 'nolog' && getPlantLogs(item.id).length) return false;
+    return true;
+}
+
+function allMapItems() {
+    return baseItems.concat(userItems).filter(function (i) { return i && i.id && allMarkersById[i.id]; });
+}
+
+function applyMapFilter() {
+    var items = allMapItems();
+    var active = filterActive();
+    var shown = 0;
+    items.forEach(function (item) {
+        var match = !active || itemMatchesFilter(item);
+        if (match) shown++;
+        var marker = allMarkersById[item.id];
+        marker.setOpacity(match ? 1 : 0.15);
+        var el = marker.getElement();
+        if (el) el.classList.toggle('marker-filtered-out', !match);
+        item._filterMatch = match;
+    });
+    var countEl = document.getElementById('filter-count');
+    if (countEl) countEl.textContent = 'Prikazano ' + shown + ' od ' + items.length;
+    var chip = document.getElementById('filter-chip');
+    if (chip) {
+        chip.classList.toggle('hidden', !active);
+        chip.textContent = '🔍 ' + shown + ' / ' + items.length + '  ✕';
+    }
+    refreshTaskBadges();
+}
+
+function refreshTaskBadges() {
+    taskBadgeLayer.clearLayers();
+    if (mapFilter.badges === 'off' || !tasksData) return;
+    allMapItems().forEach(function (item) {
+        if (item._filterMatch === false) return;
+        var marker = allMarkersById[item.id];
+        var el = marker.getElement();
+        if (el && el.classList.contains('vine-dot-wrapper')) return; // sitne točke vinove loze
+        var level = treeAlertLevel(item);
+        if (!level || (mapFilter.badges === 'important' && level !== 1)) return;
+        var ll = marker.getLatLng();
+        L.marker(ll, {
+            icon: L.divIcon({
+                className: 'task-flag-wrap',
+                html: '<span class="task-flag p' + level + '" title="' + (level === 1 ? 'Važan zadatak ovaj mjesec' : 'Zadatak ovaj mjesec') + '">!</span>',
+                iconSize: [16, 16],
+                iconAnchor: [-4, Math.round(FULL_ICON_SIZE + 6)]
+            }),
+            interactive: false,
+            keyboard: false,
+            zIndexOffset: 3000
+        }).addTo(taskBadgeLayer);
+    });
+}
+
+function renderFilterTypes() {
+    var el = document.getElementById('filter-types');
+    if (!el) return;
+    var counts = countTreesByType();
+    var types = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+    el.innerHTML = types.map(function (t) {
+        var on = !!mapFilter.types[t];
+        return '<button type="button" class="fp-type' + (on ? ' active' : '') + '" data-type="' + escapeHtml(t) + '" aria-pressed="' + on + '">' +
+            speciesIconHtml(t) + escapeHtml(speciesName(t)) + ' <b>' + counts[t] + '</b></button>';
+    }).join('');
+}
+
+var filterPanelEl = document.getElementById('filter-panel');
+
+function openFilterPanel() {
+    if (!filterPanelEl) return;
+    setMenuOpen(false);
+    renderFilterTypes();
+    filterPanelEl.classList.remove('hidden');
+    loadTasks().then(function () { renderFilterTypes(); scheduleMapRefresh(); }).catch(function () {});
+}
+
+function closeFilterPanel() {
+    if (filterPanelEl) filterPanelEl.classList.add('hidden');
+}
+
+if (filterPanelEl) {
+    document.getElementById('open-filter').addEventListener('click', openFilterPanel);
+    document.getElementById('close-filter').addEventListener('click', closeFilterPanel);
+    document.getElementById('filter-chip').addEventListener('click', openFilterPanel);
+    document.getElementById('filter-types').addEventListener('click', function (event) {
+        var b = event.target.closest('.fp-type');
+        if (!b) return;
+        var t = b.getAttribute('data-type');
+        if (mapFilter.types[t]) delete mapFilter.types[t];
+        else mapFilter.types[t] = true;
+        renderFilterTypes();
+        scheduleMapRefresh();
+    });
+    filterPanelEl.addEventListener('change', function (event) {
+        if (event.target.name === 'filter-state') {
+            mapFilter.state = event.target.value;
+            scheduleMapRefresh();
+        } else if (event.target.id === 'filter-badges') {
+            mapFilter.badges = event.target.value;
+            scheduleMapRefresh();
+        }
+    });
+    var searchEl = document.getElementById('filter-search');
+    searchEl.addEventListener('input', function () {
+        mapFilter.search = searchEl.value.trim();
+        scheduleMapRefresh();
+    });
+    searchEl.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        var hits = allMapItems().filter(itemMatchesFilter);
+        if (!hits.length) return;
+        var item = hits[0];
+        map.setView(allMarkersById[item.id].getLatLng(), Math.max(map.getZoom(), 1));
+        openPlantPanel(item, userItems.some(function (u) { return u.id === item.id; }));
+    });
+    document.getElementById('filter-reset').addEventListener('click', function () {
+        mapFilter.types = {};
+        mapFilter.state = 'all';
+        mapFilter.search = '';
+        searchEl.value = '';
+        var allRadio = filterPanelEl.querySelector('input[name="filter-state"][value="all"]');
+        if (allRadio) allRadio.checked = true;
+        renderFilterTypes();
+        scheduleMapRefresh();
+    });
+}
+
+// Nakon promjena u rasporedu osvježi oznake i otvoreni panel
+function onTasksChanged() {
+    afterPlantDataChange();
 }

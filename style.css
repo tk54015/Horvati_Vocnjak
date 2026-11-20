@@ -3299,3 +3299,73 @@ body.placing-tree .leaflet-container {
     background: #3d9a4a;
     color: #fff;
 }
+
+/* ---------- Enciklopedija: problem -> rješenje ---------- */
+.enc-problems {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.enc-problem {
+    padding: 8px 10px;
+    border: 1px solid #d5e5cb;
+    border-radius: 8px;
+    background: #f6fbf2;
+}
+
+.enc-problem-name {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.enc-problem-row {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 8px;
+    align-items: start;
+    padding: 3px 0;
+}
+
+.enc-problem-row p {
+    margin: 0 !important;
+}
+
+.enc-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.enc-tag.see { background: #e7eefb; color: #2f5f96; }
+.enc-tag.fix { background: #e3f4e1; color: #22662b; }
+
+@media (max-width: 640px) {
+    .enc-problem-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+}
+
+/* ---------- Kartice Voće / Povrće: neaktivna tamnija ---------- */
+.enc-tab {
+    background: #c3dcb0;
+    border-color: #a9cc94;
+    color: #4f6a45;
+}
+
+.enc-tab:hover {
+    background: #cfe5be;
+}
+
+.enc-tab.active {
+    background: var(--panel-bg-solid);
+    border-color: var(--panel-border);
+    border-bottom-color: var(--panel-bg-solid);
+    color: #1f4f1f;
+}

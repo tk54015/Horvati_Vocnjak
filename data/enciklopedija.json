@@ -19,41 +19,50 @@
       "bolesti": [
         {
           "naziv": "Krastavost jabuke",
-          "opis": "Maslinaste do tamne baršunaste pjege na listu i plodu; jako zaraženi plodovi mogu se deformirati i pucati. Najvažnija bolest jabuke, širi se u proljeće kad je list dulje mokar od kiše."
+          "prepoznaj": "Maslinaste do tamne baršunaste pjege na listu i plodu; jako zaraženi plodovi mogu se deformirati i pucati. Najvažnija bolest jabuke, širi se u proljeće kad je list dulje mokar od kiše.",
+          "rjesenje": "U jesen pograbiti i ukloniti lišće (na njemu prezimljuje). Krošnju prozračiti rezidbom. Ako je bilo krastavosti, od mišjeg uha do nakon cvatnje štititi prije najavljene kiše (bakreni pa organski/sumporni pripravci prema etiketi)."
         },
         {
           "naziv": "Pepelnica jabuke",
-          "opis": "Bijela prevlaka na mladim listovima i izbojcima. Zaražene vrhove izboja izrezati zimi i u proljeće čim se pojave; to je glavna mjera."
+          "prepoznaj": "Bijela, brašnasta prevlaka na mladim listovima i vrhovima izboja; listovi se suše i uvijaju.",
+          "rjesenje": "Zaražene vrhove izboja izrezati zimi i u proljeće čim se pojave – to je glavna mjera. Kod jakog napada sumporni pripravci od početka cvatnje."
         },
         {
           "naziv": "Monilija (trulež plodova)",
-          "opis": "Smeđa trulež s koncentričnim krugovima jastučića. Mumificirane plodove ukloniti sa stabla i s tla."
+          "prepoznaj": "Smeđa trulež ploda s koncentričnim krugovima bjelkastih jastučića; plodovi se osuše u tvrde „mumije”.",
+          "rjesenje": "Mumije skupiti sa stabla i s tla i odnijeti iz voćnjaka. Trule plodove brati čim se pojave. Izbjegavati ozljede plodova (ose, tuča, savijač)."
         },
         {
           "naziv": "Bakterijska palež",
-          "opis": "Cvjetovi i vrhovi izboja venu i pocrne, savijaju se kao pastirski štap. Zaražene grane izrezati 30–50 cm u zdravo i dezinficirati alat."
+          "prepoznaj": "Cvjetovi i vrhovi izboja naglo venu i pocrne, savijaju se kao pastirski štap; iz rana može curiti ljepljiv iscjedak.",
+          "rjesenje": "Zaražene grane po suhom vremenu izrezati 30–50 cm u zdravo i spaliti ili odnijeti. Alat dezinficirati nakon svakog reza. Ne gnojiti previše dušikom. Sumnju prijaviti savjetodavnoj službi."
         },
         {
           "naziv": "Rak kore",
-          "opis": "Udubljene, napukle rane na granama i deblu, često oko pupova i rana od rezidbe. Zaražene grane izrezati u zdravo po suhom vremenu."
+          "prepoznaj": "Udubljene, napukle rane na granama i deblu, često oko pupova i rana od rezidbe; kora oko rane odumire.",
+          "rjesenje": "Zaražene grane izrezati u zdravo po suhom vremenu; rane na deblu očistiti do zdravog drva. Rezati pravilno, bez patrljaka. Kod jakog napada bakar u jesen pri opadanju lišća."
         }
       ],
       "stetnici": [
         {
           "naziv": "Jabučni savijač",
-          "opis": "Ličinka (crv) u plodu. Prati se feromonskim klopkama, a crvljive plodove treba skupljati."
+          "prepoznaj": "Crv (ličinka) u plodu, rupica s izmetom na plodu; crvljivi plodovi ranije opadaju.",
+          "rjesenje": "Feromonske klopke od svibnja za praćenje leta. Crvljive i otpale plodove redovito skupljati. Kod jakog napada ciljani tretman u vrijeme izlaska ličinki, prema ulovu."
         },
         {
           "naziv": "Lisne uši (zelena, krvava uš)",
-          "opis": "Kovrčanje lista; krvava uš stvara bijele vunaste kolonije na kori."
+          "prepoznaj": "Kovrčanje lista i ljepljiva medna rosa; krvava uš stvara bijele vunaste kolonije na kori i ranama.",
+          "rjesenje": "Male kolonije isprati mlazom vode ili otkinuti vrhove. Poticati korisne kukce (bubamare, zlatooke). Prskati samo kod jakog napada mladih stabala."
         },
         {
           "naziv": "Crveni voćni pauk (grinja)",
-          "opis": "List posvijetli i postane brončan ljeti u suhom vremenu."
+          "prepoznaj": "List posvijetli, postane sitno točkast pa brončan, ljeti u suhom i vrućem vremenu.",
+          "rjesenje": "Pregledati naličje lista lupom. Izbjegavati širokospektralna sredstva koja ubijaju grabežljive grinje. Kod jakog napada zimsko uljno prskanje iduće godine."
         },
         {
           "naziv": "Potkornjaci",
-          "opis": "Sitne rupice na kori, uglavnom na oslabljenim stablima. Najbolja zaštita je dobra kondicija stabla i uklanjanje suhih grana."
+          "prepoznaj": "Sitne rupice na kori i piljevina, uglavnom na oslabljenim i suhim granama.",
+          "rjesenje": "Održavati stablo u dobroj kondiciji (voda, kompost). Suhe i napadnute grane izrezati i spaliti prije proljeća."
         }
       ],
       "zastita": [
@@ -95,25 +104,30 @@
       "bolesti": [
         {
           "naziv": "Krastavost kruške",
-          "opis": "Tamne pjege na listu i plodu, plodovi pucaju. Zaštita kao kod jabuke."
+          "prepoznaj": "Tamne pjege na listu i plodu, plodovi pucaju i ostaju sitni.",
+          "rjesenje": "Kao kod jabuke: ukloniti otpalo lišće, prozračiti krošnju, a ako je bilo zaraze štititi prije kiše od pupanja do nakon cvatnje."
         },
         {
           "naziv": "Bakterijska palež",
-          "opis": "Kruška je vrlo osjetljiva. Pocrnjeli cvjetovi i vrhovi izboja; izrezati duboko u zdravo i spaliti."
+          "prepoznaj": "Kruška je vrlo osjetljiva: pocrnjeli cvjetovi i vrhovi izboja savijeni kao pastirski štap.",
+          "rjesenje": "Zaražene grane po suhom vremenu izrezati duboko u zdravo (30–50 cm) i spaliti, alat dezinficirati. Pregledavati u cvatnji. Sumnju prijaviti savjetodavnoj službi."
         },
         {
           "naziv": "Hrđa kruške",
-          "opis": "Narančaste pjege na listu, a s donje strane izrasline. Prijelazni domaćin je kleka / sabina; uklanjanje kleke u blizini smanjuje zarazu, ali spore mogu doći i s veće udaljenosti."
+          "prepoznaj": "Narančaste pjege na licu lista, a na naličju izrasline poput bradavica.",
+          "rjesenje": "Ukloniti zaraženo lišće. Ne saditi kleku / sabinu u blizini (prijelazni domaćin); spore ipak mogu doći i izdaleka. Kod jakog napada zaštita u proljeće."
         }
       ],
       "stetnici": [
         {
           "naziv": "Kruškina buha",
-          "opis": "Ljepljiva medna rosa i čađavica na lišću i plodovima. Pratiti brojnost u proljeće; zimski uljni pripravak samo kod jačeg napada, ne svake godine."
+          "prepoznaj": "Ljepljiva medna rosa i crna čađavica na lišću i plodovima; mlade ličinke u pazušcima listova.",
+          "rjesenje": "Pratiti brojnost u proljeće. Zimski uljni pripravak samo nakon jačeg napada, ne svake godine. Ne gnojiti previše dušikom."
         },
         {
           "naziv": "Lisne uši i savijač",
-          "opis": "Kao kod jabuke."
+          "prepoznaj": "Kovrčanje lista (uši) i crvljivi plodovi (savijač).",
+          "rjesenje": "Kao kod jabuke: uši isprati ili otkinuti vrhove, za savijača feromonske klopke i skupljanje crvljivih plodova."
         }
       ],
       "zastita": [
@@ -151,37 +165,45 @@
       "bolesti": [
         {
           "naziv": "Šarka šljive (virus)",
-          "opis": "Svijetli prstenovi i pjege na listu, deformirani, kiseli plodovi koji prerano opadaju. Nije svako stablo s deformiranim plodovima zaraženo: sumnju potvrditi (savjetodavna služba ili laboratorij). Potvrđeno zaražena stabla su neizlječiva i treba ih izvaditi. Virus šire lisne uši."
+          "prepoznaj": "Svijetli prstenovi i pjege na listu, deformirani, kiseli plodovi koji prerano opadaju.",
+          "rjesenje": "Sumnju potvrditi (savjetodavna služba ili laboratorij) – nije svako stablo s deformiranim plodovima zaraženo. Potvrđeno zaražena stabla su neizlječiva: izvaditi ih. Saditi certificirane sadnice; virus šire lisne uši."
         },
         {
           "naziv": "Rogač šljive",
-          "opis": "Plodovi izduženi, spljošteni, bez koštice. Bakar u vrijeme bubrenja pupova."
+          "prepoznaj": "Plodovi izduženi, spljošteni i šuplji, bez koštice; kasnije se presvuku sivom prevlakom.",
+          "rjesenje": "Zaražene plodove otkinuti i ukloniti prije nego se presvuku. Ako ga je bilo, bakreni tretman u vrijeme bubrenja pupova iduće godine."
         },
         {
           "naziv": "Monilija",
-          "opis": "Trulež plodova i sušenje cvjetova. Ukloniti mumije."
+          "prepoznaj": "Sušenje cvjetova u kišnoj cvatnji i trulež zrelih plodova s jastučićima.",
+          "rjesenje": "Ukloniti mumije i suhe grančice. Ne ostavljati trule plodove. U kišnoj cvatnji zaštita cvijeta ako je prijašnjih godina bilo jake zaraze."
         },
         {
           "naziv": "Šupljikavost lista",
-          "opis": "Male crvenkaste pjege koje ispadnu pa list izgleda izbušeno."
+          "prepoznaj": "Male crvenkaste pjege koje ispadnu, pa list izgleda kao izbušen sačmom.",
+          "rjesenje": "Pograbiti otpalo lišće. Kod jače zaraze bakar pri opadanju lišća i u bubrenju pupova."
         },
         {
           "naziv": "Hrđa šljive",
-          "opis": "Smeđe-narančasti jastučići na naličju lista krajem ljeta, rano opadanje lišća."
+          "prepoznaj": "Smeđe-narančasti jastučići na naličju lista krajem ljeta; lišće rano opada.",
+          "rjesenje": "Pograbiti i ukloniti lišće u jesen. Obično ne treba prskati jer se javlja kasno, nakon berbe."
         }
       ],
       "stetnici": [
         {
           "naziv": "Šljivin savijač",
-          "opis": "Crvljivi plodovi koji ranije dozrijevaju i opadaju. Pratiti feromonskim klopkama od svibnja."
+          "prepoznaj": "Crvljivi plodovi koji ranije dobiju boju i opadaju.",
+          "rjesenje": "Feromonske klopke od svibnja. Otpale crvljive plodove skupljati. Tretman samo kod velikog ulova."
         },
         {
           "naziv": "Šljivine osice",
-          "opis": "Ličinke u mladim plodićima nakon cvatnje; plodići otpadaju. Pratiti bijelim ljepljivim pločama postavljenim prije cvatnje."
+          "prepoznaj": "Ličinke u mladim plodićima nakon cvatnje; plodići s rupicom i tamnom kašom otpadaju.",
+          "rjesenje": "Bijele ljepljive ploče objesiti prije cvatnje za praćenje leta. Tretman samo ako je ulov velik, odmah nakon otpadanja latica."
         },
         {
           "naziv": "Lisne uši",
-          "opis": "Kovrčanje lista i prijenos šarke."
+          "prepoznaj": "Kovrčanje lista na vrhovima mladica; prenose virus šarke.",
+          "rjesenje": "Otkinuti jako napadnute vrhove, poticati korisne kukce. Prskati samo kod jakog napada."
         }
       ],
       "zastita": [
@@ -223,21 +245,25 @@
       "bolesti": [
         {
           "naziv": "Hrđa smokve",
-          "opis": "Sitne smeđe-narančaste pjege, lišće rano opada u vlažnim godinama."
+          "prepoznaj": "Sitne smeđe-narančaste pjege na listu; lišće rano opada u vlažnim godinama.",
+          "rjesenje": "Pograbiti otpalo lišće, prozračiti krošnju. Prskanje obično nije potrebno."
         },
         {
           "naziv": "Trulež plodova",
-          "opis": "Siva plijesan na zrelim plodovima nakon kiše."
+          "prepoznaj": "Siva plijesan i kiseo miris na zrelim plodovima nakon kiše.",
+          "rjesenje": "Brati redovito i ne ostavljati prezrele plodove na grani i tlu."
         }
       ],
       "stetnici": [
         {
           "naziv": "Štitaste uši",
-          "opis": "Voštani štitići na granama i medna rosa. Manje kolonije ostrugati; uljni pripravak zimi samo kod jačeg napada i ako je dopušten."
+          "prepoznaj": "Voštani štitići na granama, ljepljiva medna rosa i čađavica.",
+          "rjesenje": "Manje kolonije ostrugati četkom. Uljni pripravak zimi samo kod jačeg napada i ako je dopušten."
         },
         {
           "naziv": "Ose i octene mušice",
-          "opis": "Napadaju zrele plodove; brati redovito."
+          "prepoznaj": "Izgrizeni i kiseli zreli plodovi.",
+          "rjesenje": "Brati čim plod omekša, skupljati otpale plodove; po potrebi zamke s octom."
         }
       ],
       "zastita": [
@@ -263,29 +289,35 @@
       "bolesti": [
         {
           "naziv": "Kovrčavost lista breskve",
-          "opis": "Listovi se u proljeće naboraju, zadebljaju i pocrvene, pa otpadnu. Kad se pojavi, kasno je za zaštitu. Ključno je jedno dobro tempirano bakreno prskanje prije otvaranja pupova (kasna zima); jesensko prskanje pri opadanju lišća je dopuna, ne obveza."
+          "prepoznaj": "Listovi se u proljeće naboraju, zadebljaju i pocrvene, pa otpadnu.",
+          "rjesenje": "Kad se pojavi, kasno je za prskanje. Ključno je jedno dobro tempirano bakreno prskanje prije otvaranja pupova (kasna zima); jesensko prskanje pri opadanju lišća je dopuna, ne obveza. Zaražene listove ukloniti, a stablo zaliti i nahraniti kompostom da potjera novo lišće."
         },
         {
           "naziv": "Monilija",
-          "opis": "Sušenje cvjetova i trulež plodova."
+          "prepoznaj": "Sušenje cvjetova u kišnoj cvatnji i smeđa trulež plodova.",
+          "rjesenje": "Ukloniti mumije i suhe grančice, prorijediti plodove da se ne dodiruju. U kišnoj cvatnji zaštita cvijeta."
         },
         {
           "naziv": "Pepelnica breskve",
-          "opis": "Bijela prevlaka na plodovima i mladim listovima."
+          "prepoznaj": "Bijela brašnasta prevlaka na mladim listovima i plodovima; plodovi pucaju.",
+          "rjesenje": "Izrezati zaražene vrhove, krošnju držati prozračnom. Kod jakog napada sumporni pripravak od precvjetavanja."
         },
         {
           "naziv": "Šupljikavost lista i smolotok",
-          "opis": "Rupice na listu; smola na kori nakon rana i stresa."
+          "prepoznaj": "Rupice na listu; smola (gumoza) na kori nakon rana, mraza i stresa.",
+          "rjesenje": "Pograbiti lišće, rezati po suhom vremenu i bez velikih rana. Kod jake šupljikavosti bakar pri opadanju lišća."
         }
       ],
       "stetnici": [
         {
           "naziv": "Zelena breskvina uš",
-          "opis": "Kovrčanje vrhova u proljeće."
+          "prepoznaj": "Kovrčanje i uvijanje listova na vrhovima mladica u proljeće.",
+          "rjesenje": "Otkinuti napadnute vrhove, isprati vodom, poticati bubamare. Prskati samo kod jakog napada mladih stabala."
         },
         {
           "naziv": "Istočni breskvin savijač",
-          "opis": "Vrhovi mladica venu, a kasnije su plodovi crvljivi."
+          "prepoznaj": "Vrhovi mladica venu i suše se (ličinka u vrhu), a kasnije su plodovi crvljivi.",
+          "rjesenje": "Uvele vrhove odrezati i uništiti. Feromonske klopke za praćenje; tretman samo kod velikog ulova."
         }
       ],
       "zastita": [
@@ -323,33 +355,40 @@
       "bolesti": [
         {
           "naziv": "Monilija",
-          "opis": "Sušenje cvjetova i trulež plodova."
+          "prepoznaj": "Sušenje cvjetova u kišnoj cvatnji i trulež plodova pred berbu.",
+          "rjesenje": "Ukloniti mumije i suhe grančice. U kišnoj cvatnji zaštita cvijeta; brati na vrijeme."
         },
         {
           "naziv": "Kozičavost lista trešnje",
-          "opis": "Sitne ljubičaste pjege, lišće žuti i otpada već ljeti. Pograbiti lišće u jesen."
+          "prepoznaj": "Sitne ljubičaste pjege na listu, lišće žuti i otpada već ljeti.",
+          "rjesenje": "Pograbiti i ukloniti otpalo lišće u jesen. Kod jake zaraze zaštita nakon berbe."
         },
         {
           "naziv": "Bakterijski rak",
-          "opis": "Udubljene rane na kori s curenjem smole. Bakar u jesen."
+          "prepoznaj": "Udubljene rane na kori grana i debla s curenjem smole; grane se suše.",
+          "rjesenje": "Zaražene grane izrezati ljeti po suhom vremenu. Ako ga ima, bakar pri opadanju lišća."
         }
       ],
       "stetnici": [
         {
           "naziv": "Trešnjina muha",
-          "opis": "Crvljivi plodovi, uglavnom kod srednje kasnih i kasnih sorti; rane sorte često izbjegnu napad. Žute ljepljive ploče služe za praćenje leta, postaviti ih prije očekivanog leta."
+          "prepoznaj": "Crvljivi, mekani plodovi, uglavnom kod srednje kasnih i kasnih sorti.",
+          "rjesenje": "Žute ljepljive ploče postaviti prije očekivanog leta (svibanj) za praćenje. Brati sve plodove i ne ostavljati otpale ispod stabla. Kod jakog ulova tretman prema etiketi."
         },
         {
           "naziv": "Azijska octena mušica",
-          "opis": "Napada zrele, zdrave plodove. Brati na vrijeme i ne ostavljati otpale plodove."
+          "prepoznaj": "Napada zrele, zdrave plodove: mekana udubljenja i crvi.",
+          "rjesenje": "Brati na vrijeme i redovito, skupljati otpale plodove; ostaviti zamke s octom."
         },
         {
           "naziv": "Crna trešnjina uš",
-          "opis": "Jako kovrčanje vrhova mladica."
+          "prepoznaj": "Jako kovrčanje i crne kolonije na vrhovima mladica.",
+          "rjesenje": "Otkinuti napadnute vrhove; prskati samo kod jakog napada mladih stabala."
         },
         {
           "naziv": "Ptice",
-          "opis": "Zaštitne mreže postaviti prije dozrijevanja, prije nego ptice počnu napadati plodove."
+          "prepoznaj": "Kljucani plodovi pred berbu.",
+          "rjesenje": "Zaštitne mreže postaviti prije dozrijevanja, prije nego ptice počnu napadati."
         }
       ],
       "zastita": [
@@ -387,17 +426,20 @@
       "bolesti": [
         {
           "naziv": "Monilijska palež",
-          "opis": "Kod višnje vrlo jaka: cvjetovi i vrhovi grančica naglo se osuše. Suhe vrhove izrezati po suhom vremenu 10–15 cm u zdravo."
+          "prepoznaj": "Kod višnje vrlo jaka: cvjetovi i vrhovi grančica naglo se osuše odmah nakon cvatnje.",
+          "rjesenje": "Suhe vrhove odmah izrezati po suhom vremenu 10–15 cm u zdravo i ukloniti. U kišnoj cvatnji zaštita cvijeta, posebno ako je prošle godine bilo paleži."
         },
         {
           "naziv": "Kozičavost lista",
-          "opis": "Kao kod trešnje, rano opadanje lišća."
+          "prepoznaj": "Ljubičaste pjege, lišće žuti i rano otpada.",
+          "rjesenje": "Pograbiti lišće u jesen; kod jake zaraze zaštita nakon berbe."
         }
       ],
       "stetnici": [
         {
           "naziv": "Trešnjina muha i uši",
-          "opis": "Kao kod trešnje."
+          "prepoznaj": "Crvljivi plodovi i kovrčavi vrhovi mladica.",
+          "rjesenje": "Kao kod trešnje: žute ploče za praćenje, brati sve plodove, otkinuti napadnute vrhove."
         }
       ],
       "zastita": [
@@ -431,17 +473,20 @@
       "bolesti": [
         {
           "naziv": "Bakterijska palež",
-          "opis": "Glog može biti domaćin bakterijske paleži. Ne treba ga preventivno tretirati, ali u proljeće pregledati i osušene vrhove izrezati, posebno ako su blizu jabuka i krušaka."
+          "prepoznaj": "Osušeni, pocrnjeli vrhovi izboja; glog može biti domaćin i izvor zaraze.",
+          "rjesenje": "Ne treba ga preventivno tretirati, ali u proljeće pregledati i osušene vrhove izrezati, posebno ako su blizu jabuka i krušaka."
         },
         {
           "naziv": "Pepelnica i hrđa",
-          "opis": "Bijela prevlaka, odnosno narančaste pjege na lišću."
+          "prepoznaj": "Bijela prevlaka (pepelnica), odnosno narančaste pjege (hrđa) na lišću.",
+          "rjesenje": "Obično ne treba ništa; kod jačeg napada izrezati zaražene vrhove."
         }
       ],
       "stetnici": [
         {
           "naziv": "Gusjenice i uši",
-          "opis": "Povremeno, obično bez većih šteta."
+          "prepoznaj": "Pojedeno ili kovrčavo lišće, povremeno.",
+          "rjesenje": "Obično bez većih šteta; gnijezda gusjenica ručno ukloniti."
         }
       ],
       "zastita": [],
@@ -462,13 +507,15 @@
       "bolesti": [
         {
           "naziv": "Rijetko",
-          "opis": "Drenak gotovo nema ozbiljnih bolesti."
+          "prepoznaj": "Drenak gotovo nema ozbiljnih bolesti.",
+          "rjesenje": "Ništa posebno; samo uklanjati suhe grane."
         }
       ],
       "stetnici": [
         {
-          "naziv": "Rijetko",
-          "opis": "Povremeno uši; ptice jedu plodove."
+          "naziv": "Ptice i uši",
+          "prepoznaj": "Ptice jedu zrele plodove; povremeno lisne uši.",
+          "rjesenje": "Brati na vrijeme ili tresti na plahtu; uši obično ne treba suzbijati."
         }
       ],
       "zastita": [],
@@ -489,25 +536,30 @@
       "bolesti": [
         {
           "naziv": "Siva plijesan",
-          "opis": "Trulež plodova u kišnom vremenu; prozračan uzgoj pomaže."
+          "prepoznaj": "Siva paperjasta trulež plodova u kišnom vremenu.",
+          "rjesenje": "Prozračan uzgoj na žici, ne pregusti izboji. Brati često i ukloniti trule plodove."
         },
         {
           "naziv": "Hrđa kupine",
-          "opis": "Narančasti jastučići na listu."
+          "prepoznaj": "Narančasti jastučići na naličju lista, lišće rano otpada.",
+          "rjesenje": "Ukloniti zaraženo lišće i izboje nakon berbe; prozračiti grm."
         },
         {
           "naziv": "Pjegavost izboja",
-          "opis": "Ljubičaste pjege na izbojima; zaražene izboje ukloniti."
+          "prepoznaj": "Ljubičaste do sive pjege na izbojima; izboji pucaju i suše se.",
+          "rjesenje": "Zaražene izboje izrezati i ukloniti. Kod jakog napada bakar u bubrenju pupova."
         }
       ],
       "stetnici": [
         {
           "naziv": "Kupinova grinja",
-          "opis": "Dio bobica ostaje crven i tvrd."
+          "prepoznaj": "Dio bobica u plodu ostaje crven i tvrd.",
+          "rjesenje": "Nakon berbe izrezati sve izboje koji su rodili; kod jakog napada zaštita u proljeće."
         },
         {
           "naziv": "Azijska octena mušica",
-          "opis": "Napada zrele plodove; brati često."
+          "prepoznaj": "Mekani, kiseli plodovi s crvima.",
+          "rjesenje": "Brati često (svaka 2 dana), ne ostavljati prezrele plodove, zamke s octom."
         }
       ],
       "zastita": [
@@ -537,29 +589,35 @@
       "bolesti": [
         {
           "naziv": "Pepelnica",
-          "opis": "Bijela pa smeđa prevlaka na vrhovima izboja i bobicama. Zaražene vrhove odrezati i grm prozračiti; zaštita samo ako se širi."
+          "prepoznaj": "Bijela pa smeđa prevlaka na vrhovima izboja i bobicama.",
+          "rjesenje": "Zaražene vrhove odrezati i grm prozračiti rezidbom. Zaštita (npr. sumporni pripravci) samo ako se širi."
         },
         {
           "naziv": "Pjegavost lista (antraknoza)",
-          "opis": "Sitne smeđe pjege, lišće rano otpada. Pograbiti lišće."
+          "prepoznaj": "Sitne smeđe pjege na listu, lišće rano otpada već ljeti.",
+          "rjesenje": "Pograbiti i ukloniti otpalo lišće. Ne zalijevati po listu."
         },
         {
           "naziv": "Stupičasta hrđa",
-          "opis": "Narančasti stupići na naličju lista. Prijelazni domaćin je borovac (bor)."
+          "prepoznaj": "Narančasti stupići na naličju lista krajem ljeta.",
+          "rjesenje": "Ukloniti zaraženo lišće. Prijelazni domaćin je borovac (bor) – ne saditi ga u blizini."
         }
       ],
       "stetnici": [
         {
           "naziv": "Ribizova grinja pupova",
-          "opis": "Pupovi nabreknu i postanu okrugli. U mirovanju ih otkinuti i uništiti; kod jakog napada ukloniti cijeli zaraženi izboj."
+          "prepoznaj": "Pupovi nabreknu i postanu okrugli; ne otvaraju se.",
+          "rjesenje": "U mirovanju otkinuti i uništiti nabrekle pupove; kod jakog napada izrezati cijeli zaraženi izboj."
         },
         {
           "naziv": "Ribizov staklokrilac",
-          "opis": "Ličinka u srži izboja; izboj se suši. Takve izboje izrezati do zdravog dijela."
+          "prepoznaj": "Ličinka u srži izboja (tamna srž); izboj vene i suši se.",
+          "rjesenje": "Takve izboje izrezati do zdravog (svijetle srži) i uništiti."
         },
         {
           "naziv": "Lisne uši",
-          "opis": "Crvenkasta mjehurasta ispupčenja na listu."
+          "prepoznaj": "Crvenkasta mjehurasta ispupčenja na listu.",
+          "rjesenje": "Obično ne treba ništa; jako napadnute vrhove otkinuti."
         }
       ],
       "zastita": [
@@ -593,17 +651,20 @@
       "bolesti": [
         {
           "naziv": "Pjegavost lista i bakterijska palež duda",
-          "opis": "Tamne pjege na listu i vrhovima izboja u vlažnim godinama."
+          "prepoznaj": "Tamne pjege na listu i pocrnjeli vrhovi izboja u vlažnim godinama.",
+          "rjesenje": "Pograbiti lišće, izrezati osušene vrhove po suhom vremenu. Prskanje obično nije potrebno."
         }
       ],
       "stetnici": [
         {
           "naziv": "Dudovac (američki dudovac)",
-          "opis": "Gusjenice u gnijezdima od mreže pojedu lišće. Gnijezda odrezati i uništiti dok su mala."
+          "prepoznaj": "Gusjenice u gnijezdima od bijele mreže pojedu lišće.",
+          "rjesenje": "Gnijezda odrezati i uništiti dok su mala (svibanj–kolovoz); pregledavati stablo svaka 2–3 tjedna."
         },
         {
           "naziv": "Štitaste uši",
-          "opis": "Povremeno na granama."
+          "prepoznaj": "Štitići na granama i medna rosa, povremeno.",
+          "rjesenje": "Manje kolonije ostrugati; kod jakog napada zimsko uljno prskanje."
         }
       ],
       "zastita": [],
@@ -624,37 +685,45 @@
       "bolesti": [
         {
           "naziv": "Peronospora (plamenjača)",
-          "opis": "Uljne pjege na licu lista i bijela prevlaka na naličju; grozdovi se suše. Pravilo 3 × 10 (iznad 10 °C, mladice dulje od 10 cm, barem 10 mm kiše) samo je orijentacija za početak rizika, ne potpuna prognoza."
+          "prepoznaj": "Uljne pjege na licu lista i bijela prevlaka na naličju; grozdovi posmeđe i suše se.",
+          "rjesenje": "Zelenom rezidbom držati trs prozračnim. U kišnim razdobljima štititi bakrenim ili drugim pripravcima prema kiši i porastu. Pravilo 3 × 10 je samo orijentacija za početak rizika."
         },
         {
           "naziv": "Pepelnica",
-          "opis": "Pepeljasta prevlaka na listu i bobicama; bobice pucaju. Pogoduje joj toplo i suho vrijeme sa sparinom."
+          "prepoznaj": "Pepeljasta prevlaka na listu i bobicama; bobice pucaju. Pogoduje joj toplo vrijeme sa sparinom.",
+          "rjesenje": "Prozračiti zonu grozda, sumporni pripravci od 3–5 listova do zatvaranja grozda prema riziku."
         },
         {
           "naziv": "Siva plijesan",
-          "opis": "Trulež zbijenih grozdova u kišnoj jeseni."
+          "prepoznaj": "Siva trulež zbijenih grozdova u kišnoj jeseni.",
+          "rjesenje": "Prorijediti lišće oko grozdova (umjereno), ne ozljeđivati bobice, brati na vrijeme."
         },
         {
           "naziv": "Crna pjegavost",
-          "opis": "Crne pjege i pukotine na osnovi mladica. Glavna mjera je uklanjanje zaraženog prošlogodišnjeg drva pri rezidbi."
+          "prepoznaj": "Crne pjege i pukotine na osnovi mladica, bijelo drvo.",
+          "rjesenje": "Glavna mjera je uklanjanje zaraženog prošlogodišnjeg drva pri rezidbi; kod jakog napada zaštita u bubrenju."
         },
         {
           "naziv": "Crna trulež",
-          "opis": "Smeđe pjege s tamnim rubom na listu, a bobice se smežuraju u tvrde crne mumije. Mumije ukloniti s trsa i tla."
+          "prepoznaj": "Smeđe pjege s tamnim rubom na listu; bobice se smežuraju u tvrde crne mumije.",
+          "rjesenje": "Mumije ukloniti s trsa i s tla; zaštita kao protiv peronospore."
         }
       ],
       "stetnici": [
         {
           "naziv": "Grožđani moljci",
-          "opis": "Ličinke oštećuju cvat i bobice, što otvara put sivoj plijesni."
+          "prepoznaj": "Ličinke oštećuju cvat i bobice, što otvara put sivoj plijesni.",
+          "rjesenje": "Feromonske klopke za praćenje; tretman samo kod velikog ulova."
         },
         {
           "naziv": "Grinje (erinoza)",
-          "opis": "Ispupčenja na listu s bijelom pustenastom prevlakom na naličju."
+          "prepoznaj": "Ispupčenja na licu lista s bijelom pustenastom prevlakom na naličju.",
+          "rjesenje": "Obično bezopasno; kod jakog napada zaštita u bubrenju iduće godine."
         },
         {
           "naziv": "Američki cvrčak i zlatna žutica",
-          "opis": "Cvrčak prenosi zlatnu žuticu, karantensku bolest (listovi se uvijaju i crvene ili žute, mladice ne odrvene). Sumnju prijaviti savjetodavnoj službi."
+          "prepoznaj": "Listovi se uvijaju i crvene ili žute, mladice ne odrvene; cvrčak prenosi karantensku bolest.",
+          "rjesenje": "Sumnju odmah prijaviti savjetodavnoj službi. Zaražene trsove prema uputi ukloniti."
         }
       ],
       "zastita": [
@@ -692,21 +761,25 @@
       "bolesti": [
         {
           "naziv": "Bakterijska palež oraha",
-          "opis": "Crne pjege na listu, mladim plodovima i resama; plodovi pocrne i otpadnu. Bakar u listanju i cvatnji."
+          "prepoznaj": "Crne pjege na listu, mladim plodovima i resama; plodovi pocrne i otpadnu.",
+          "rjesenje": "Ako ga je bilo, bakreni tretman u kišnom listanju i cvatnji. Pocrnjele plodove ukloniti."
         },
         {
           "naziv": "Antraknoza (smeđa pjegavost)",
-          "opis": "Okrugle smeđe pjege na listu. Pograbiti i ukloniti lišće u jesen."
+          "prepoznaj": "Okrugle smeđe pjege na listu, lišće rano otpada.",
+          "rjesenje": "Pograbiti i ukloniti lišće u jesen (na njemu prezimljuje)."
         }
       ],
       "stetnici": [
         {
           "naziv": "Orahova muha",
-          "opis": "Zelena ljuska pocrni i postane ljepljiva, a jezgra je tamna. Žute ljepljive ploče postaviti prije očekivanog leta (varira po godini, obično od kraja lipnja); zaražene ljuske i plodove skupljati i uklanjati."
+          "prepoznaj": "Zelena ljuska pocrni i postane ljepljiva, a jezgra je tamna.",
+          "rjesenje": "Žute ljepljive ploče postaviti prije očekivanog leta (obično od kraja lipnja). Zaražene ljuske i plodove skupljati i uklanjati."
         },
         {
           "naziv": "Jabučni savijač",
-          "opis": "Može napasti i plodove oraha."
+          "prepoznaj": "Crvljivi plodovi oraha koji ranije otpadaju.",
+          "rjesenje": "Skupljati otpale plodove; feromonske klopke za praćenje."
         }
       ],
       "zastita": [
@@ -740,29 +813,35 @@
       "bolesti": [
         {
           "naziv": "Bakterijski rak kivija",
-          "opis": "Smeđe pjege sa žutim rubom na listu, sušenje izboja i cvjetova, a na kori rane iz kojih curi crvenkasti ili bjelkasti iscjedak. Ozbiljna bolest: sumnju prijaviti savjetodavnoj službi, zaražene dijelove izrezati po suhom vremenu i dezinficirati alat."
+          "prepoznaj": "Smeđe pjege sa žutim rubom na listu, sušenje izboja i cvjetova, a na kori rane iz kojih curi crvenkasti ili bjelkasti iscjedak.",
+          "rjesenje": "Ozbiljna bolest: sumnju prijaviti savjetodavnoj službi. Zaražene dijelove izrezati po suhom vremenu, alat dezinficirati. Ako je bilo pjega, bakar u proljeće."
         },
         {
           "naziv": "Trulež korijena",
-          "opis": "Biljka vene i žuti unatoč vlažnom tlu. Nastaje na teškom, mokrom tlu bez odvodnje; sprječava se sadnjom na ocjedito mjesto ili blago povišenu gredicu."
+          "prepoznaj": "Biljka vene i žuti unatoč vlažnom tlu.",
+          "rjesenje": "Saditi na ocjedito mjesto ili blago povišenu gredicu; ne prelijevati, posebno na glinastom tlu."
         },
         {
           "naziv": "Siva plijesan",
-          "opis": "Trulež cvjetova i plodova u kišnom vremenu i kasnije u skladištu. Pomaže prozračna krošnja i čuvanje samo zdravih plodova."
+          "prepoznaj": "Trulež cvjetova i plodova u kišnom vremenu i kasnije u skladištu.",
+          "rjesenje": "Prozračna krošnja (ljetna rezidba), čuvati samo zdrave plodove."
         }
       ],
       "stetnici": [
         {
           "naziv": "Mramorasta stjenica",
-          "opis": "Sisanjem oštećuje plodove (udubljenja i plutasta mjesta ispod kore). Pratiti od ljeta, ručno uklanjati."
+          "prepoznaj": "Udubljenja i plutasta mjesta ispod kore ploda.",
+          "rjesenje": "Pratiti od ljeta i ručno skupljati (ujutro, u posudu sa sapunicom)."
         },
         {
           "naziv": "Štitaste uši",
-          "opis": "Povremeno na granama; manje kolonije ostrugati."
+          "prepoznaj": "Štitići na granama, povremeno.",
+          "rjesenje": "Manje kolonije ostrugati."
         },
         {
           "naziv": "Mačke",
-          "opis": "Mlade biljke kivija privlače mačke koje grizu i grebu izboje i koru; mlade sadnice zaštititi mrežom."
+          "prepoznaj": "Izgrizeni i izgrebeni mladi izboji i kora.",
+          "rjesenje": "Mlade sadnice zaštititi mrežom ili ogradom."
         }
       ],
       "zastita": [
@@ -788,6 +867,77 @@
         }
       ],
       "berba": "Krupni kivi: listopad–studeni, prije jačih mrazeva. Bere se još tvrd kad sjemenke potamne, a dozrijeva u skladištu (brže uz jabuke). Mini kivi: rujan–listopad, kad plodovi omekšaju, i jedu se odmah."
+    },
+    {
+      "id": "borovnica",
+      "naziv": "Borovnica",
+      "latinski": "Vaccinium corymbosum (visokogrma borovnica)",
+      "emoji": "🫐",
+      "opis": "Grm visine 1,5–2 m koji traži kiselo tlo (pH oko 4,5–5,5) – to je najvažniji uvjet uspjeha. Na običnom, glinastom ili vapnenastom tlu raste slabo i lišće žuti, pa se sadi u povišenu gredicu ili veliku posudu s kiselim supstratom (treset ili supstrat za borovnice, kora četinjača). Za bolji rod saditi barem dvije sorte. Puni rod od 4.–5. godine.",
+      "voda": "Srednja do visoka: plitko, vlaknasto korijenje ne podnosi isušivanje. Malčirati korom četinjača i redovito zalijevati, najbolje kišnicom (vodovodna voda je često vapnenasta i diže pH). Na glinastom tlu voda se dugo zadržava: prije zalijevanja provjeriti vlagu na 10–20 cm i ne prelijevati.",
+      "orezivanje": {
+        "kada": "Kasna zima, veljača–ožujak, prije kretanja vegetacije.",
+        "kako": "Prve 2–3 godine samo ukloniti slabe izboje (i cvjetne pupove, da grm ojača). Kasnije svake godine ukloniti 1–2 najstarija izboja (starije od 5–6 godina) pri tlu, te slabe, polegle i križane grane. Ostaviti 6–10 jakih izboja različite starosti."
+      },
+      "gnojidba": "Ne gnojiti svježim stajskim gnojem ni vapnom. U proljeće malo gnojiva za borovnice / kiselo tlo ili kompost od lišća i kore četinjača; malč od kore četinjača obnavljati svake godine.",
+      "bolesti": [
+        {
+          "naziv": "Kloroza (previsok pH tla)",
+          "prepoznaj": "Lišće žuti između žila, a žile ostaju zelene; grm slabo raste. Nije bolest nego posljedica nekiselog tla ili vapnenaste vode.",
+          "rjesenje": "Provjeriti pH tla (komplet iz vrtnog centra). Zalijevati kišnicom, malčirati korom četinjača, dodati supstrat za borovnice ili sumpor za zakiseljavanje prema uputi."
+        },
+        {
+          "naziv": "Mumifikacija plodova (monilija borovnice)",
+          "prepoznaj": "Bobice pobijele ili poružičaste, smežuraju se i otpadaju kao tvrde „mumije”; vrhovi mladica mogu venuti.",
+          "rjesenje": "Skupiti mumificirane bobice s grma i tla, obnoviti malč preko njih u proljeće. Kod jake zaraze zaštita u cvatnji."
+        },
+        {
+          "naziv": "Siva plijesan",
+          "prepoznaj": "Siva trulež cvjetova i zrelih bobica u kišnom vremenu.",
+          "rjesenje": "Prozračan grm (rezidba), brati često, ukloniti trule bobice."
+        },
+        {
+          "naziv": "Rak i sušenje izboja",
+          "prepoznaj": "Crvenkasto-smeđe pjege i rane na izbojima koji se zatim suše.",
+          "rjesenje": "Zaražene izboje izrezati u zdravo po suhom vremenu i ukloniti."
+        }
+      ],
+      "stetnici": [
+        {
+          "naziv": "Ptice",
+          "prepoznaj": "Pojedene i kljucane zrele bobice.",
+          "rjesenje": "Mreža preko grmova prije dozrijevanja."
+        },
+        {
+          "naziv": "Azijska octena mušica",
+          "prepoznaj": "Mekane, kisele bobice s crvima pred kraj berbe.",
+          "rjesenje": "Brati često i do kraja, ne ostavljati prezrele plodove; zamke s octom."
+        },
+        {
+          "naziv": "Lisne uši",
+          "prepoznaj": "Kovrčanje vrhova mladica.",
+          "rjesenje": "Obično ne treba ništa; jako napadnute vrhove otkinuti."
+        }
+      ],
+      "zastita": [
+        {
+          "kada": "Mirovanje",
+          "sto": "Rezidba; ukloniti suhe izboje i izboje s pjegama."
+        },
+        {
+          "kada": "Proljeće",
+          "sto": "Provjeriti boju lišća (žutilo = pH previsok); obnoviti malč od kore četinjača."
+        },
+        {
+          "kada": "Cvatnja",
+          "sto": "U kišnom vremenu pratiti sivu plijesan i mumifikaciju plodova."
+        },
+        {
+          "kada": "Dozrijevanje",
+          "sto": "Mreže protiv ptica; brati često zbog octene mušice."
+        }
+      ],
+      "berba": "Lipanj–kolovoz, ovisno o sorti, u više navrata. Bobicu brati nekoliko dana nakon što posve poplavi – tada je najslađa i lako se odvaja."
     },
     {
       "id": "ostalo",

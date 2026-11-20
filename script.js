@@ -464,6 +464,7 @@ function getTypeWithEmoji(typeOrItem) {
         dud2: '🍇',
         vinova_loza: '🍇',
         kivi: '🥝',
+        borovnica: '🫐',
         ostalo: '🌳'
     };
     return type + (emojis[type] ? ' ' + emojis[type] : '');
@@ -498,6 +499,7 @@ function getEmojiForType(item) {
         dud2: '🍇',
         vinova_loza: '🍇',
         kivi: '🥝',
+        borovnica: '🫐',
         ostalo: '🌳'
     };
     return emojis[type] || '🌿';
@@ -532,6 +534,7 @@ var AVG_YIELD_KG_BY_TYPE = {
     vinova_loza: 1.5,
     dud2: 15,
     kivi: 30,
+    borovnica: 3,
     _default: 10
 };
 
@@ -550,6 +553,7 @@ var REFERENCE_YIELD_BY_TYPE = {
     kupina: { adultHeightM: 2.0, minKg: 2, maxKg: 6 },
     vinova_loza: { adultHeightM: 2.0, minKg: 2, maxKg: 8 },
     kivi: { adultHeightM: 2.5, minKg: 20, maxKg: 50 },
+    borovnica: { adultHeightM: 1.6, minKg: 2, maxKg: 5 },
     dud2: { adultHeightM: 6.0, minKg: 10, maxKg: 20 }
 };
 
@@ -586,6 +590,7 @@ var WATER_NEED_LEVEL = {
     ribizl: 2,
     vinova_loza: 2,
     kivi: 4,
+    borovnica: 3,
     _default: 2
 };
 
@@ -606,6 +611,7 @@ function normalizeType(typeText) {
         .replace(/ć/g, 'c')
         .replace(/ž/g, 'z');
     if (t.indexOf('kivi') !== -1 || t.indexOf('kiwi') !== -1) return 'kivi';
+    if (t.indexOf('borovnic') !== -1 || t.indexOf('blueberr') !== -1) return 'borovnica';
     if (t.indexOf('jabuk') !== -1) return 'jabuka';
     if (t.indexOf('ribiz') !== -1) return 'ribizl';
     if (t.indexOf('kru') !== -1) return 'kruska';
@@ -640,6 +646,7 @@ function iconByType(typeText) {
     if (t === 'glog') return 'icons/glog.png';
     if (t === 'orah') return 'icons/orah.png';
     if (t === 'drenak') return 'icons/drenak.png';
+    if (t === 'borovnica') return 'icons/borovnica.png';
     if (t === 'vinova_loza') return 'icons/grapes.png';
     return null;
 }
@@ -2723,7 +2730,7 @@ var encyclopediaSelectedId = null;
 function loadEncyclopedia() {
     if (encyclopediaData) return Promise.resolve(encyclopediaData);
     if (!encyclopediaLoading) {
-        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261122b')
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261123a')
             .then(function (data) {
                 encyclopediaData = data;
                 return data;
@@ -2767,7 +2774,7 @@ function renderEncyclopediaList() {
     if (encyclopediaMode === 'povrce') { renderVegList(); return; }
     if (!encyclopediaData || !encyclopediaListEl) return;
     var counts = countTreesByType();
-    encyclopediaListEl.innerHTML = encyclopediaData.vrste.map(function (entry) {
+    encyclopediaListEl.innerHTML = sortedFruitEntries().map(function (entry) {
         var count = counts[entry.id] || 0;
         var active = entry.id === encyclopediaSelectedId;
         return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
@@ -2779,11 +2786,16 @@ function renderEncyclopediaList() {
     }).join('');
 }
 
-function listHtml(items) {
+function listHtml(items, icon) {
     if (!items || !items.length) return '<p class="enc-muted">Nema posebnih napomena.</p>';
-    return '<ul class="enc-list">' + items.map(function (it) {
-        return '<li><b>' + escapeHtml(it.naziv) + '</b> – ' + escapeHtml(it.opis) + '</li>';
-    }).join('') + '</ul>';
+    return '<div class="enc-problems">' + items.map(function (it) {
+        var recognize = it.prepoznaj || it.opis || '';
+        return '<div class="enc-problem">' +
+            '<div class="enc-problem-name">' + (icon || '') + ' ' + escapeHtml(it.naziv) + '</div>' +
+            (recognize ? '<div class="enc-problem-row"><span class="enc-tag see">🔍 Kako prepoznati</span><p>' + escapeHtml(recognize) + '</p></div>' : '') +
+            (it.rjesenje ? '<div class="enc-problem-row"><span class="enc-tag fix">✅ Što napraviti</span><p>' + escapeHtml(it.rjesenje) + '</p></div>' : '') +
+            '</div>';
+    }).join('') + '</div>';
 }
 
 function renderEncyclopediaArticle() {
@@ -2814,13 +2826,13 @@ function renderEncyclopediaArticle() {
         html += '<section><h3>🌱 Gnojidba</h3><p>' + escapeHtml(entry.gnojidba) + '</p></section>';
     }
     if (entry.bolesti && entry.bolesti.length) {
-        html += '<section><h3>🦠 Bolesti</h3>' + listHtml(entry.bolesti) + '</section>';
+        html += '<section><h3>🦠 Bolesti</h3>' + listHtml(entry.bolesti, '🦠') + '</section>';
     }
     if (entry.stetnici && entry.stetnici.length) {
-        html += '<section><h3>🐛 Štetnici</h3>' + listHtml(entry.stetnici) + '</section>';
+        html += '<section><h3>🐛 Štetnici</h3>' + listHtml(entry.stetnici, '🐛') + '</section>';
     }
     if (entry.zastita && entry.zastita.length) {
-        html += '<section><h3>🧴 Tretmani / zaštita kroz godinu</h3><table class="enc-table"><tbody>' +
+        html += '<section><h3>🗓️ Kalendar zaštite (sažetak)</h3><table class="enc-table"><tbody>' +
             entry.zastita.map(function (z) {
                 return '<tr><th scope="row">' + escapeHtml(z.kada) + '</th><td>' + escapeHtml(z.sto) + '</td></tr>';
             }).join('') + '</tbody></table></section>';
@@ -2856,7 +2868,7 @@ function openEncyclopedia(typeId) {
         .then(function (data) {
             var wanted = typeId ? normalizeType(typeId) : encyclopediaSelectedId;
             var exists = data.vrste.some(function (v) { return v.id === wanted; });
-            selectEncyclopediaEntry(exists ? wanted : data.vrste[0].id);
+            selectEncyclopediaEntry(exists ? wanted : sortedFruitEntries()[0].id);
             var active = encyclopediaListEl && encyclopediaListEl.querySelector('.enc-item.active');
             if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
         })
@@ -2922,7 +2934,7 @@ function seasonName(month) {
 function loadTasks() {
     if (tasksData) return Promise.resolve(tasksData);
     if (!tasksLoading) {
-        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261121a'), loadEncyclopedia().catch(function () { return null; })])
+        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261123a'), loadEncyclopedia().catch(function () { return null; })])
             .then(function (results) {
                 tasksData = results[0];
                 tasksBaseZadaci = tasksData.zadaci.slice();
@@ -3413,7 +3425,7 @@ var VEG_COLORS = { unutra: 'var(--veg-unutra)', sadnja: 'var(--veg-sadnja)', ber
 function loadVegetables() {
     if (vegData) return Promise.resolve(vegData);
     if (!vegLoading) {
-        vegLoading = fetchJsonFile('data/povrce.json?v=20261121g')
+        vegLoading = fetchJsonFile('data/povrce.json?v=20261123a')
             .then(function (data) {
                 vegData = data;
                 return data;
@@ -3467,7 +3479,7 @@ function vegLegendHtml() {
 
 function renderVegList() {
     if (!vegData || !encyclopediaListEl) return;
-    var items = [{ id: 'kalendar', naziv: 'Kalendar (sve)', emoji: '📅' }, { id: 'savjeti', naziv: 'Opći savjeti', emoji: '📋' }].concat(vegData.vrste);
+    var items = [{ id: 'kalendar', naziv: 'Kalendar (sve)', emoji: '📅' }, { id: 'savjeti', naziv: 'Opći savjeti', emoji: '📋' }].concat(sortByName(vegData.vrste));
     encyclopediaListEl.innerHTML = items.map(function (entry) {
         var active = entry.id === vegSelectedId;
         return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
@@ -3486,7 +3498,7 @@ function renderVegArticle() {
             '<div><h2>Kalendar sjetve i berbe</h2><div class="enc-onmap">Klikni povrće za detalje</div></div></header>';
         html += vegLegendHtml();
         html += '<div class="veg-table-wrap"><table class="veg-table veg-table-all">' + vegMonthHeaderHtml('Povrće') + '<tbody>' +
-            vegData.vrste.map(function (v) {
+            sortByName(vegData.vrste).map(function (v) {
                 return '<tr><th scope="row" class="veg-name-col"><button type="button" class="veg-link" data-id="' + escapeHtml(v.id) + '">' +
                     escapeHtml(v.emoji) + ' ' + escapeHtml(v.naziv) + '</button></th>' +
                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(function (m) { return vegCellHtml(v, m); }).join('') + '</tr>';
@@ -3543,7 +3555,7 @@ function setEncyclopediaMode(mode) {
         encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Učitavanje...</p>';
     }
     return loader.then(function (data) {
-        if (encyclopediaMode === 'voce' && !encyclopediaSelectedId) encyclopediaSelectedId = data.vrste[0].id;
+        if (encyclopediaMode === 'voce' && !encyclopediaSelectedId) encyclopediaSelectedId = sortedFruitEntries()[0].id;
         renderEncyclopediaList();
         renderEncyclopediaArticle();
     }).catch(function (error) {
@@ -4726,4 +4738,15 @@ if (walletModal) {
             }).catch(function (error) { alert('Brisanje nije uspjelo: ' + error.message); });
         });
     });
+}
+
+// Abecedni redoslijed (hrvatska abeceda); "Ostalo" uvijek na kraju
+function sortByName(list) {
+    return (list || []).slice().sort(function (a, b) { return String(a.naziv).localeCompare(String(b.naziv), 'hr'); });
+}
+
+function sortedFruitEntries() {
+    var list = sortByName(encyclopediaData ? encyclopediaData.vrste : []);
+    var other = list.filter(function (v) { return v.id === 'ostalo'; });
+    return list.filter(function (v) { return v.id !== 'ostalo'; }).concat(other);
 }

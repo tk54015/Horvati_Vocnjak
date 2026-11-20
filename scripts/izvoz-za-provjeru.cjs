@@ -8,7 +8,7 @@ const enc = JSON.parse(fs.readFileSync(path.join(root, 'data/enciklopedija.json'
 const ras = JSON.parse(fs.readFileSync(path.join(root, 'data/raspored.json'), 'utf8'));
 
 const MONTHS = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
-const WATER = { jabuka: 3, kruska: 3, breskva: 4, smokva: 1, kupina: 3, glog: 1, dunja: 2, sljiva: 3, tresnja: 3, visnja: 3, ribizl: 2, vinova_loza: 2, kivi: 4 };
+const WATER = { jabuka: 3, kruska: 3, breskva: 4, smokva: 1, kupina: 3, glog: 1, dunja: 2, sljiva: 3, tresnja: 3, visnja: 3, ribizl: 2, vinova_loza: 2, kivi: 4, borovnica: 3 };
 const names = Object.fromEntries(enc.vrste.map(v => [v.id, v.naziv]));
 const L = [];
 
@@ -30,8 +30,9 @@ enc.vrste.forEach(v => {
   L.push(`**Voda** (razina ${w}/4 u aplikaciji): ${v.voda}`, '');
   if (v.orezivanje) L.push(`**Orezivanje – kada:** ${v.orezivanje.kada}`, '', `**Orezivanje – kako:** ${v.orezivanje.kako}`, '');
   if (v.gnojidba) L.push(`**Gnojidba:** ${v.gnojidba}`, '');
-  if (v.bolesti && v.bolesti.length) { L.push('**Bolesti:**'); v.bolesti.forEach(b => L.push(`- **${b.naziv}** – ${b.opis}`)); L.push(''); }
-  if (v.stetnici && v.stetnici.length) { L.push('**Štetnici:**'); v.stetnici.forEach(b => L.push(`- **${b.naziv}** – ${b.opis}`)); L.push(''); }
+  const prob = (b) => `- **${b.naziv}** – prepoznati: ${b.prepoznaj || b.opis || ''}${b.rjesenje ? ' | rješenje: ' + b.rjesenje : ''}`;
+  if (v.bolesti && v.bolesti.length) { L.push('**Bolesti:**'); v.bolesti.forEach(b => L.push(prob(b))); L.push(''); }
+  if (v.stetnici && v.stetnici.length) { L.push('**Štetnici:**'); v.stetnici.forEach(b => L.push(prob(b))); L.push(''); }
   if (v.zastita && v.zastita.length) {
     L.push('**Zaštita kroz godinu:**', '', '| Kada | Što |', '|---|---|');
     v.zastita.forEach(z => L.push(`| ${z.kada} | ${z.sto} |`));

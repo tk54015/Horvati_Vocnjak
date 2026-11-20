@@ -68,6 +68,13 @@ var syncInFlight = false;
 var syncRetryTimer = null;
 var syncFlushTimer = null;
 var isAdminUser = false;
+// Probni admin način: sve admin opcije, ali spremanje samo u localStorage ovog preglednika
+var DEMO_FLAG_KEY = 'horvati_demo_mode';
+var DEMO_STATE_KEY = 'horvati_demo_state_v1';
+var DEMO_WALLET_KEY = 'horvati_demo_wallet_v1';
+var demoMode = (function () {
+    try { return localStorage.getItem(DEMO_FLAG_KEY) === '1'; } catch (e) { return false; }
+})();
 var AUTH_API_URL = 'api/auth';
 
 // Uređivati može samo admin (na staroj verziji bez servera svi, kao prije).
@@ -111,6 +118,8 @@ function setSyncStatus(state, message) {
         el.textContent = '☁️ Spremanje...';
     } else if (state === 'error') {
         el.textContent = '⚠️ Spremanje nije uspjelo, pokušavam ponovno...';
+    } else if (state === 'ok' && demoMode) {
+        el.textContent = '🧪 Spremljeno samo u ovom pregledniku.';
     } else if (state === 'ok') {
         el.textContent = '☁️ Sve spremljeno na server.';
     } else {
@@ -119,6 +128,7 @@ function setSyncStatus(state, message) {
 }
 
 function queueServerSync(kind, currentMap) {
+    if (demoMode) { scheduleDemoSave(); return; }
     if (!isAdminUser) return;
     var snap = syncSnapshot[kind];
     var changed = false;
@@ -1662,11 +1672,12 @@ function loadInventory() {
                 setAdminMode(false);
                 showOfflineBanner();
             } else {
-                setAdminMode(results[1]);
+                setAdminMode(demoMode ? true : results[1]);
+                if (demoMode) showDemoUi();
             }
 
             return ensureServerSeeded(state).then(function (seededState) {
-                applyServerState(seededState);
+                applyServerState(demoMode ? demoOverlay(seededState) : seededState);
                 baseItems = normalizeItems(seededState.stabla).concat(normalizeItems(seededState.loza))
                     .filter(function (item) { return !deletedIds[item.id]; });
                 computeVisibleBaseVineIds(baseItems);
@@ -2593,6 +2604,7 @@ if (loginToggleBtn && loginFormEl) {
 
 if (logoutBtn) {
     logoutBtn.addEventListener('click', function () {
+        if (demoMode) { exitDemo(); return; }
         if (hasUnsavedChanges()) {
             flushServerSync(false);
             alert('Još se spremaju izmjene, pokušaj odjavu za par sekundi.');
@@ -4551,6 +4563,7 @@ function walletCategoryLabel(kind, cat) {
 }
 
 function walletRequest(method, body) {
+    if (demoMode) return demoWalletRequest(method, body);
     return fetch(WALLET_API_URL, {
         method: method,
         headers: body ? { 'Content-Type': 'application/json' } : undefined,
@@ -5203,3 +5216,134 @@ if (reportModal) {
         btn.outerHTML = '<span class="pp-ok">✓ Dodano u raspored za ' + (reportYear + 1) + '.</span>';
     });
 }
+
+// ---------------------------------------------------------------------------
+// Probni admin način (localStorage)
+// ---------------------------------------------------------------------------
+function demoMaps() {
+    return {
+        userItems: userItems,
+        noteOverrides: noteOverrides,
+        plantDetails: plantDetails,
+        positionOverrides: positionOverrides,
+        deletedIds: deletedIds,
+        taskDone: taskDone,
+        plantLogs: plantLogs,
+        plantHarvests: plantHarvests,
+        treeTaskStates: treeTaskStates,
+        customTasks: customTasks
+    };
+}
+
+var demoSaveTimer = null;
+function scheduleDemoSave() {
+    if (demoSaveTimer) clearTimeout(demoSaveTimer);
+    demoSaveTimer = setTimeout(function () {
+        demoSaveTimer = null;
+        try {
+            localStorage.setItem(DEMO_STATE_KEY, JSON.stringify(demoMaps()));
+            setSyncStatus('ok');
+        } catch (e) {
+            setSyncStatus('error', '⚠️ Probne promjene se ne mogu spremiti u preglednik.');
+        }
+    }, 150);
+}
+
+// Probno stanje (ako postoji) zamjenjuje izmjene sa servera; originalna stabla ostaju ista
+function demoOverlay(state) {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(DEMO_STATE_KEY) || 'null'); } catch (e) { saved = null; }
+    if (!saved) return state;
+    var out = Object.assign({}, state);
+    Object.keys(saved).forEach(function (k) { out[k] = saved[k]; });
+    return out;
+}
+
+function showDemoUi() {
+    document.body.classList.add('demo-mode');
+    var banner = document.getElementById('demo-banner');
+    if (banner) banner.classList.remove('hidden');
+    var text = document.getElementById('login-status-text');
+    if (text) text.innerHTML = '🧪 <b>Probni admin</b>';
+    if (logoutBtn) logoutBtn.textContent = 'Izađi';
+}
+
+function startDemo() {
+    askConfirm('Isprobati admin način?',
+        'Dobit ćeš sve admin opcije (dodavanje i premještanje stabala, dnevnik, berba, raspored, novčanik…). ' +
+        'Ništa se ne sprema na server – promjene ostaju samo u ovom pregledniku i nitko ih drugi ne vidi. Kreće se od stvarnog stanja.',
+        '🧪 Isprobaj').then(function (ok) {
+        if (!ok) return;
+        try {
+            localStorage.removeItem(DEMO_STATE_KEY);
+            localStorage.removeItem(DEMO_WALLET_KEY);
+            localStorage.setItem(DEMO_FLAG_KEY, '1');
+        } catch (e) {
+            alert('Preglednik ne dopušta spremanje (localStorage), pa probni način ne može raditi.');
+            return;
+        }
+        window.location.reload();
+    });
+}
+
+function clearDemoStorage() {
+    try {
+        localStorage.removeItem(DEMO_FLAG_KEY);
+        localStorage.removeItem(DEMO_STATE_KEY);
+        localStorage.removeItem(DEMO_WALLET_KEY);
+    } catch (e) { /* ništa */ }
+}
+
+function exitDemo() {
+    askConfirm('Izaći iz probnog načina?', 'Probne promjene će se obrisati, a stranica se vraća na stvarno stanje.', 'Izađi').then(function (ok) {
+        if (!ok) return;
+        clearDemoStorage();
+        window.location.reload();
+    });
+}
+
+function resetDemo() {
+    askConfirm('Vratiti stvarno stanje?', 'Sve probne promjene se brišu, a probni način ostaje uključen i kreće ispočetka od stvarnog stanja.', '↺ Vrati').then(function (ok) {
+        if (!ok) return;
+        try {
+            localStorage.removeItem(DEMO_STATE_KEY);
+            localStorage.removeItem(DEMO_WALLET_KEY);
+        } catch (e) { /* ništa */ }
+        window.location.reload();
+    });
+}
+
+function demoWalletRequest(method, body) {
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(DEMO_WALLET_KEY) || '[]'); } catch (e) { list = []; }
+    var store = function () { localStorage.setItem(DEMO_WALLET_KEY, JSON.stringify(list)); };
+    return new Promise(function (resolve) {
+        if (method === 'GET') {
+            resolve({ entries: list.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); }) });
+            return;
+        }
+        if (body.action === 'delete') {
+            list = list.filter(function (e) { return e.id !== body.id; });
+            store();
+            resolve({ deleted: body.id });
+            return;
+        }
+        var e = Object.assign({}, body.entry, { amount: Math.round(Number(body.entry.amount) * 100) / 100, planned: body.entry.planned === true });
+        list = list.filter(function (x) { return x.id !== e.id; }).concat([e]);
+        store();
+        resolve({ entry: e });
+    });
+}
+
+var demoStartBtn = document.getElementById('demo-start');
+if (demoStartBtn) demoStartBtn.addEventListener('click', startDemo);
+var demoExitBtn = document.getElementById('demo-exit');
+if (demoExitBtn) demoExitBtn.addEventListener('click', exitDemo);
+var demoResetBtn = document.getElementById('demo-reset');
+if (demoResetBtn) demoResetBtn.addEventListener('click', resetDemo);
+window.addEventListener('pagehide', function () {
+    if (demoMode && demoSaveTimer) {
+        clearTimeout(demoSaveTimer);
+        try { localStorage.setItem(DEMO_STATE_KEY, JSON.stringify(demoMaps())); } catch (e) { /* ništa */ }
+    }
+});

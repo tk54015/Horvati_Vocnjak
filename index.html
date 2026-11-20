@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261123d">
+    <link rel="stylesheet" href="style.css?v=20261123e">
 </head>
 <body>
     <div id="map"></div>
@@ -129,8 +129,9 @@
           <button id="login-submit" type="submit">Prijavi se</button>
           <div id="login-error" class="login-error hidden" role="alert"></div>
         </form>
+        <button id="demo-start" type="button" class="demo-start">🧪 Isprobaj admin način rada</button>
         <div id="login-status" class="hidden">
-          <span>👤 Prijavljen: <b>admin</b></span>
+          <span id="login-status-text">👤 Prijavljen: <b>admin</b></span>
           <button id="logout-btn" type="button">Odjava</button>
         </div>
         <small id="sync-status" class="admin-only">Učitavanje podataka...</small>
@@ -424,6 +425,11 @@
       <span id="offline-text">📴 Offline: prikazani su zadnji spremljeni podaci, uređivanje nije moguće.</span>
       <button id="offline-reload" type="button" class="hidden">Osvježi</button>
     </div>
+    <div id="demo-banner" class="hidden" role="status">
+      <span>🧪 <b>Probni admin način</b> – promjene se spremaju samo u ovom pregledniku</span>
+      <button id="demo-reset" type="button" title="Odbaci probne promjene i kreni od stvarnog stanja">↺ Vrati stvarno stanje</button>
+      <button id="demo-exit" type="button">Izađi</button>
+    </div>
     <div id="cursor-tree" class="hidden" aria-hidden="true"></div>
 
     <div id="changes-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Izmjene podataka">
@@ -459,6 +465,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261123d"></script>
+    <script src="script.js?v=20261123e"></script>
 </body>
 </html>

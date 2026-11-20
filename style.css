@@ -3711,3 +3711,82 @@ body.placing-tree .leaflet-container {
         break-inside: avoid;
     }
 }
+
+/* ---------- Probni admin način ---------- */
+.demo-start {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 5px 8px;
+    border: 1px dashed #8a6d00;
+    border-radius: 6px;
+    background: #fff7d6;
+    color: #5a4700;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.demo-start:hover {
+    background: #ffeeb0;
+}
+
+body.is-admin .demo-start {
+    display: none;
+}
+
+#demo-banner {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1450;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    padding: 6px 8px 6px 14px;
+    border: 2px solid #c9a400;
+    border-radius: 999px;
+    background: #fff7d6;
+    color: #4a3a00;
+    font-size: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+#demo-banner.hidden {
+    display: none;
+}
+
+#demo-banner button {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border: 1px solid #a88a00;
+    border-radius: 999px;
+    background: #fff;
+    color: #4a3a00;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#demo-exit {
+    background: #c9a400 !important;
+    color: #fff !important;
+}
+
+@media (max-width: 900px) {
+    #demo-banner {
+        top: auto;
+        bottom: 16px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: fit-content;
+        transform: none;
+        border-radius: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

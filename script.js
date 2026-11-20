@@ -55,7 +55,8 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {} };
+var taskDone = {}; // obavljeni zadaci iz rasporeda: 'godina:zadatak' -> { done, at }
 var deletedIds = {}; // izbrisana originalna stabla: id -> { deletedAt, name, treeType }
 var pendingChanges = {};
 var syncInFlight = false;
@@ -298,6 +299,7 @@ function applyServerState(state) {
     plantDetails = asPlainObject(state.plantDetails);
     positionOverrides = asPlainObject(state.positionOverrides);
     deletedIds = asPlainObject(state.deletedIds);
+    taskDone = asPlainObject(state.taskDone);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
@@ -305,7 +307,8 @@ function applyServerState(state) {
         note: buildSnapshotFromMap(noteOverrides),
         details: buildSnapshotFromMap(plantDetails),
         position: buildSnapshotFromMap(positionOverrides),
-        deleted: buildSnapshotFromMap(deletedIds)
+        deleted: buildSnapshotFromMap(deletedIds),
+        task: buildSnapshotFromMap(taskDone)
     };
     pendingChanges = {};
 }
@@ -2125,6 +2128,7 @@ document.addEventListener('keydown', function (e) {
         setMenuOpen(false);
         closeAddTreeModal();
         closeEncyclopedia();
+        closeTasks();
         setPlacementEnabled(false);
         return;
     }
@@ -2826,5 +2830,216 @@ if (plantEncyclopediaBtn) {
     plantEncyclopediaBtn.addEventListener('click', function () {
         var item = selectedPlant && allItemsById[selectedPlant.itemId];
         openEncyclopedia(item ? item.treeType : null);
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Raspored radova (podaci u data/raspored.json, kvačice u bazi kao 'task')
+// ---------------------------------------------------------------------------
+var MONTH_NAMES = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
+var CATEGORY_ICONS = { orezivanje: '✂️', 'zaštita': '🧴', gnojidba: '🌱', berba: '🧺', voda: '💧', higijena: '🧹', vrijeme: '🌡️', ostalo: '📝' };
+var tasksModal = document.getElementById('tasks-modal');
+var tasksData = null;
+var tasksLoading = null;
+var tasksView = null; // { year, month }
+
+function seasonName(month) {
+    if (month === 12 || month <= 2) return '❄️ Zima';
+    if (month <= 5) return '🌸 Proljeće';
+    if (month <= 8) return '☀️ Ljeto';
+    return '🍂 Jesen';
+}
+
+function loadTasks() {
+    if (tasksData) return Promise.resolve(tasksData);
+    if (!tasksLoading) {
+        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120e'), loadEncyclopedia().catch(function () { return null; })])
+            .then(function (results) {
+                tasksData = results[0];
+                return tasksData;
+            })
+            .catch(function (error) {
+                tasksLoading = null;
+                throw error;
+            });
+    }
+    return tasksLoading;
+}
+
+// Zadatak koji prelazi preko Nove godine (npr. studeni–ožujak) pripada sezoni sljedeće godine.
+function taskKey(task, year, month) {
+    var m = task.mjeseci || [];
+    var wraps = m.indexOf(12) !== -1 && m.indexOf(1) !== -1;
+    var seasonYear = wraps && month >= 9 ? year + 1 : year;
+    return seasonYear + ':' + task.id;
+}
+
+function speciesName(typeId) {
+    if (encyclopediaData) {
+        var entry = encyclopediaData.vrste.find(function (v) { return v.id === typeId; });
+        if (entry) return entry.naziv;
+    }
+    return typeId;
+}
+
+function speciesIconHtml(typeId) {
+    var icon = iconByType(typeId);
+    if (icon) return '<img src="' + icon + '" alt="" width="16" height="16">';
+    var emoji = '🌳';
+    if (encyclopediaData) {
+        var entry = encyclopediaData.vrste.find(function (v) { return v.id === typeId; });
+        if (entry && entry.emoji) emoji = entry.emoji;
+    }
+    return '<span>' + emoji + '</span>';
+}
+
+function tasksForView() {
+    var counts = countTreesByType();
+    var month = tasksView.month;
+    return tasksData.zadaci
+        .filter(function (task) { return (task.mjeseci || []).indexOf(month) !== -1; })
+        .map(function (task) {
+            var species = (task.vrste || []).filter(function (v) { return counts[v] > 0; });
+            var key = taskKey(task, tasksView.year, month);
+            var m = task.mjeseci;
+            return {
+                task: task,
+                key: key,
+                species: species,
+                trees: species.reduce(function (sum, v) { return sum + counts[v]; }, 0),
+                done: !!taskDone[key],
+                isLast: m.length > 1 && m[m.length - 1] === month,
+                isFirst: m.length > 1 && m[0] === month
+            };
+        })
+        .filter(function (row) { return !row.task.vrste.length || row.species.length > 0; });
+}
+
+function renderTasks() {
+    if (!tasksData || !tasksView) return;
+    var now = new Date();
+    var isCurrent = tasksView.year === now.getFullYear() && tasksView.month === now.getMonth() + 1;
+    document.getElementById('tasks-month').textContent = MONTH_NAMES[tasksView.month - 1] + ' ' + tasksView.year;
+    document.getElementById('tasks-season').textContent = seasonName(tasksView.month) + (isCurrent ? ' · ovaj mjesec' : '');
+    document.getElementById('tasks-today').classList.toggle('hidden', isCurrent);
+
+    var rows = tasksForView();
+    var doneCount = rows.filter(function (r) { return r.done; }).length;
+    var progressEl = document.getElementById('tasks-progress');
+    progressEl.innerHTML = rows.length
+        ? '<div class="tasks-bar"><span style="width:' + Math.round(doneCount / rows.length * 100) + '%"></span></div>' +
+          '<span>' + doneCount + ' / ' + rows.length + ' obavljeno</span>'
+        : '';
+
+    var listEl = document.getElementById('tasks-list');
+    if (!rows.length) {
+        listEl.innerHTML = '<p class="tasks-empty">Za ovaj mjesec nema posebnih radova za vrste koje imaš na karti. 🌿</p>';
+        return;
+    }
+
+    var editable = isAdminUser || storageMode === 'local';
+    var prios = tasksData.meta.prioriteti;
+    var html = '';
+    [1, 2, 3].forEach(function (p) {
+        var group = rows.filter(function (r) { return r.task.prioritet === p; });
+        if (!group.length) return;
+        group.sort(function (a, b) {
+            if (a.done !== b.done) return a.done ? 1 : -1;
+            if (a.isLast !== b.isLast) return a.isLast ? -1 : 1;
+            return b.trees - a.trees;
+        });
+        var info = prios[String(p)];
+        html += '<section class="tasks-group prio-' + p + '"><h3>' + info.oznaka + ' ' + escapeHtml(info.naziv) +
+            ' <small>' + escapeHtml(info.opis) + '</small></h3><ul>';
+        group.forEach(function (r) {
+            var t = r.task;
+            var badges = '';
+            if (r.isLast && !r.done) badges += '<span class="task-badge last">⏳ zadnji mjesec</span>';
+            if (r.isFirst && !r.done) badges += '<span class="task-badge first">počinje</span>';
+            var chips = r.species.map(function (v) {
+                return '<button type="button" class="task-chip" data-species="' + escapeHtml(v) + '" title="Otvori u enciklopediji">' +
+                    speciesIconHtml(v) + escapeHtml(speciesName(v)) + ' <b>' + countTreesByType()[v] + '</b></button>';
+            }).join('');
+            html += '<li class="task' + (r.done ? ' done' : '') + '">' +
+                '<label class="task-check"><input type="checkbox" data-key="' + escapeHtml(r.key) + '"' +
+                (r.done ? ' checked' : '') + (editable ? '' : ' disabled') + ' aria-label="Obavljeno"></label>' +
+                '<div class="task-main">' +
+                '<div class="task-title">' + (CATEGORY_ICONS[t.kategorija] || '📝') + ' ' + escapeHtml(t.naslov) + badges + '</div>' +
+                (t.opis ? '<div class="task-desc">' + escapeHtml(t.opis) + '</div>' : '') +
+                (chips ? '<div class="task-chips">' + chips + '</div>' : '') +
+                '</div></li>';
+        });
+        html += '</ul></section>';
+    });
+    if (tasksData.meta.napomena) {
+        html += '<p class="enc-note">ℹ️ ' + escapeHtml(tasksData.meta.napomena) +
+            (editable ? '' : ' Kvačice može mijenjati samo admin.') + '</p>';
+    }
+    listEl.innerHTML = html;
+}
+
+function shiftTasksMonth(delta) {
+    var m = tasksView.month + delta;
+    var y = tasksView.year;
+    if (m < 1) { m = 12; y -= 1; }
+    if (m > 12) { m = 1; y += 1; }
+    tasksView = { year: y, month: m };
+    renderTasks();
+}
+
+function openTasks() {
+    if (!tasksModal) return;
+    var now = new Date();
+    tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
+    tasksModal.classList.remove('hidden');
+    document.getElementById('tasks-list').innerHTML = '<p class="tasks-empty">Učitavanje...</p>';
+    loadTasks()
+        .then(renderTasks)
+        .catch(function (error) {
+            console.error(error);
+            document.getElementById('tasks-list').innerHTML = '<p class="tasks-empty">Ne mogu učitati raspored.</p>';
+        });
+}
+
+function closeTasks() {
+    if (tasksModal) tasksModal.classList.add('hidden');
+}
+
+if (tasksModal) {
+    document.getElementById('open-tasks').addEventListener('click', function () {
+        setMenuOpen(false);
+        openTasks();
+    });
+    document.getElementById('close-tasks').addEventListener('click', closeTasks);
+    document.getElementById('tasks-prev').addEventListener('click', function () { shiftTasksMonth(-1); });
+    document.getElementById('tasks-next').addEventListener('click', function () { shiftTasksMonth(1); });
+    document.getElementById('tasks-today').addEventListener('click', function () {
+        var now = new Date();
+        tasksView = { year: now.getFullYear(), month: now.getMonth() + 1 };
+        renderTasks();
+    });
+    tasksModal.addEventListener('click', function (event) {
+        if (event.target === tasksModal) closeTasks();
+    });
+    document.getElementById('tasks-list').addEventListener('change', function (event) {
+        var box = event.target;
+        if (!box || box.type !== 'checkbox') return;
+        if (!(isAdminUser || storageMode === 'local')) {
+            box.checked = !box.checked;
+            return;
+        }
+        var key = box.getAttribute('data-key');
+        if (box.checked) {
+            taskDone[key] = { done: true, at: new Date().toISOString() };
+        } else {
+            delete taskDone[key];
+        }
+        if (storageMode === 'server') queueServerSync('task', taskDone);
+        renderTasks();
+    });
+    document.getElementById('tasks-list').addEventListener('click', function (event) {
+        var chip = event.target.closest('.task-chip');
+        if (!chip) return;
+        openEncyclopedia(chip.getAttribute('data-species'));
     });
 }

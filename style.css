@@ -3512,3 +3512,202 @@ body.placing-tree .leaflet-container {
         grid-template-columns: 1fr;
     }
 }
+
+/* ---------- Godišnji izvještaj ---------- */
+#report-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1850;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+#report-modal.hidden {
+    display: none;
+}
+
+.report-card {
+    width: min(760px, 100%);
+    height: min(90vh, 900px);
+    display: flex;
+    flex-direction: column;
+    background: var(--panel-bg-solid, #e5f1dc);
+    border: 1px solid var(--panel-border, #b7d3a6);
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    font-size: 13px;
+}
+
+#close-report {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background: #888;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#report-prev,
+#report-next {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #0a4e9b;
+    border-radius: 999px;
+    background: #fff;
+    color: #0a4e9b;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.report-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 14px 8px;
+}
+
+.report-actions button {
+    padding: 5px 12px;
+    border: 1px solid #356b35;
+    border-radius: 999px;
+    background: #fff;
+    color: #2f5d2f;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.report-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 16px 18px;
+    line-height: 1.5;
+}
+
+.rp-sec {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f6fbf2;
+    border: 1px solid #d5e5cb;
+}
+
+.rp-sec h3 {
+    margin: 0 0 6px;
+    font-size: 14px;
+    color: #2f5d2f;
+}
+
+.rp-sec p {
+    margin: 4px 0;
+}
+
+.rp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.rp-list,
+.rp-plan-list {
+    margin: 0;
+    padding-left: 4px;
+    list-style: none;
+}
+
+.rp-list li {
+    padding: 3px 0;
+}
+
+.rp-list li img {
+    vertical-align: -3px;
+}
+
+.rp-list small {
+    color: #666;
+}
+
+.rp-plan {
+    border-left: 5px solid #4f8f4f;
+}
+
+.rp-plan-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid #e3eedc;
+}
+
+.rp-plan-title img {
+    vertical-align: -3px;
+}
+
+.rp-plan-task {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #2f5f96;
+}
+
+.rp-plan-task select {
+    padding: 2px 4px;
+    border: 1px solid #bcd0b4;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.rp-table th {
+    width: 32%;
+}
+
+.rp-table th img {
+    vertical-align: -3px;
+}
+
+.rp-pos { color: #2e7d32; }
+.rp-neg { color: #c62828; }
+
+/* Ispis: samo izvještaj */
+@media print {
+    body.printing-report > *:not(#report-modal) {
+        display: none !important;
+    }
+
+    body.printing-report #report-modal {
+        position: static;
+        background: none;
+        padding: 0;
+    }
+
+    body.printing-report .report-card {
+        width: auto;
+        height: auto;
+        box-shadow: none;
+        border: 0;
+        background: #fff;
+    }
+
+    body.printing-report .report-body {
+        overflow: visible;
+    }
+
+    body.printing-report .report-actions,
+    body.printing-report #close-report,
+    body.printing-report #report-prev,
+    body.printing-report #report-next,
+    body.printing-report .rp-plan-task select,
+    body.printing-report [data-act="rp-add"] {
+        display: none !important;
+    }
+
+    body.printing-report .rp-sec {
+        background: #fff;
+        break-inside: avoid;
+    }
+}

@@ -2178,6 +2178,7 @@ document.addEventListener('keydown', function (e) {
         closeTasks();
         closeFilterPanel();
         closeWallet();
+        closeReport();
         setPlacementEnabled(false);
         return;
     }
@@ -4848,4 +4849,357 @@ function renderSprayPage() {
 
     encyclopediaArticleEl.innerHTML = html;
     encyclopediaArticleEl.scrollTop = 0;
+}
+
+// ---------------------------------------------------------------------------
+// Dnevnik: izbor bolesti / štetnika iz enciklopedije
+// ---------------------------------------------------------------------------
+function speciesEntry(typeId) {
+    if (!encyclopediaData) return null;
+    return encyclopediaData.vrste.find(function (v) { return v.id === normalizeType(typeId); }) || null;
+}
+
+function findProblem(typeId, name) {
+    var entry = speciesEntry(typeId);
+    if (!entry || !name) return null;
+    return [].concat(entry.bolesti || [], entry.stetnici || []).find(function (p) { return p.naziv === name; }) || null;
+}
+
+// Prepoznaj poznati problem iz enciklopedije u slobodnom tekstu (npr. "pepelnica na vrhovima")
+function findProblemInText(typeId, text) {
+    var entry = speciesEntry(typeId);
+    if (!entry || !text) return null;
+    var t = normalizeSearch(text);
+    return [].concat(entry.bolesti || [], entry.stetnici || []).find(function (p) {
+        var stem = normalizeSearch(p.naziv).split(/[^a-z]+/).filter(function (w) { return w.length >= 5; })[0];
+        return stem && t.indexOf(stem.slice(0, 6)) !== -1;
+    }) || null;
+}
+
+// ---------------------------------------------------------------------------
+// Godišnji izvještaj + plan za sljedeću godinu
+// ---------------------------------------------------------------------------
+var reportModal = document.getElementById('report-modal');
+var reportYear = new Date().getFullYear();
+var reportWallet = null;
+var reportMarkdown = '';
+
+function itemLabel(item) {
+    return (item.name || item.id) + ' (' + item.id + ')';
+}
+
+function suggestTaskForProblem(speciesId, problemName) {
+    if (!tasksData) return null;
+    var stem = normalizeSearch(problemName).split(/[^a-z]+/).filter(function (w) { return w.length >= 5; })[0];
+    if (!stem) return null;
+    stem = stem.slice(0, 6);
+    return tasksData.zadaci.find(function (z) {
+        return (z.vrste || []).indexOf(speciesId) !== -1 && normalizeSearch(z.naslov + ' ' + (z.opis || '')).indexOf(stem) !== -1;
+    }) || null;
+}
+
+function monthsLabel(mjeseci) {
+    return (mjeseci || []).map(function (m) { return MONTH_NAMES[m - 1].slice(0, 3).toLowerCase(); }).join('–');
+}
+
+function buildReport(year) {
+    var y = String(year);
+    var items = baseItems.concat(userItems);
+    var byId = {};
+    items.forEach(function (i) { byId[i.id] = i; });
+
+    // dnevnik
+    var logs = [];
+    Object.keys(plantLogs).forEach(function (id) {
+        var item = byId[id];
+        if (!item) return;
+        (plantLogs[id] || []).forEach(function (e) {
+            if (String(e.date).slice(0, 4) === y) logs.push({ item: item, e: e });
+        });
+    });
+    var typeCounts = {};
+    logs.forEach(function (l) { typeCounts[l.e.type] = (typeCounts[l.e.type] || 0) + 1; });
+
+    // problemi
+    var problems = {};
+    logs.filter(function (l) { return l.e.type === 'bolest'; }).forEach(function (l) {
+        var sp = normalizeType(l.item.treeType);
+        var name = l.e.problem || l.e.text || 'Bez opisa';
+        var key = sp + '|' + name;
+        var p = problems[key] || (problems[key] = { species: sp, name: name, known: !!l.e.problem, trees: {}, dates: [] });
+        p.trees[l.item.id] = l.item;
+        p.dates.push(l.e.date);
+    });
+    var problemList = Object.keys(problems).map(function (k) { return problems[k]; })
+        .sort(function (a, b) { return Object.keys(b.trees).length - Object.keys(a.trees).length; });
+
+    // napomene
+    var notes = logs.filter(function (l) { return (l.e.type === 'ostalo' || l.e.type === 'pregled') && l.e.text && !l.e.taskKey; });
+
+    // rezidba: vrste koje imaju zadatak rezidbe, a stabla nemaju zapis orezivanja te godine
+    var pruneSpecies = {};
+    (tasksData ? tasksData.zadaci : []).forEach(function (z) {
+        if (z.kategorija === 'orezivanje') (z.vrste || []).forEach(function (v) { pruneSpecies[v] = true; });
+    });
+    var notPruned = items.filter(function (i) {
+        var sp = normalizeType(i.treeType);
+        if (!pruneSpecies[sp] || sp === 'vinova_loza') return false;
+        return !(plantLogs[i.id] || []).some(function (e) { return e.type === 'orezivanje' && String(e.date).slice(0, 4) === y; });
+    });
+
+    // berba
+    var harvest = {};
+    var harvestTrees = 0;
+    Object.keys(plantHarvests).forEach(function (id) {
+        var item = byId[id];
+        var h = plantHarvests[id] && plantHarvests[id][y];
+        if (!item || !h) return;
+        var sp = normalizeType(item.treeType);
+        var row = harvest[sp] || (harvest[sp] = { kg: 0, trees: 0, estMin: 0, estMax: 0 });
+        row.kg += Number(h.kg || 0);
+        row.trees++;
+        harvestTrees++;
+        if (sp !== 'ostalo') {
+            var est = getYieldRangeKg(item);
+            row.estMin += est.min;
+            row.estMax += est.max;
+        }
+    });
+
+    // raspored
+    var taskStats = { done: 0, skipped: 0, postponed: 0 };
+    Object.keys(taskDone).forEach(function (k) {
+        if (k.slice(0, 4) !== y) return;
+        var s = getTaskState(k);
+        if (!s) return;
+        if (s.status === 'done') taskStats.done++;
+        else if (s.status === 'skipped') taskStats.skipped++;
+        else if (s.status === 'postponed') taskStats.postponed++;
+    });
+
+    return { year: year, logs: logs, typeCounts: typeCounts, problems: problemList, notes: notes, notPruned: notPruned,
+        harvest: harvest, harvestTrees: harvestTrees, taskStats: taskStats };
+}
+
+function renderReport() {
+    if (!reportModal) return;
+    var r = buildReport(reportYear);
+    var md = [];
+    var html = '';
+    document.getElementById('report-year').textContent = String(reportYear);
+    md.push('# Horvati voćnjak – izvještaj za ' + reportYear + '.', '');
+
+    // sažetak
+    var types = Object.keys(LOG_TYPES).filter(function (t) { return r.typeCounts[t]; });
+    html += '<section class="rp-sec"><h3>📒 Radovi iz dnevnika</h3>';
+    md.push('## Radovi iz dnevnika', '');
+    if (!r.logs.length) {
+        html += '<p class="pp-muted">Za ' + reportYear + '. nema zapisa u dnevniku.</p>';
+        md.push('Nema zapisa u dnevniku.', '');
+    } else {
+        html += '<div class="rp-chips">' + types.map(function (t) {
+            md.push('- ' + LOG_TYPES[t].naziv + ': ' + r.typeCounts[t]);
+            return '<span class="pp-chip">' + LOG_TYPES[t].icon + ' ' + escapeHtml(LOG_TYPES[t].naziv) + ': <b>' + r.typeCounts[t] + '</b></span>';
+        }).join('') + '</div>';
+        md.push('');
+    }
+    var ts = r.taskStats;
+    if (ts.done + ts.skipped + ts.postponed) {
+        html += '<p>🗓️ Raspored: <b>' + ts.done + '</b> obavljeno, <b>' + ts.skipped + '</b> preskočeno, <b>' + ts.postponed + '</b> odgođeno.</p>';
+        md.push('Raspored: ' + ts.done + ' obavljeno, ' + ts.skipped + ' preskočeno, ' + ts.postponed + ' odgođeno.', '');
+    }
+    html += '</section>';
+
+    // bolesti
+    html += '<section class="rp-sec"><h3>🦠 Bolesti i štetnici</h3>';
+    md.push('## Bolesti i štetnici', '');
+    if (!r.problems.length) {
+        html += '<p class="pp-muted">Nije zabilježen nijedan problem.</p>';
+        md.push('Nije zabilježen nijedan problem.', '');
+    } else {
+        html += '<ul class="rp-list">' + r.problems.map(function (p) {
+            var trees = Object.keys(p.trees).map(function (id) { return p.trees[id]; });
+            var dates = p.dates.slice().sort();
+            var line = speciesName(p.species) + ' – ' + p.name + ': ' + trees.length + (trees.length === 1 ? ' stablo' : ' stabla') +
+                ' (' + formatHrDate(dates[0]) + (dates.length > 1 ? ' – ' + formatHrDate(dates[dates.length - 1]) : '') + ')';
+            md.push('- ' + line);
+            return '<li>' + speciesIconHtml(p.species) + ' <b>' + escapeHtml(speciesName(p.species)) + '</b> – ' + escapeHtml(p.name) +
+                ': ' + trees.length + (trees.length === 1 ? ' stablo' : ' stabla') + ' <small>(' + escapeHtml(trees.map(itemLabel).join(', ')) + '; ' +
+                escapeHtml(formatHrDate(dates[0])) + (dates.length > 1 ? ' – ' + escapeHtml(formatHrDate(dates[dates.length - 1])) : '') + ')</small></li>';
+        }).join('') + '</ul>';
+        md.push('');
+    }
+    html += '</section>';
+
+    // berba
+    var hk = Object.keys(r.harvest);
+    html += '<section class="rp-sec"><h3>🧺 Berba</h3>';
+    md.push('## Berba', '');
+    if (!hk.length) {
+        html += '<p class="pp-muted">Berba za ' + reportYear + '. nije upisana.</p>';
+        md.push('Berba nije upisana.', '');
+    } else {
+        html += '<table class="enc-table rp-table"><tbody>' + hk.sort(function (a, b) { return r.harvest[b].kg - r.harvest[a].kg; }).map(function (sp) {
+            var h = r.harvest[sp];
+            var est = h.estMax ? Math.round(h.estMin) + '–' + Math.round(h.estMax) + ' kg' : '–';
+            md.push('- ' + speciesName(sp) + ': ' + (Math.round(h.kg * 10) / 10) + ' kg (' + h.trees + ' stabala, procjena ' + est + ')');
+            return '<tr><th scope="row">' + speciesIconHtml(sp) + ' ' + escapeHtml(speciesName(sp)) + '</th><td><b>' + (Math.round(h.kg * 10) / 10) + ' kg</b> s ' + h.trees +
+                (h.trees === 1 ? ' stabla' : ' stabala') + '</td><td>procjena za ta stabla: ' + est + '</td></tr>';
+        }).join('') + '</tbody></table>';
+        md.push('');
+    }
+    html += '</section>';
+
+    // napomene
+    if (r.notes.length) {
+        html += '<section class="rp-sec"><h3>📝 Napomene i pregledi</h3><ul class="rp-list">' + r.notes.map(function (n) {
+            md.push('- ' + formatHrDate(n.e.date) + ' ' + itemLabel(n.item) + ': ' + n.e.text);
+            return '<li><small>' + escapeHtml(formatHrDate(n.e.date)) + '</small> <b>' + escapeHtml(itemLabel(n.item)) + '</b>: ' + escapeHtml(n.e.text) + '</li>';
+        }).join('') + '</ul></section>';
+        md.splice(md.length - r.notes.length, 0, '## Napomene i pregledi', '');
+        md.push('');
+    }
+
+    // novčanik (samo admin)
+    if (isAdminUser && reportWallet) {
+        var w = reportWallet.filter(function (e) { return String(e.date).slice(0, 4) === String(reportYear) && !e.planned; });
+        var cost = 0;
+        var income = 0;
+        w.forEach(function (e) { if (e.kind === 'prihod') income += e.amount; else cost += e.amount; });
+        var bal = income - cost;
+        html += '<section class="rp-sec"><h3>💰 Novčanik</h3><p>Troškovi <b>' + formatEur(cost) + '</b> · Prihodi <b>' + formatEur(income) + '</b> · ' +
+            (bal >= 0 ? 'Dobit' : 'Gubitak') + ' <b class="' + (bal >= 0 ? 'rp-pos' : 'rp-neg') + '">' + (bal >= 0 ? '+' : '−') + formatEur(Math.abs(bal)) + '</b></p></section>';
+        md.push('## Novčanik', '', 'Troškovi ' + formatEur(cost) + ', prihodi ' + formatEur(income) + ', ' + (bal >= 0 ? 'dobit +' : 'gubitak −') + formatEur(Math.abs(bal)), '');
+    }
+
+    // plan
+    var next = reportYear + 1;
+    html += '<section class="rp-sec rp-plan"><h3>📌 Plan za ' + next + '.</h3>';
+    md.push('## Plan za ' + next + '.', '');
+    var planCount = 0;
+    if (r.problems.length) {
+        html += '<ul class="rp-plan-list">' + r.problems.map(function (p, idx) {
+            planCount++;
+            var prob = p.known ? findProblem(p.species, p.name) : findProblemInText(p.species, p.name);
+            var task = suggestTaskForProblem(p.species, prob ? prob.naziv : p.name);
+            var title = speciesName(p.species) + ': ' + p.name + (prob && !p.known ? ' → ' + prob.naziv : '');
+            var fix = prob && prob.rjesenje ? prob.rjesenje : 'Pratiti stanje i po potrebi provjeriti u enciklopediji ili sa savjetodavnom službom.';
+            md.push('- [ ] ' + title + ' – ' + fix + (task ? ' (u rasporedu: ' + task.naslov + ', ' + monthsLabel(task.mjeseci) + ')' : ''));
+            return '<li><div class="rp-plan-title">' + speciesIconHtml(p.species) + ' <b>' + escapeHtml(title) + '</b></div>' +
+                '<div class="enc-problem-row"><span class="enc-tag fix">✅ Što napraviti</span><p>' + escapeHtml(fix) + '</p></div>' +
+                (task
+                    ? '<div class="rp-plan-task">🗓️ Već u rasporedu: <b>' + escapeHtml(task.naslov) + '</b> (' + escapeHtml(monthsLabel(task.mjeseci)) + ')</div>'
+                    : (isAdminUser ? '<div class="rp-plan-task">Podsjetnik u ' + next + '.: <select class="rp-month" data-idx="' + idx + '">' +
+                        MONTH_NAMES.map(function (n, i) { return '<option value="' + (i + 1) + '"' + (i === 1 ? ' selected' : '') + '>' + n + '</option>'; }).join('') +
+                        '</select> <button type="button" class="pp-act" data-act="rp-add" data-idx="' + idx + '">📌 Dodaj u raspored</button></div>' : '')) +
+                '</li>';
+        }).join('') + '</ul>';
+    }
+    var pruneBySpecies = {};
+    r.notPruned.forEach(function (i) { var sp = normalizeType(i.treeType); pruneBySpecies[sp] = (pruneBySpecies[sp] || 0) + 1; });
+    var pk = Object.keys(pruneBySpecies);
+    if (pk.length && r.logs.length) {
+        planCount++;
+        var pruneText = pk.map(function (sp) { return speciesName(sp) + ' ' + pruneBySpecies[sp]; }).join(', ');
+        html += '<p>✂️ Rezidba nije zabilježena na: ' + escapeHtml(pruneText) + '. Provjeri jesu li orezana ili ih uvrsti u zimsku rezidbu.</p>';
+        md.push('- [ ] Rezidba nije zabilježena na: ' + pruneText);
+    }
+    if (!planCount) {
+        html += '<p class="pp-muted">Nema posebnih prijedloga – vodi dnevnik (bolesti, rezidba) tijekom godine pa će plan biti konkretniji.</p>';
+        md.push('Nema posebnih prijedloga.');
+    }
+    html += '</section>';
+
+    reportMarkdown = md.join('\n') + '\n';
+    document.getElementById('report-body').innerHTML = html;
+    reportModal._problems = r.problems;
+}
+
+function openReport() {
+    if (!reportModal) return;
+    setMenuOpen(false);
+    reportYear = new Date().getFullYear();
+    reportModal.classList.remove('hidden');
+    document.getElementById('report-body').innerHTML = '<p class="pp-muted">Učitavanje…</p>';
+    var jobs = [loadTasks().catch(function () {}), loadEncyclopedia().catch(function () {})];
+    if (isAdminUser) {
+        jobs.push(walletRequest('GET').then(function (d) { reportWallet = d.entries || []; }).catch(function () { reportWallet = null; }));
+    }
+    Promise.all(jobs).then(renderReport);
+}
+
+function closeReport() {
+    if (reportModal) reportModal.classList.add('hidden');
+}
+
+if (reportModal) {
+    document.getElementById('open-report').addEventListener('click', openReport);
+    document.getElementById('close-report').addEventListener('click', closeReport);
+    reportModal.addEventListener('click', function (event) { if (event.target === reportModal) closeReport(); });
+    document.getElementById('report-prev').addEventListener('click', function () { reportYear--; renderReport(); });
+    document.getElementById('report-next').addEventListener('click', function () { reportYear++; renderReport(); });
+    document.getElementById('report-print').addEventListener('click', function () {
+        document.body.classList.add('printing-report');
+        window.print();
+        setTimeout(function () { document.body.classList.remove('printing-report'); }, 500);
+    });
+    document.getElementById('report-download').addEventListener('click', function () {
+        var blob = new Blob([reportMarkdown], { type: 'text/markdown;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'vocnjak-izvjestaj-' + reportYear + '.md';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+    document.getElementById('report-csv').addEventListener('click', function () {
+        var rows = [['Datum', 'Stablo', 'ID', 'Vrsta', 'Opis', 'Prepoznato kao']];
+        Object.keys(plantLogs).forEach(function (id) {
+            var item = allItemsById[id];
+            if (!item) return;
+            (plantLogs[id] || []).forEach(function (e) {
+                if (e.type !== 'bolest' || String(e.date).slice(0, 4) !== String(reportYear)) return;
+                var prob = e.problem ? findProblem(item.treeType, e.problem) : findProblemInText(item.treeType, e.text);
+                rows.push([formatHrDate(e.date), item.name || '', item.id, speciesName(normalizeType(item.treeType)), e.problem || e.text || '', prob ? prob.naziv : '']);
+            });
+        });
+        if (rows.length === 1) {
+            alert('Za ' + reportYear + '. nema zapisa bolesti i štetnika.');
+            return;
+        }
+        rows = [rows[0]].concat(rows.slice(1).sort(function (x, y) { return (x[1] + x[2]).localeCompare(y[1] + y[2], 'hr') || x[0].localeCompare(y[0]); }));
+        var csv = '\uFEFF' + rows.map(function (row) {
+            return row.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(';');
+        }).join('\r\n');
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'vocnjak-bolesti-' + reportYear + '.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+    document.getElementById('report-body').addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-act="rp-add"]');
+        if (!btn || !canEdit()) return;
+        var p = (reportModal._problems || [])[Number(btn.getAttribute('data-idx'))];
+        if (!p) return;
+        var monthSel = document.querySelector('.rp-month[data-idx="' + btn.getAttribute('data-idx') + '"]');
+        var prob = p.known ? findProblem(p.species, p.name) : findProblemInText(p.species, p.name);
+        addCustomTask({
+            naslov: 'Prevencija: ' + p.name + ' (' + speciesName(p.species) + ')',
+            opis: prob && prob.rjesenje ? prob.rjesenje : 'Prošle godine zabilježeno: ' + p.name,
+            mjeseci: [Number(monthSel ? monthSel.value : 2)],
+            godina: reportYear + 1,
+            prioritet: 2,
+            kategorija: 'vlastito',
+            vrste: p.species && p.species !== 'ostalo' ? [p.species] : [],
+            at: new Date().toISOString()
+        });
+        btn.outerHTML = '<span class="pp-ok">✓ Dodano u raspored za ' + (reportYear + 1) + '.</span>';
+    });
 }

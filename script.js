@@ -4358,3 +4358,6 @@ function taskProgressHtml(r) {
     if (p.postponed) parts.push(p.postponed + ' odgođeno');
     return '<div class="task-progress">' + escapeHtml(parts.join(' · ')) + '</div>';
 }
+
+// Izbornik lijevo je na računalu otvoren prema zadanim postavkama (na mobitelu zatvoren, da ne pokriva kartu)
+if (window.innerWidth >= 700) setMenuOpen(true);

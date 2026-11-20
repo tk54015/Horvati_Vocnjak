@@ -2907,3 +2907,36 @@ body.placing-tree .leaflet-container {
 .weather-score-card {
     background: #f6fbf2;
 }
+
+/* ---------- Još zelenije ---------- */
+:root {
+    --panel-bg-solid: #d9ecca;
+    --panel-border: #9fc58a;
+    --panel-head: #c6e1b3;
+}
+
+.map-controls,
+#side-menu,
+#filter-panel,
+#login-panel,
+#plant-panel {
+    background: rgba(211, 232, 196, 0.97);
+}
+
+#encyclopedia-list {
+    background: #cbe4b9;
+}
+
+.pp-task,
+.pp-last,
+.task,
+.pp-form,
+.add-tree-optional,
+.weather-score-card {
+    background: #f1f8eb;
+}
+
+.pp-chip {
+    background: #eef6e8;
+    border-color: #c4dcb5;
+}

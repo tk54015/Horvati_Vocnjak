@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventar Stabala</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261120c">
+    <link rel="stylesheet" href="style.css?v=20261120d">
 </head>
 <body>
     <div id="map"></div>
@@ -65,6 +65,7 @@
     <nav id="side-menu" class="hidden" aria-label="Izbornik">
       <button id="open-weather" type="button" class="menu-view">🌦️ Prognoza</button>
       <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
+      <button id="open-encyclopedia" type="button" class="menu-view">📖 Enciklopedija</button>
       <div class="admin-only menu-admin">
         <button id="open-add-tree" type="button" class="menu-view">➕🌳 Dodaj stablo</button>
         <button id="toggle-drag" type="button" class="menu-view" aria-pressed="false">✋ Premjesti stablo</button>
@@ -100,7 +101,7 @@
         <div id="plant-empty">Klikni marker za otvaranje podataka.</div>
         <div id="plant-form" class="hidden">
           <div class="plant-meta"><span>ID:</span><strong id="plant-id">-</strong></div>
-          <div class="plant-meta"><span>Vrsta:</span><strong id="plant-type">-</strong></div>
+          <div class="plant-meta"><span>Vrsta:</span><span class="plant-type-wrap"><strong id="plant-type">-</strong> <button id="plant-open-encyclopedia" type="button" class="link-btn" title="Otvori u enciklopediji">📖 O vrsti</button></span></div>
           <div class="plant-meta"><span>Visina:</span><strong id="plant-height">-</strong></div>
           <div class="plant-meta"><span>Zalijevanje:</span><strong id="plant-water">-</strong></div>
           <div class="plant-meta"><span>Koordinate:</span><strong id="plant-coords">-</strong></div>
@@ -154,6 +155,7 @@
               <option value="ribizl">Ribizl 🍓</option>
               <option value="dud2">Dud 🌳</option>
               <option value="vinova_loza">Vinova loza 🍇</option>
+            <option value="ostalo">Ostalo (stablo, grm…) 🌳</option>
           </select>
 
           <label for="new-tree-name">Ime / oznaka <span class="req">*</span></label>
@@ -211,6 +213,21 @@
       </form>
     </div>
 
+    <div id="encyclopedia-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="encyclopedia-title">
+      <div class="encyclopedia-card">
+        <div class="encyclopedia-header">
+          <b id="encyclopedia-title">📖 Enciklopedija</b>
+          <button id="close-encyclopedia" type="button" title="Zatvori">x</button>
+        </div>
+        <div class="encyclopedia-body">
+          <nav id="encyclopedia-list" aria-label="Vrste"></nav>
+          <article id="encyclopedia-article" tabindex="-1">
+            <p class="encyclopedia-empty">Odaberi vrstu s popisa.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+
     <div id="confirm-modal" class="hidden" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
       <div class="confirm-card">
         <b id="confirm-title">Jesi li siguran?</b>
@@ -261,6 +278,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261120c"></script>
+    <script src="script.js?v=20261120d"></script>
 </body>
 </html>

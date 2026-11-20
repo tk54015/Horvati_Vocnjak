@@ -1,0 +1,402 @@
+{
+  "meta": {
+    "naziv": "Enciklopedija voćnjaka",
+    "napomena": "Opće preporuke za kontinentalnu Hrvatsku (okolica Zagreba). Rokovi ovise o sorti i vremenu u pojedinoj godini. Za sredstva za zaštitu uvijek provjeri etiketu, dozvolu i karencu."
+  },
+  "vrste": [
+    {
+      "id": "jabuka",
+      "naziv": "Jabuka",
+      "latinski": "Malus domestica",
+      "emoji": "🍎",
+      "opis": "Najraširenija voćka umjerenog pojasa. Dobro podnosi hladne zime, ali cvat može stradati od kasnog proljetnog mraza. Većini sorti treba oprašivač (druga sorta jabuke u blizini).",
+      "voda": "Srednja potreba. Mlada stabla redovito zalijevati u sušnim razdobljima. Odraslim stablima u dužoj suši dati 20–40 L tjedno, osobito u lipnju i srpnju kad plodovi rastu. Malč oko debla čuva vlagu.",
+      "orezivanje": {
+        "kada": "Zimska rezidba od kraja veljače do početka travnja (nakon jakih mrazeva, prije kretanja vegetacije). Ljetna (zelena) rezidba u lipnju i srpnju.",
+        "kako": "Prorjeđivati krošnju da uđe svjetlo, ukloniti suhe, bolesne i grane koje se križaju te vodopije. Rodne grančice ne skraćivati previše. Nakon lipanjskog opadanja prorijediti plodove na 1–2 po cvjetnom grozdu."
+      },
+      "gnojidba": "U rano proljeće (ožujak) mineralno NPK gnojivo po projekciji krošnje. U jesen zreli stajski gnoj ili kompost. Izbjegavati jako dušično gnojenje ljeti.",
+      "bolesti": [
+        { "naziv": "Krastavost (čađava krastavost)", "opis": "Tamne baršunaste pjege na listu i plodu, plodovi pucaju. Najvažnija bolest jabuke, šire je proljetne kiše." },
+        { "naziv": "Pepelnica jabuke", "opis": "Bijela prevlaka na mladim listovima i izbojcima. Zaražene vrhove izboja odrezati zimi." },
+        { "naziv": "Monilija (trulež plodova)", "opis": "Smeđa trulež s koncentričnim krugovima jastučića. Mumificirane plodove ukloniti sa stabla i s tla." },
+        { "naziv": "Bakterijska palež", "opis": "Cvjetovi i vrhovi izboja venu i pocrne, savijaju se kao pastirski štap. Zaražene grane izrezati 30–50 cm u zdravo i dezinficirati alat." }
+      ],
+      "stetnici": [
+        { "naziv": "Jabučni savijač", "opis": "Ličinka (crv) u plodu. Prati se feromonskim klopkama, a crvljive plodove treba skupljati." },
+        { "naziv": "Lisne uši (zelena, krvava uš)", "opis": "Kovrčanje lista; krvava uš stvara bijele vunaste kolonije na kori." },
+        { "naziv": "Crveni voćni pauk (grinja)", "opis": "List posvijetli i postane brončan ljeti u suhom vremenu." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova (ožujak)", "sto": "Bakreni pripravak, po potrebi s mineralnim uljem (protiv prezimljujućih jaja uši i grinja)." },
+        { "kada": "Mišje uho do cvatnje", "sto": "Zaštita od krastavosti, osobito prije i poslije kiše." },
+        { "kada": "Nakon cvatnje do lipnja", "sto": "Nastaviti zaštitu od krastavosti i pepelnice; pratiti savijača klopkama." },
+        { "kada": "Jesen, opadanje lišća", "sto": "Pograbiti i ukloniti lišće (smanjuje krastavost) te mumificirane plodove." }
+      ],
+      "berba": "Ljetne sorte srpanj–kolovoz, jesenske i zimske rujan–listopad. Plod je zreo kad se lako odvaja okretanjem i sjemenke su smeđe."
+    },
+    {
+      "id": "kruska",
+      "naziv": "Kruška",
+      "latinski": "Pyrus communis",
+      "emoji": "🍐",
+      "opis": "Dugovječna voćka, cvate nešto ranije od jabuke pa je osjetljivija na proljetni mraz. Većini sorti treba oprašivač.",
+      "voda": "Srednja potreba, nešto veća od jabuke u vrijeme rasta plodova. U suši redovito zalijevati, osobito mlada stabla.",
+      "orezivanje": {
+        "kada": "Kraj zime, veljača–ožujak. Ljetna rezidba vodopija u lipnju i srpnju.",
+        "kako": "Kruška raste uspravno pa grane treba otvarati i prorjeđivati vrh. Rezati umjereno, jer jaka rezidba potiče vodopije."
+      },
+      "gnojidba": "Kao kod jabuke: NPK u rano proljeće, organsko gnojivo u jesen.",
+      "bolesti": [
+        { "naziv": "Krastavost kruške", "opis": "Tamne pjege na listu i plodu, plodovi pucaju. Zaštita kao kod jabuke." },
+        { "naziv": "Bakterijska palež", "opis": "Kruška je vrlo osjetljiva. Pocrnjeli cvjetovi i vrhovi izboja; izrezati duboko u zdravo i spaliti." },
+        { "naziv": "Hrđa kruške", "opis": "Narančaste pjege na listu, a s donje strane izrasline. Prijelazni domaćin je kleka / sabina, pa ih ne saditi u blizini." }
+      ],
+      "stetnici": [
+        { "naziv": "Kruškina buha", "opis": "Ljepljiva medna rosa i čađavica na lišću i plodovima. Zimi uljni pripravci protiv prezimljujućih odraslih i jaja." },
+        { "naziv": "Lisne uši i savijač", "opis": "Kao kod jabuke." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova", "sto": "Bakreni pripravak; mineralno ulje protiv kruškine buhe." },
+        { "kada": "Prije i poslije cvatnje", "sto": "Zaštita od krastavosti; u cvatnji pregledavati ima li znakova paleži." },
+        { "kada": "Ljeto", "sto": "Uklanjati vodopije i zaražene izboje." }
+      ],
+      "berba": "Kolovoz–listopad. Zimske sorte brati malo prije pune zrelosti, dozrijevaju u skladištu."
+    },
+    {
+      "id": "sljiva",
+      "naziv": "Šljiva",
+      "latinski": "Prunus domestica",
+      "emoji": "🟣",
+      "opis": "Tradicionalna voćka kontinentalne Hrvatske (npr. Bistrica). Skromnih zahtjeva, ali osjetljiva na šarku.",
+      "voda": "Srednja potreba. Zalijevati u suši tijekom rasta plodova (lipanj–kolovoz). Ne podnosi dugotrajno zadržavanje vode u tlu.",
+      "orezivanje": {
+        "kada": "Najbolje u rano proljeće kad krene vegetacija ili ljeti nakon berbe. Izbjegavati veće rezove u jesen i zimi.",
+        "kako": "Prorjeđivati gustu krošnju i uklanjati suhe grane. Velike rane premazati voćarskim voskom, jer se kroz njih šire srebrnasta bolest i smolotok."
+      },
+      "gnojidba": "Umjereno: NPK u ožujku, organsko gnojivo u jesen.",
+      "bolesti": [
+        { "naziv": "Šarka šljive (virus)", "opis": "Svijetli prstenovi na listu, deformirani i kiseli plodovi koji prerano opadaju. Neizlječiva: zaražena stabla treba izvaditi. Virus šire lisne uši." },
+        { "naziv": "Rogač šljive", "opis": "Plodovi izduženi, spljošteni, bez koštice. Bakar u vrijeme bubrenja pupova." },
+        { "naziv": "Monilija", "opis": "Trulež plodova i sušenje cvjetova. Ukloniti mumije." },
+        { "naziv": "Šupljikavost lista", "opis": "Male crvenkaste pjege koje ispadnu pa list izgleda izbušeno." },
+        { "naziv": "Hrđa šljive", "opis": "Smeđe-narančasti jastučići na naličju lista krajem ljeta, rano opadanje lišća." }
+      ],
+      "stetnici": [
+        { "naziv": "Šljivin savijač", "opis": "Crvljivi plodovi koji ranije dozrijevaju i opadaju." },
+        { "naziv": "Šljivine osice", "opis": "Ličinke u mladim plodićima nakon cvatnje; plodići otpadaju." },
+        { "naziv": "Lisne uši", "opis": "Kovrčanje lista i prijenos šarke." }
+      ],
+      "zastita": [
+        { "kada": "Opadanje lišća (jesen)", "sto": "Bakreni pripravak." },
+        { "kada": "Bubrenje pupova", "sto": "Bakar (rogač, šupljikavost)." },
+        { "kada": "Odmah nakon cvatnje", "sto": "Zaštita od šljivinih osica." },
+        { "kada": "Lipanj–kolovoz", "sto": "Pratiti savijača feromonskim klopkama." }
+      ],
+      "berba": "Srpanj–rujan, ovisno o sorti. Za rakiju i pekmez pustiti da potpuno dozriju."
+    },
+    {
+      "id": "smokva",
+      "naziv": "Smokva",
+      "latinski": "Ficus carica",
+      "emoji": "🟤",
+      "opis": "Mediteranska voćka koja u kontinentu uspijeva na toplom, zaštićenom mjestu (uz južni zid). Na oko -10 do -12 °C stradaju jednogodišnji izbojci, a na jačem mrazu i nadzemni dio, ali se obično obnovi iz korijena.",
+      "voda": "Niska potreba, podnosi sušu. Za lijepe plodove ljeti povremeno temeljito zaliti. Ne prelijevati, jer plodovi pucaju i trunu.",
+      "orezivanje": {
+        "kada": "Kasno proljeće (travanj), kad prođu jaki mrazevi i vidi se što je smrznuto.",
+        "kako": "Minimalno: ukloniti smrznute, suhe i preguste grane. Mladim biljkama u kontinentu zimi zaštititi bazu (malč, prekrivanje)."
+      },
+      "gnojidba": "Skromno. Malo komposta u proljeće; previše dušika daje bujan rast i manje plodova.",
+      "bolesti": [
+        { "naziv": "Hrđa smokve", "opis": "Sitne smeđe-narančaste pjege, lišće rano opada u vlažnim godinama." },
+        { "naziv": "Trulež plodova", "opis": "Siva plijesan na zrelim plodovima nakon kiše." }
+      ],
+      "stetnici": [
+        { "naziv": "Štitaste uši", "opis": "Voštani štitići na granama i medna rosa. Zimi uljni pripravak." },
+        { "naziv": "Ose i octene mušice", "opis": "Napadaju zrele plodove; brati redovito." }
+      ],
+      "zastita": [
+        { "kada": "Zima", "sto": "Uljni pripravak protiv štitastih uši; zaštita od mraza za mlade biljke." }
+      ],
+      "berba": "U kontinentu uglavnom kolovoz–rujan. Plod je zreo kad omekša i objesi se."
+    },
+    {
+      "id": "breskva",
+      "naziv": "Breskva",
+      "latinski": "Prunus persica",
+      "emoji": "🍑",
+      "opis": "Toploljubiva voćka kraćeg vijeka (15–20 godina). Rano cvate i rodi na jednogodišnjim izbojcima, pa joj treba redovita jaka rezidba.",
+      "voda": "Visoka potreba, osobito u zadnjih 4–6 tjedana prije berbe, kad plod najviše raste. U suši redovito i obilno zalijevati.",
+      "orezivanje": {
+        "kada": "U vrijeme ili neposredno prije cvatnje (ožujak), kad se razlikuju cvjetni pupovi. Ljetna rezidba nakon berbe.",
+        "kako": "Oblik otvorene vaze. Svake godine obnavljati rodno drvo: dio izbojaka koji su rodili ukloniti, ostaviti nove jednogodišnje. Plodove prorijediti na 15–20 cm razmaka."
+      },
+      "gnojidba": "NPK u ožujku. Breskva traži više hrane od jabuke; organsko gnojivo u jesen.",
+      "bolesti": [
+        { "naziv": "Kovrčavost lista breskve", "opis": "Listovi se u proljeće naboraju, zadebljaju i pocrvene, pa otpadnu. Kad se pojavi, kasno je za zaštitu. Ključno je prskanje bakrom u jesen i u kasnu zimu." },
+        { "naziv": "Monilija", "opis": "Sušenje cvjetova i trulež plodova." },
+        { "naziv": "Pepelnica breskve", "opis": "Bijela prevlaka na plodovima i mladim listovima." },
+        { "naziv": "Šupljikavost lista i smolotok", "opis": "Rupice na listu; smola na kori nakon rana i stresa." }
+      ],
+      "stetnici": [
+        { "naziv": "Zelena breskvina uš", "opis": "Kovrčanje vrhova u proljeće." },
+        { "naziv": "Istočni breskvin savijač", "opis": "Vrhovi mladica venu, a kasnije su plodovi crvljivi." }
+      ],
+      "zastita": [
+        { "kada": "Opadanje lišća (studeni)", "sto": "Bakreni pripravak (kovrčavost)." },
+        { "kada": "Kasna zima, bubrenje pupova (prije otvaranja)", "sto": "Bakar još jednom, najvažnije prskanje protiv kovrčavosti." },
+        { "kada": "Cvatnja", "sto": "Zaštita od monilije u kišnom vremenu." },
+        { "kada": "Ljeto", "sto": "Pratiti savijača i pepelnicu." }
+      ],
+      "berba": "Srpanj–rujan. Brati kad osnovna boja kožice prijeđe iz zelene u žutu ili kremastu."
+    },
+    {
+      "id": "tresnja",
+      "naziv": "Trešnja",
+      "latinski": "Prunus avium",
+      "emoji": "🍒",
+      "opis": "Bujna, visoka voćka, prva u sezoni berbe. Većini sorti treba oprašivač. Plodovi pucaju ako u dozrijevanju padne puno kiše.",
+      "voda": "Srednja potreba. Ne podnosi mokro i teško tlo. Pred berbu izbjegavati obilno zalijevanje (pucanje plodova).",
+      "orezivanje": {
+        "kada": "Ljetna rezidba odmah nakon berbe (srpanj–kolovoz). Zimi samo blago.",
+        "kako": "Ljetni rezovi brže zacjeljuju i manje je smolotoka i bakterijskog raka. Smanjivati visinu i prorjeđivati krošnju."
+      },
+      "gnojidba": "Umjereno, NPK u rano proljeće. Previše dušika pojačava bujnost i pucanje.",
+      "bolesti": [
+        { "naziv": "Monilija", "opis": "Sušenje cvjetova i trulež plodova." },
+        { "naziv": "Kozičavost lista trešnje", "opis": "Sitne ljubičaste pjege, lišće žuti i otpada već ljeti. Pograbiti lišće u jesen." },
+        { "naziv": "Bakterijski rak", "opis": "Udubljene rane na kori s curenjem smole. Bakar u jesen." }
+      ],
+      "stetnici": [
+        { "naziv": "Trešnjina muha", "opis": "Crvljivi plodovi kod srednjih i kasnih sorti. Žute ljepljive ploče od svibnja." },
+        { "naziv": "Azijska octena mušica", "opis": "Napada zrele, zdrave plodove. Brati na vrijeme i ne ostavljati otpale plodove." },
+        { "naziv": "Crna trešnjina uš", "opis": "Jako kovrčanje vrhova mladica." },
+        { "naziv": "Ptice", "opis": "Zaštitne mreže pred dozrijevanje." }
+      ],
+      "zastita": [
+        { "kada": "Opadanje lišća", "sto": "Bakreni pripravak (bakterijski rak, šupljikavost)." },
+        { "kada": "Cvatnja", "sto": "Zaštita od monilije u kišnom vremenu." },
+        { "kada": "Svibanj", "sto": "Postaviti žute ploče za trešnjinu muhu." }
+      ],
+      "berba": "Svibanj–lipanj (kasne sorte do srpnja). Brati s peteljkom."
+    },
+    {
+      "id": "visnja",
+      "naziv": "Višnja",
+      "latinski": "Prunus cerasus",
+      "emoji": "🍒",
+      "opis": "Niža i skromnija od trešnje, uglavnom samooplodna. Kiseli plodovi za sokove, kolače i liker.",
+      "voda": "Srednja potreba, podnosi sušu bolje od trešnje.",
+      "orezivanje": {
+        "kada": "Nakon berbe (srpanj).",
+        "kako": "Rodi na jednogodišnjem drvu. Bez rezidbe grane ogole i rod se seli na vrhove. Redovito prorjeđivati i pomlađivati."
+      },
+      "gnojidba": "Umjereno, NPK u rano proljeće.",
+      "bolesti": [
+        { "naziv": "Monilijska palež", "opis": "Kod višnje vrlo jaka: cvjetovi i vrhovi grančica naglo se osuše. Suhe vrhove izrezati 10–15 cm u zdravo." },
+        { "naziv": "Kozičavost lista", "opis": "Kao kod trešnje, rano opadanje lišća." }
+      ],
+      "stetnici": [
+        { "naziv": "Trešnjina muha i uši", "opis": "Kao kod trešnje." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova", "sto": "Bakreni pripravak." },
+        { "kada": "Početak i puna cvatnja", "sto": "Zaštita od monilije, osobito u kišnom vremenu." }
+      ],
+      "berba": "Lipanj–srpanj."
+    },
+    {
+      "id": "glog",
+      "naziv": "Glog",
+      "latinski": "Crataegus monogyna",
+      "emoji": "🌳",
+      "opis": "Otporan samonikli grm ili malo stablo, često u živicama. Cvijet, list i plodovi koriste se za čaj.",
+      "voda": "Niska potreba, vrlo otporan na sušu.",
+      "orezivanje": {
+        "kada": "Kasna zima ili, kao živica, nakon cvatnje.",
+        "kako": "Po potrebi prorijediti i oblikovati. Ima trnje, pa rezati s rukavicama."
+      },
+      "gnojidba": "Nije potrebna.",
+      "bolesti": [
+        { "naziv": "Bakterijska palež", "opis": "Glog je domaćin bakterijske paleži i može je prenijeti na jabuke i kruške. Pregledavati ga u proljeće." },
+        { "naziv": "Pepelnica i hrđa", "opis": "Bijela prevlaka, odnosno narančaste pjege na lišću." }
+      ],
+      "stetnici": [
+        { "naziv": "Gusjenice i uši", "opis": "Povremeno, obično bez većih šteta." }
+      ],
+      "zastita": [],
+      "berba": "Cvijet u svibnju, plodovi u rujnu i listopadu."
+    },
+    {
+      "id": "drenak",
+      "naziv": "Drenak (dren)",
+      "latinski": "Cornus mas",
+      "emoji": "🔴",
+      "opis": "Vrlo otporan i dugovječan grm ili stablo. Cvate žutim cvjetovima već u veljači i ožujku, prije listanja.",
+      "voda": "Niska do srednja potreba, dobro podnosi sušu.",
+      "orezivanje": {
+        "kada": "Nakon cvatnje.",
+        "kako": "Minimalno: ukloniti suhe grane i one koje se križaju."
+      },
+      "gnojidba": "Nije potrebna; malo komposta za mlade biljke.",
+      "bolesti": [
+        { "naziv": "Rijetko", "opis": "Drenak gotovo nema ozbiljnih bolesti." }
+      ],
+      "stetnici": [
+        { "naziv": "Rijetko", "opis": "Povremeno uši; ptice jedu plodove." }
+      ],
+      "zastita": [],
+      "berba": "Kolovoz–rujan, kad plodovi potamne i sami počnu otpadati. Može se tresti na plahtu."
+    },
+    {
+      "id": "kupina",
+      "naziv": "Kupina",
+      "latinski": "Rubus fruticosus",
+      "emoji": "🫐",
+      "opis": "Grm s dvogodišnjim izbojima: izboj u prvoj godini raste, u drugoj rodi pa se osuši. Za uzgoj su najbolje sorte bez trnja.",
+      "voda": "Srednja do visoka u vrijeme dozrijevanja plodova. Plitko korijenje, pa pomaže malčiranje.",
+      "orezivanje": {
+        "kada": "Odmah nakon berbe i u rano proljeće.",
+        "kako": "Izboje koji su rodili odrezati do tla nakon berbe. Od novih ostaviti 5–8 najjačih i vezati ih na žicu. U proljeće skratiti bočne izboje na 30–40 cm."
+      },
+      "gnojidba": "Kompost ili zreli stajski gnoj u proljeće.",
+      "bolesti": [
+        { "naziv": "Siva plijesan", "opis": "Trulež plodova u kišnom vremenu; prozračan uzgoj pomaže." },
+        { "naziv": "Hrđa kupine", "opis": "Narančasti jastučići na listu." },
+        { "naziv": "Pjegavost izboja", "opis": "Ljubičaste pjege na izbojima; zaražene izboje ukloniti." }
+      ],
+      "stetnici": [
+        { "naziv": "Kupinova grinja", "opis": "Dio bobica ostaje crven i tvrd." },
+        { "naziv": "Azijska octena mušica", "opis": "Napada zrele plodove; brati često." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova", "sto": "Bakreni pripravak." }
+      ],
+      "berba": "Srpanj–rujan, postupno. Brati potpuno crne, sjajne plodove."
+    },
+    {
+      "id": "ribizl",
+      "naziv": "Ribizl",
+      "latinski": "Ribes spp.",
+      "emoji": "🍓",
+      "opis": "Grm koji dobro podnosi hladnoću i polusjenu. Crveni, bijeli i crni ribizl razlikuju se po rezidbi.",
+      "voda": "Srednja do visoka. Plitko korijenje: malčirati i zalijevati u suši, osobito u vrijeme dozrijevanja.",
+      "orezivanje": {
+        "kada": "Zimi, studeni–ožujak.",
+        "kako": "Grm treba imati 8–12 grana različite starosti. Crni ribizl rodi na jednogodišnjim izbojima, pa svake godine ukloniti najstarije grane (3+ godine). Crveni i bijeli rode na dvo- i trogodišnjem drvu (ostruge); ukloniti grane starije od 4 godine."
+      },
+      "gnojidba": "Kompost u proljeće; voli kalij.",
+      "bolesti": [
+        { "naziv": "Pepelnica", "opis": "Bijela pa smeđa prevlaka na vrhovima izboja i bobicama." },
+        { "naziv": "Pjegavost lista (antraknoza)", "opis": "Sitne smeđe pjege, lišće rano otpada. Pograbiti lišće." },
+        { "naziv": "Stupičasta hrđa", "opis": "Narančasti stupići na naličju lista. Prijelazni domaćin je borovac (bor)." }
+      ],
+      "stetnici": [
+        { "naziv": "Ribizova grinja pupova", "opis": "Pupovi nabreknu i postanu okrugli. Zimi ih otkinuti i spaliti." },
+        { "naziv": "Ribizov staklokrilac", "opis": "Ličinka u srži izboja; izboj se suši. Takve izboje izrezati do zdravog dijela." },
+        { "naziv": "Lisne uši", "opis": "Crvenkasta mjehurasta ispupčenja na listu." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova", "sto": "Bakreni pripravak." },
+        { "kada": "Prije i poslije cvatnje", "sto": "Zaštita od pepelnice (npr. sumporni pripravci)." }
+      ],
+      "berba": "Lipanj–srpanj. Brati cijele grozdiće."
+    },
+    {
+      "id": "dud2",
+      "naziv": "Dud",
+      "latinski": "Morus alba / Morus nigra",
+      "emoji": "🌳",
+      "opis": "Dugovječno stablo široke krošnje. Plodovi su slatki i jako boje. Vrlo otporan.",
+      "voda": "Niska do srednja potreba; razvijeno stablo dobro podnosi sušu.",
+      "orezivanje": {
+        "kada": "U mirovanju (prosinac–veljača) ili ljeti. Ne u rano proljeće, jer tada jako curi sok.",
+        "kako": "Minimalno: ukloniti suhe grane i one koje smetaju."
+      },
+      "gnojidba": "Nije potrebna.",
+      "bolesti": [
+        { "naziv": "Pjegavost lista i bakterijska palež duda", "opis": "Tamne pjege na listu i vrhovima izboja u vlažnim godinama." }
+      ],
+      "stetnici": [
+        { "naziv": "Dudovac (američki dudovac)", "opis": "Gusjenice u gnijezdima od mreže pojedu lišće. Gnijezda odrezati i uništiti dok su mala." },
+        { "naziv": "Štitaste uši", "opis": "Povremeno na granama." }
+      ],
+      "zastita": [],
+      "berba": "Lipanj–srpanj. Plodovi lako otpadaju, pa se mogu tresti na plahtu."
+    },
+    {
+      "id": "vinova_loza",
+      "naziv": "Vinova loza",
+      "latinski": "Vitis vinifera",
+      "emoji": "🍇",
+      "opis": "Penjačica dubokog korijena, za grožđe i vino. Traži redovitu zimsku i zelenu rezidbu te zaštitu od peronospore i pepelnice.",
+      "voda": "Niska do srednja potreba; podnosi sušu. Previše vode slabi kvalitetu i pogoduje bolestima. Mlade trsove zalijevati u suši.",
+      "orezivanje": {
+        "kada": "Zimska rezidba u mirovanju, veljača–ožujak (kasnija rezidba malo smanjuje rizik od proljetnog mraza). Zelena rezidba svibanj–srpanj.",
+        "kako": "Zimi ostaviti broj rodnih pupova prema uzgojnom obliku (kordonac, Guyot). Zelena rezidba: plijevljenje suvišnih mladica, uklanjanje zaperaka, prorjeđivanje lišća oko grozdova radi prozračnosti."
+      },
+      "gnojidba": "Umjereno. Kompost ili stajski gnoj u jesen; prihrana u proljeće prema potrebi.",
+      "bolesti": [
+        { "naziv": "Peronospora (plamenjača)", "opis": "Uljne pjege na licu lista i bijela prevlaka na naličju; grozdovi se suše. Uvjeti za zarazu po pravilu 3 × 10: temperatura iznad 10 °C, mladice dulje od 10 cm, barem 10 mm kiše." },
+        { "naziv": "Pepelnica", "opis": "Pepeljasta prevlaka na listu i bobicama; bobice pucaju. Pogoduje joj toplo i suho vrijeme sa sparinom." },
+        { "naziv": "Siva plijesan", "opis": "Trulež zbijenih grozdova u kišnoj jeseni." },
+        { "naziv": "Crna pjegavost", "opis": "Crne pjege i pukotine na osnovi mladica." }
+      ],
+      "stetnici": [
+        { "naziv": "Grožđani moljci", "opis": "Ličinke oštećuju cvat i bobice, što otvara put sivoj plijesni." },
+        { "naziv": "Grinje (erinoza)", "opis": "Ispupčenja na listu s bijelom pustenastom prevlakom na naličju." },
+        { "naziv": "Američki cvrčak i zlatna žutica", "opis": "Cvrčak prenosi zlatnu žuticu, karantensku bolest (listovi se uvijaju i crvene ili žute, mladice ne odrvene). Sumnju prijaviti savjetodavnoj službi." }
+      ],
+      "zastita": [
+        { "kada": "Bubrenje pupova", "sto": "Bakar s uljem ili sumporni pripravak (crna pjegavost, grinje)." },
+        { "kada": "Od 3–5 listova do zatvaranja grozda", "sto": "Redovita zaštita od peronospore (bakar ili drugi fungicidi) i pepelnice (sumpor), svakih 7–14 dana ovisno o kiši." },
+        { "kada": "Šara (omekšavanje bobica)", "sto": "Zaštita od sive plijesni po potrebi; prorijediti lišće oko grozdova." }
+      ],
+      "berba": "Kolovoz–listopad, ovisno o sorti i namjeni (stolno ili vinsko grožđe)."
+    },
+    {
+      "id": "orah",
+      "naziv": "Orah",
+      "latinski": "Juglans regia",
+      "emoji": "🌰",
+      "opis": "Veliko, dugovječno stablo. Lišće i korijen luče juglon, pa pod orahom mnoge biljke slabo rastu. Kasno lista, ali mladi izboji stradaju od proljetnog mraza.",
+      "voda": "Srednja potreba; duboko korijenje. Mlada stabla zalijevati u suši.",
+      "orezivanje": {
+        "kada": "Ljeti (srpanj–kolovoz) ili rano u jesen. Ne u kasnu zimu i proljeće, jer orah jako curi sok.",
+        "kako": "Minimalno: ukloniti suhe i polomljene grane. Velike rezove izbjegavati."
+      },
+      "gnojidba": "Kompost ili stajski gnoj za mlada stabla; odrasla obično ne trebaju.",
+      "bolesti": [
+        { "naziv": "Bakterijska palež oraha", "opis": "Crne pjege na listu, mladim plodovima i resama; plodovi pocrne i otpadnu. Bakar u listanju i cvatnji." },
+        { "naziv": "Antraknoza (smeđa pjegavost)", "opis": "Okrugle smeđe pjege na listu. Pograbiti i ukloniti lišće u jesen." }
+      ],
+      "stetnici": [
+        { "naziv": "Orahova muha", "opis": "Zelena ljuska pocrni i postane ljepljiva, a jezgra je tamna. Žute ljepljive ploče od srpnja." },
+        { "naziv": "Jabučni savijač", "opis": "Može napasti i plodove oraha." }
+      ],
+      "zastita": [
+        { "kada": "Listanje i cvatnja", "sto": "Bakreni pripravak protiv bakterijske paleži." },
+        { "kada": "Srpanj", "sto": "Žute ploče za orahovu muhu." },
+        { "kada": "Jesen", "sto": "Ukloniti otpalo lišće." }
+      ],
+      "berba": "Rujan–listopad, kad zelena ljuska pukne i orasi počnu padati. Osušiti ih na prozračnom mjestu."
+    },
+    {
+      "id": "ostalo",
+      "naziv": "Ostalo (stablo, grm…)",
+      "latinski": "",
+      "emoji": "🌳",
+      "opis": "Za biljke koje nisu voćke (ukrasno stablo, grm, živica…) i koje želiš samo imati označene na karti. Ne ulaze u procjenu uroda.",
+      "voda": "Ovisi o biljci. Novoposađena stabla i grmove prve 1–2 godine redovito zalijevati u suši.",
+      "orezivanje": {
+        "kada": "Većinu listopadnih stabala i grmova orezati u mirovanju (kasna zima). Grmove koji cvatu u proljeće orezati odmah nakon cvatnje.",
+        "kako": "Ukloniti suhe, bolesne i grane koje se križaju."
+      },
+      "gnojidba": "Uglavnom nije potrebna; malo komposta za mlade biljke.",
+      "bolesti": [],
+      "stetnici": [],
+      "zastita": [],
+      "berba": ""
+    }
+  ]
+}

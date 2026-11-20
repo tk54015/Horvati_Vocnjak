@@ -1216,3 +1216,300 @@ body.placing-tree .leaflet-container {
         font-size: 14px;
     }
 }
+
+/* ---------- Marker "Ostalo" (emoji stabla) ---------- */
+.emoji-marker {
+    background: transparent;
+    border: 0;
+}
+
+.emoji-marker span {
+    display: block;
+    font-size: 26px;
+    line-height: 30px;
+    text-align: center;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+/* ---------- Link "O vrsti" u podacima o biljci ---------- */
+.plant-type-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.link-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: #0a4e9b;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ---------- Enciklopedija ---------- */
+#encyclopedia-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1850;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+#encyclopedia-modal.hidden {
+    display: none;
+}
+
+.encyclopedia-card {
+    width: min(900px, 100%);
+    height: min(86vh, 760px);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #b5b5b5;
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.encyclopedia-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+#close-encyclopedia {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background: #888;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.encyclopedia-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+}
+
+#encyclopedia-list {
+    width: 210px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    border-right: 1px solid #e3e3e3;
+    background: #f7f9f6;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.enc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    color: #222;
+    text-align: left;
+    cursor: pointer;
+}
+
+.enc-item:hover {
+    background: #e9f1e6;
+}
+
+.enc-item.active {
+    background: #4f8f4f;
+    border-color: #356b35;
+    color: #fff;
+}
+
+.enc-item img {
+    flex-shrink: 0;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.enc-item .enc-emoji {
+    width: 22px;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1;
+}
+
+.enc-item-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.enc-count {
+    flex-shrink: 0;
+    min-width: 18px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    text-align: center;
+}
+
+.enc-item.active .enc-count {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+#encyclopedia-article {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 14px 20px 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #222;
+    outline: none;
+}
+
+.encyclopedia-empty,
+.enc-muted {
+    color: #777;
+}
+
+.enc-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.enc-head img {
+    border-radius: 6px;
+}
+
+.enc-head .enc-emoji {
+    width: 44px;
+    text-align: center;
+}
+
+.enc-head h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.enc-latin {
+    color: #666;
+}
+
+.enc-onmap {
+    font-size: 12px;
+    color: #555;
+}
+
+#encyclopedia-article section {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+#encyclopedia-article h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    color: #2f5d2f;
+}
+
+#encyclopedia-article p {
+    margin: 4px 0;
+}
+
+.enc-list {
+    margin: 4px 0;
+    padding-left: 18px;
+}
+
+.enc-list li {
+    margin-bottom: 4px;
+}
+
+.enc-drops .drop-off {
+    opacity: 0.25;
+}
+
+.enc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+}
+
+.enc-table th,
+.enc-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    vertical-align: top;
+}
+
+.enc-table th {
+    width: 38%;
+    font-weight: 600;
+    color: #444;
+    background: #f7f9f6;
+}
+
+.enc-note {
+    margin-top: 16px !important;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #fff7d6;
+    color: #5a4a00;
+    font-size: 12px;
+}
+
+@media (max-width: 640px) {
+    .encyclopedia-card {
+        height: calc(100vh - 24px);
+    }
+
+    .encyclopedia-body {
+        flex-direction: column;
+    }
+
+    #encyclopedia-list {
+        width: auto;
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-right: 0;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    .enc-item {
+        width: auto;
+        flex-shrink: 0;
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+    #encyclopedia-article {
+        padding: 12px 14px 16px;
+    }
+
+    .enc-table th {
+        width: 42%;
+    }
+}

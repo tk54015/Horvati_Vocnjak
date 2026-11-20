@@ -439,7 +439,8 @@ function getTypeWithEmoji(typeOrItem) {
         kupina: '🫐',
         ribizl: '🍓',
         dud2: '🌳',
-        vinova_loza: '🍇'
+        vinova_loza: '🍇',
+        ostalo: '🌳'
     };
     return type + (emojis[type] ? ' ' + emojis[type] : '');
 }
@@ -471,7 +472,8 @@ function getEmojiForType(item) {
         kupina: '🫐',
         ribizl: '🍓',
         dud2: '🌳',
-        vinova_loza: '🍇'
+        vinova_loza: '🍇',
+        ostalo: '🌳'
     };
     return emojis[type] || '🌿';
 }
@@ -724,7 +726,10 @@ function renderYieldTable() {
     var summary = document.getElementById('yield-summary');
     if (!body || !summary) return;
 
-    var merged = baseItems.concat(userItems);
+    // "Ostalo" (stabla/grmovi koji nisu voćke) ne ulazi u procjenu uroda.
+    var merged = baseItems.concat(userItems).filter(function (item) {
+        return normalizeType(item.treeType) !== 'ostalo';
+    });
     if (!merged.length) {
         body.innerHTML = '<tr><td colspan="3">Nema podataka.</td></tr>';
         summary.innerHTML = '<p>Ukupni ocekivani urod: 0-0 kg</p>';
@@ -838,6 +843,17 @@ function buildMarkerIcon(item, isUserItem) {
 
     if (waterFilterEnabled) {
         return buildWaterIcon(item);
+    }
+
+    if (normalizedType === 'ostalo') {
+        // Ostalo (stablo, grm...): obični emoji stabla
+        return L.divIcon({
+            className: 'emoji-marker',
+            html: '<span>🌳</span>',
+            iconSize: [FULL_ICON_SIZE, FULL_ICON_SIZE],
+            iconAnchor: [Math.round(FULL_ICON_SIZE / 2), FULL_ICON_SIZE],
+            popupAnchor: [0, -FULL_ICON_SIZE]
+        });
     }
 
     var resolvedIcon = iconByType(item.treeType);
@@ -2108,6 +2124,7 @@ document.addEventListener('keydown', function (e) {
         closeYieldModal();
         setMenuOpen(false);
         closeAddTreeModal();
+        closeEncyclopedia();
         setPlacementEnabled(false);
         return;
     }
@@ -2631,5 +2648,183 @@ if (deleteTreeBtn) {
         ).then(function (ok) {
             if (ok) deleteTree(itemId);
         });
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Enciklopedija vrsta (podaci u data/enciklopedija.json)
+// ---------------------------------------------------------------------------
+var encyclopediaModal = document.getElementById('encyclopedia-modal');
+var encyclopediaListEl = document.getElementById('encyclopedia-list');
+var encyclopediaArticleEl = document.getElementById('encyclopedia-article');
+var encyclopediaData = null;
+var encyclopediaLoading = null;
+var encyclopediaSelectedId = null;
+
+function loadEncyclopedia() {
+    if (encyclopediaData) return Promise.resolve(encyclopediaData);
+    if (!encyclopediaLoading) {
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261120d')
+            .then(function (data) {
+                encyclopediaData = data;
+                return data;
+            })
+            .catch(function (error) {
+                encyclopediaLoading = null;
+                throw error;
+            });
+    }
+    return encyclopediaLoading;
+}
+
+function countTreesByType() {
+    var counts = {};
+    baseItems.concat(userItems).forEach(function (item) {
+        var t = normalizeType(item.treeType);
+        counts[t] = (counts[t] || 0) + 1;
+    });
+    return counts;
+}
+
+function encyclopediaIconHtml(entry, size) {
+    var icon = iconByType(entry.id);
+    if (icon) {
+        return '<img src="' + icon + '" alt="" width="' + size + '" height="' + size + '">';
+    }
+    return '<span class="enc-emoji" style="font-size:' + Math.round(size * 0.8) + 'px">' + escapeHtml(entry.emoji || '🌳') + '</span>';
+}
+
+function waterDropsHtml(typeId) {
+    var t = normalizeType(typeId);
+    var level = WATER_NEED_LEVEL[t] !== undefined ? WATER_NEED_LEVEL[t] : WATER_NEED_LEVEL._default;
+    var labels = ['minimalna', 'niska', 'srednja', 'povišena', 'visoka'];
+    var drops = '';
+    for (var i = 0; i < 4; i++) {
+        drops += i < level ? '💧' : '<span class="drop-off">💧</span>';
+    }
+    return '<span class="enc-drops" title="Potreba za vodom: ' + labels[level] + '">' + drops + '</span> <small>(' + labels[level] + ')</small>';
+}
+
+function renderEncyclopediaList() {
+    if (!encyclopediaData || !encyclopediaListEl) return;
+    var counts = countTreesByType();
+    encyclopediaListEl.innerHTML = encyclopediaData.vrste.map(function (entry) {
+        var count = counts[entry.id] || 0;
+        var active = entry.id === encyclopediaSelectedId;
+        return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
+            (active ? ' aria-current="true"' : '') + '>' +
+            encyclopediaIconHtml(entry, 22) +
+            '<span class="enc-item-name">' + escapeHtml(entry.naziv) + '</span>' +
+            (count ? '<span class="enc-count" title="Na karti">' + count + '</span>' : '') +
+            '</button>';
+    }).join('');
+}
+
+function listHtml(items) {
+    if (!items || !items.length) return '<p class="enc-muted">Nema posebnih napomena.</p>';
+    return '<ul class="enc-list">' + items.map(function (it) {
+        return '<li><b>' + escapeHtml(it.naziv) + '</b> – ' + escapeHtml(it.opis) + '</li>';
+    }).join('') + '</ul>';
+}
+
+function renderEncyclopediaArticle() {
+    if (!encyclopediaData || !encyclopediaArticleEl) return;
+    var entry = encyclopediaData.vrste.find(function (v) { return v.id === encyclopediaSelectedId; });
+    if (!entry) {
+        encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Odaberi vrstu s popisa.</p>';
+        return;
+    }
+
+    var count = countTreesByType()[entry.id] || 0;
+    var html = '';
+    html += '<header class="enc-head">' + encyclopediaIconHtml(entry, 44) +
+        '<div><h2>' + escapeHtml(entry.naziv) + '</h2>' +
+        (entry.latinski ? '<i class="enc-latin">' + escapeHtml(entry.latinski) + '</i>' : '') +
+        '<div class="enc-onmap">Na karti: <b>' + count + '</b></div></div></header>';
+    html += '<p>' + escapeHtml(entry.opis) + '</p>';
+
+    html += '<section><h3>💧 Voda</h3><p>' + waterDropsHtml(entry.id) + '</p><p>' + escapeHtml(entry.voda) + '</p></section>';
+
+    if (entry.orezivanje) {
+        html += '<section><h3>✂️ Orezivanje</h3>' +
+            '<p><b>Kada:</b> ' + escapeHtml(entry.orezivanje.kada) + '</p>' +
+            '<p><b>Kako:</b> ' + escapeHtml(entry.orezivanje.kako) + '</p></section>';
+    }
+    if (entry.gnojidba) {
+        html += '<section><h3>🌱 Gnojidba</h3><p>' + escapeHtml(entry.gnojidba) + '</p></section>';
+    }
+    if (entry.bolesti && entry.bolesti.length) {
+        html += '<section><h3>🦠 Bolesti</h3>' + listHtml(entry.bolesti) + '</section>';
+    }
+    if (entry.stetnici && entry.stetnici.length) {
+        html += '<section><h3>🐛 Štetnici</h3>' + listHtml(entry.stetnici) + '</section>';
+    }
+    if (entry.zastita && entry.zastita.length) {
+        html += '<section><h3>🧴 Tretmani / zaštita kroz godinu</h3><table class="enc-table"><tbody>' +
+            entry.zastita.map(function (z) {
+                return '<tr><th scope="row">' + escapeHtml(z.kada) + '</th><td>' + escapeHtml(z.sto) + '</td></tr>';
+            }).join('') + '</tbody></table></section>';
+    }
+    if (entry.berba) {
+        html += '<section><h3>🧺 Berba</h3><p>' + escapeHtml(entry.berba) + '</p></section>';
+    }
+    if (encyclopediaData.meta && encyclopediaData.meta.napomena) {
+        html += '<p class="enc-note">ℹ️ ' + escapeHtml(encyclopediaData.meta.napomena) + '</p>';
+    }
+
+    encyclopediaArticleEl.innerHTML = html;
+    encyclopediaArticleEl.scrollTop = 0;
+}
+
+function selectEncyclopediaEntry(id) {
+    encyclopediaSelectedId = id;
+    renderEncyclopediaList();
+    renderEncyclopediaArticle();
+}
+
+function openEncyclopedia(typeId) {
+    if (!encyclopediaModal) return;
+    encyclopediaModal.classList.remove('hidden');
+    if (encyclopediaArticleEl && !encyclopediaData) {
+        encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Učitavanje...</p>';
+    }
+    loadEncyclopedia()
+        .then(function (data) {
+            var wanted = typeId ? normalizeType(typeId) : encyclopediaSelectedId;
+            var exists = data.vrste.some(function (v) { return v.id === wanted; });
+            selectEncyclopediaEntry(exists ? wanted : data.vrste[0].id);
+            var active = encyclopediaListEl && encyclopediaListEl.querySelector('.enc-item.active');
+            if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        })
+        .catch(function (error) {
+            console.error(error);
+            if (encyclopediaArticleEl) encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Ne mogu učitati enciklopediju.</p>';
+        });
+}
+
+function closeEncyclopedia() {
+    if (encyclopediaModal) encyclopediaModal.classList.add('hidden');
+}
+
+if (encyclopediaModal) {
+    document.getElementById('open-encyclopedia').addEventListener('click', function () {
+        setMenuOpen(false);
+        openEncyclopedia(null);
+    });
+    document.getElementById('close-encyclopedia').addEventListener('click', closeEncyclopedia);
+    encyclopediaModal.addEventListener('click', function (event) {
+        if (event.target === encyclopediaModal) closeEncyclopedia();
+    });
+    encyclopediaListEl.addEventListener('click', function (event) {
+        var btn = event.target.closest('.enc-item');
+        if (btn) selectEncyclopediaEntry(btn.getAttribute('data-id'));
+    });
+}
+
+var plantEncyclopediaBtn = document.getElementById('plant-open-encyclopedia');
+if (plantEncyclopediaBtn) {
+    plantEncyclopediaBtn.addEventListener('click', function () {
+        var item = selectedPlant && allItemsById[selectedPlant.itemId];
+        openEncyclopedia(item ? item.treeType : null);
     });
 }

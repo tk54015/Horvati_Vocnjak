@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261122j">
+    <link rel="stylesheet" href="style.css?v=20261122l">
 </head>
 <body>
     <div id="map"></div>
@@ -372,8 +372,10 @@
               <input id="wallet-note" type="text" maxlength="300" placeholder="Opis (npr. 10 sadnica jabuke, bakreni pripravak)">
               <button type="submit" class="btn-primary">Dodaj</button>
             </div>
+            <label class="wallet-planned"><input id="wallet-planned" type="checkbox"> 🕒 Planirano (još nije plaćeno / primljeno)</label>
             <div id="wallet-error" class="add-tree-error hidden" role="alert"></div>
           </form>
+          <div id="wallet-planned-box"></div>
           <div id="wallet-breakdown"></div>
           <h4 class="pp-h">Zapisi</h4>
           <ul id="wallet-list" class="wallet-list"></ul>
@@ -435,6 +437,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261122k"></script>
+    <script src="script.js?v=20261122l"></script>
 </body>
 </html>

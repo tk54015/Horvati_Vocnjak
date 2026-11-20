@@ -4568,10 +4568,17 @@ function renderWallet() {
         brEl.innerHTML = '';
         return;
     }
-    var entries = walletEntries.filter(function (e) { return String(e.date).slice(0, 4) === String(walletYear); });
+    var yearEntries = walletEntries.filter(function (e) { return String(e.date).slice(0, 4) === String(walletYear); });
+    var entries = yearEntries.filter(function (e) { return !e.planned; });
+    var planned = yearEntries.filter(function (e) { return e.planned; });
     var income = 0;
     var cost = 0;
+    var plannedIncome = 0;
+    var plannedCost = 0;
     var byCat = {};
+    planned.forEach(function (e) {
+        if (e.kind === 'prihod') plannedIncome += e.amount; else plannedCost += e.amount;
+    });
     entries.forEach(function (e) {
         if (e.kind === 'prihod') income += e.amount; else cost += e.amount;
         var k = e.kind + '|' + e.category;
@@ -4583,6 +4590,23 @@ function renderWallet() {
         '<div class="ws-card cost"><span>Troškovi</span><b>' + formatEur(cost) + '</b></div>' +
         '<div class="ws-card ' + (balance >= 0 ? 'profit' : 'loss') + '"><span>' + (balance >= 0 ? 'Dobit' : 'Gubitak') + '</span><b>' +
         (balance >= 0 ? '+' : '−') + formatEur(Math.abs(balance)) + '</b></div>';
+    var after = balance + plannedIncome - plannedCost;
+    sumEl.innerHTML +=
+        '<div class="ws-card planned cost"><span>🕒 Planirani troškovi</span><b>' + formatEur(plannedCost) + '</b></div>' +
+        '<div class="ws-card planned income"><span>🕒 Planirani prihodi</span><b>' + formatEur(plannedIncome) + '</b></div>' +
+        '<div class="ws-card planned ' + (after >= 0 ? 'profit' : 'loss') + '"><span>Bilanca nakon planiranog</span><b>' +
+        (after >= 0 ? '+' : '−') + formatEur(Math.abs(after)) + '</b></div>';
+
+    var plannedBox = document.getElementById('wallet-planned-box');
+    if (plannedBox) {
+        plannedBox.innerHTML = planned.length ? '<h4 class="pp-h">🕒 Planirano</h4><ul class="wallet-list planned-list">' + planned.map(function (e) {
+            return '<li class="' + e.kind + ' planned"><div class="wl-main"><div><b>' + escapeHtml(walletCategoryLabel(e.kind, e.category)) + '</b> <small>' +
+                escapeHtml(formatHrDate(e.date)) + '</small></div>' + (e.note ? '<div class="pp-log-text">' + escapeHtml(e.note) + '</div>' : '') + '</div>' +
+                '<span class="wl-amount ' + e.kind + '">' + (e.kind === 'prihod' ? '+' : '−') + formatEur(e.amount) + '</span>' +
+                '<button type="button" class="wl-realize" data-act="wallet-realize" data-id="' + escapeHtml(e.id) + '" title="Označi kao plaćeno / primljeno (današnji datum)">✓ Ostvareno</button>' +
+                '<button type="button" class="pp-x" data-act="wallet-del" data-id="' + escapeHtml(e.id) + '" title="Obriši">✕</button></li>';
+        }).join('') + '</ul>' : '';
+    }
 
     var keys = Object.keys(byCat).sort(function (a, b) { return byCat[b] - byCat[a]; });
     var max = keys.reduce(function (mx, k) { return Math.max(mx, byCat[k]); }, 0);
@@ -4594,7 +4618,7 @@ function renderWallet() {
     }).join('') + '</ul>' : '';
 
     if (!entries.length) {
-        listEl.innerHTML = '<li class="pp-muted">Za ' + walletYear + '. još nema zapisa.</li>';
+        listEl.innerHTML = '<li class="pp-muted">Za ' + walletYear + '. još nema ' + (planned.length ? 'ostvarenih ' : '') + 'zapisa.</li>';
         return;
     }
     listEl.innerHTML = entries.map(function (e) {
@@ -4654,7 +4678,8 @@ if (walletModal) {
             kind: document.querySelector('input[name="wallet-kind"]:checked').value,
             amount: amount,
             category: document.getElementById('wallet-category').value,
-            note: document.getElementById('wallet-note').value.trim()
+            note: document.getElementById('wallet-note').value.trim(),
+            planned: document.getElementById('wallet-planned').checked
         };
         var submitBtn = event.target.querySelector('button[type=submit]');
         submitBtn.disabled = true;
@@ -4663,6 +4688,7 @@ if (walletModal) {
             walletYear = Number(String(entry.date).slice(0, 4));
             document.getElementById('wallet-amount').value = '';
             document.getElementById('wallet-note').value = '';
+            document.getElementById('wallet-planned').checked = false;
             renderWallet();
         }).catch(function (error) {
             errEl.textContent = 'Spremanje nije uspjelo: ' + error.message;
@@ -4670,7 +4696,25 @@ if (walletModal) {
         }).then(function () { submitBtn.disabled = false; });
     });
 
-    document.getElementById('wallet-list').addEventListener('click', function (event) {
+    document.getElementById('wallet-planned-box').addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-act="wallet-realize"]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var entry = (walletEntries || []).find(function (e) { return e.id === id; });
+        if (!entry) return;
+        var updated = Object.assign({}, entry, { planned: false, date: todayIso() });
+        btn.disabled = true;
+        walletRequest('POST', { action: 'update', entry: updated }).then(function (data) {
+            walletEntries = walletEntries.map(function (e) { return e.id === id ? data.entry : e; });
+            walletYear = Number(String(updated.date).slice(0, 4));
+            renderWallet();
+        }).catch(function (error) {
+            btn.disabled = false;
+            alert('Spremanje nije uspjelo: ' + error.message);
+        });
+    });
+
+    document.getElementById('wallet-modal').addEventListener('click', function (event) {
         var btn = event.target.closest('[data-act="wallet-del"]');
         if (!btn) return;
         var id = btn.getAttribute('data-id');

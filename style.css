@@ -3255,3 +3255,47 @@ body.placing-tree .leaflet-container {
 
 .wl-amount.trosak { color: #c62828; }
 .wl-amount.prihod { color: #2e7d32; }
+
+/* ---------- Novčanik: planirano ---------- */
+.wallet-planned {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #5a4a00;
+    cursor: pointer;
+}
+
+.ws-card.planned {
+    background: transparent;
+    border-style: dashed;
+}
+
+.ws-card.planned b {
+    font-size: 13px;
+}
+
+.wallet-list li.planned {
+    background: #fffbea;
+    border: 1px dashed #d9c27a;
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding-right: 28px;
+}
+
+.wl-realize {
+    flex-shrink: 0;
+    padding: 3px 8px;
+    border: 1px solid #3d9a4a;
+    border-radius: 999px;
+    background: #fff;
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.wl-realize:hover {
+    background: #3d9a4a;
+    color: #fff;
+}

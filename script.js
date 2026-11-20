@@ -5421,10 +5421,10 @@ function bedCorners(bed, lat, lng) {
 }
 
 // Ručka za okretanje: iznad gredice, u smjeru njezine "gornje" strane
-function bedHandlePos(bed) {
+function bedHandlePos(bed, sign) {
     var ns = (bed.smjer === 'ew' ? bed.sirina : bed.duzina) / 2;
     var ew = (bed.smjer === 'ew' ? bed.duzina : bed.sirina) / 2;
-    var d = ns + Math.max(0.8, Math.min(3, Math.max(ns, ew) * 0.4));
+    var d = (ns + Math.max(0.8, Math.min(3, Math.max(ns, ew) * 0.4))) * (sign || 1);
     var t = (Number(bed.rotacija) || 0) * Math.PI / 180;
     return [bed.lat + d * Math.cos(t) / METERS_PER_LAT, bed.lng + d * Math.sin(t) / METERS_PER_LNG];
 }
@@ -5443,7 +5443,7 @@ function bedEmojis(bed) {
 function removeBedLayers(id) {
     var old = bedLayers[id];
     if (!old) return;
-    ['rect', 'label', 'handle', 'line'].forEach(function (k) { if (old[k]) bedLayerGroup.removeLayer(old[k]); });
+    ['rect', 'label', 'handle', 'mover', 'line'].forEach(function (k) { if (old[k]) bedLayerGroup.removeLayer(old[k]); });
     delete bedLayers[id];
 }
 
@@ -5474,24 +5474,38 @@ function drawBed(bed) {
         layers.label = label;
     }
 
-    // ručka za okretanje (samo odabrana gredica, samo admin)
+    // ručke (samo odabrana gredica, samo admin): ⟳ iznad za okretanje, ✥ ispod za premještanje
     if (selected && canEdit()) {
-        var hp = bedHandlePos(bed);
-        var line = L.polyline([[bed.lat, bed.lng], hp], { color: '#1e88e5', weight: 1.5, dashArray: '4 4', interactive: false }).addTo(bedLayerGroup);
+        var hp = bedHandlePos(bed, 1);
+        var mp = bedHandlePos(bed, -1);
+        var line = L.polyline([mp, hp], { color: '#1e88e5', weight: 1.5, dashArray: '4 4', interactive: false }).addTo(bedLayerGroup);
         var handle = L.marker(hp, {
             draggable: true,
             icon: L.divIcon({ className: 'bed-handle-wrap', html: '<div class="bed-handle" title="Povuci za okretanje">⟳</div>', iconSize: [26, 26], iconAnchor: [13, 13] }),
             zIndexOffset: 2000,
             keyboard: false
         });
+        var mover = L.marker(mp, {
+            draggable: true,
+            icon: L.divIcon({ className: 'bed-handle-wrap', html: '<div class="bed-handle bed-mover" title="Povuci za premještanje">✥</div>', iconSize: [26, 26], iconAnchor: [13, 13] }),
+            zIndexOffset: 2000,
+            keyboard: false
+        });
+
+        var refreshShape = function () {
+            rect.setLatLngs(bedCorners(bed));
+            if (layers.label) layers.label.setLatLng([bed.lat, bed.lng]);
+        };
+
         handle.on('drag', function (e) {
             var p = e.target.getLatLng();
             var dx = (p.lng - bed.lng) * METERS_PER_LNG;
             var dy = (p.lat - bed.lat) * METERS_PER_LAT;
             var deg = Math.round(Math.atan2(dx, dy) * 180 / Math.PI);
             bed.rotacija = (deg + 360) % 360;
-            rect.setLatLngs(bedCorners(bed));
-            line.setLatLngs([[bed.lat, bed.lng], p]);
+            refreshShape();
+            mover.setLatLng(bedHandlePos(bed, -1));
+            line.setLatLngs([bedHandlePos(bed, -1), p]);
             var sizeEl = document.getElementById('bed-size');
             if (sizeEl && selectedBedId === bed.id) sizeEl.textContent = bedSizeText(bed);
         });
@@ -5499,8 +5513,41 @@ function drawBed(bed) {
             saveBeds();
             drawBed(bed);
         });
+
+        // premještanje: gredica ide za ručkom za isti pomak (bez skakanja središta)
+        var moveStart = null;
+        mover.on('dragstart', function (e) {
+            var p = e.target.getLatLng();
+            moveStart = { lat: bed.lat, lng: bed.lng, hLat: p.lat, hLng: p.lng };
+        });
+        mover.on('drag', function (e) {
+            if (!moveStart) return;
+            var p = e.target.getLatLng();
+            bed.lat = moveStart.lat + (p.lat - moveStart.hLat);
+            bed.lng = moveStart.lng + (p.lng - moveStart.hLng);
+            refreshShape();
+            var hp2 = bedHandlePos(bed, 1);
+            handle.setLatLng(hp2);
+            line.setLatLngs([p, hp2]);
+            var dE = (bed.lng - moveStart.lng) * METERS_PER_LNG;
+            var dN = (bed.lat - moveStart.lat) * METERS_PER_LAT;
+            var sizeEl = document.getElementById('bed-size');
+            if (sizeEl && selectedBedId === bed.id) {
+                sizeEl.textContent = '↔ ' + fmtMeters(Math.abs(dE)) + ' m ' + (dE >= 0 ? 'istok' : 'zapad') +
+                    ' · ' + fmtMeters(Math.abs(dN)) + ' m ' + (dN >= 0 ? 'sjever' : 'jug');
+            }
+        });
+        mover.on('dragend', function () {
+            moveStart = null;
+            saveBeds();
+            drawBed(bed);
+            if (selectedBedId === bed.id) renderBedPanel();
+        });
+
         handle.addTo(bedLayerGroup);
+        mover.addTo(bedLayerGroup);
         layers.handle = handle;
+        layers.mover = mover;
         layers.line = line;
     }
     bedLayers[bed.id] = layers;

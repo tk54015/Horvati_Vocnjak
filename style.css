@@ -3928,3 +3928,9 @@ body.is-admin .demo-start {
 .bed-handle:active {
     cursor: grabbing;
 }
+
+.bed-handle.bed-mover {
+    background: #2e7d32;
+    cursor: move;
+    font-size: 16px;
+}

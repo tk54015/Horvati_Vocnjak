@@ -60,6 +60,13 @@ var pendingChanges = {};
 var syncInFlight = false;
 var syncRetryTimer = null;
 var syncFlushTimer = null;
+var isAdminUser = false;
+var AUTH_API_URL = 'api/auth';
+
+// Uređivati može samo admin (na staroj verziji bez servera svi, kao prije).
+function canEdit() {
+    return storageMode === 'local' || isAdminUser;
+}
 
 function stableStringify(value) {
     if (value === null || typeof value !== 'object') return JSON.stringify(value);
@@ -105,6 +112,7 @@ function setSyncStatus(state, message) {
 }
 
 function queueServerSync(kind, currentMap) {
+    if (!isAdminUser) return;
     var snap = syncSnapshot[kind];
     var changed = false;
 
@@ -171,6 +179,11 @@ function flushServerSync(useKeepalive) {
                 window.location.reload();
                 throw new Error('Nisi prijavljen');
             }
+            if (response.status === 403) {
+                var forbidden = new Error('Nisi prijavljen kao admin');
+                forbidden.forbidden = true;
+                throw forbidden;
+            }
             if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
         })
@@ -188,6 +201,13 @@ function flushServerSync(useKeepalive) {
         .catch(function (error) {
             console.error('Spremanje na server nije uspjelo:', error);
             syncInFlight = false;
+            if (error && error.forbidden) {
+                pendingChanges = {};
+                setSyncStatus('error', '⚠️ Izmjene nisu spremljene: nisi prijavljen kao admin.');
+                setAdminMode(false);
+                alert('Izmjene nisu spremljene jer više nisi prijavljen kao admin. Prijavi se ponovno i osvježi stranicu.');
+                return;
+            }
             setSyncStatus('error');
             if (syncRetryTimer) clearTimeout(syncRetryTimer);
             syncRetryTimer = setTimeout(function () {
@@ -239,6 +259,9 @@ function fetchJsonFile(url) {
 // Prvo pokretanje: kopiraj data/stabla.json i data/loza.json u bazu.
 function ensureServerSeeded(state) {
     if (state.seeded) return Promise.resolve(state);
+    if (!isAdminUser) {
+        return Promise.reject(new Error('Baza je prazna. Prijavi se kao admin i osvježi stranicu da se podaci kopiraju.'));
+    }
 
     setSyncStatus('saving', '☁️ Prvo pokretanje: kopiram podatke u bazu...');
     return fetchJsonFile('data/stabla.json')
@@ -1340,10 +1363,11 @@ function openPlantPanel(item, isUserItem) {
     var noteInput = document.getElementById('status-napomena');
     noteInput.value = details.napomena || item.notes || '';
     noteInput.setAttribute('readonly', 'readonly');
+    updatePlantFormEditable();
 }
 
 function saveSelectedPlantPanel() {
-    if (!selectedPlant) return;
+    if (!selectedPlant || !canEdit()) return;
     var item = allItemsById[selectedPlant.itemId];
     if (!item) return;
 
@@ -1556,18 +1580,21 @@ function registerAllItemsMap() {
 }
 
 function loadInventory() {
-    fetchServerState()
-        .then(function (state) {
+    Promise.all([fetchServerState(), fetchAdminStatus()])
+        .then(function (results) {
+            var state = results[0];
             if (!state) {
                 storageMode = 'local';
                 setSyncStatus('local');
+                setAdminMode(true);
                 loadInventoryLegacy();
                 return;
             }
 
             storageMode = 'server';
-            var importBtn = document.getElementById('import-backup');
-            if (importBtn) importBtn.classList.remove('hidden');
+            var loginPanel = document.getElementById('login-panel');
+            if (loginPanel) loginPanel.classList.remove('hidden');
+            setAdminMode(results[1]);
 
             return ensureServerSeeded(state).then(function (seededState) {
                 applyServerState(seededState);
@@ -1926,10 +1953,10 @@ document.getElementById('zoom-out').addEventListener('click', function () { map.
 var noteInputEl = document.getElementById('status-napomena');
 if (noteInputEl) {
     noteInputEl.addEventListener('focus', function () {
-        noteInputEl.removeAttribute('readonly');
+        if (canEdit()) noteInputEl.removeAttribute('readonly');
     });
     noteInputEl.addEventListener('click', function () {
-        noteInputEl.removeAttribute('readonly');
+        if (canEdit()) noteInputEl.removeAttribute('readonly');
     });
     noteInputEl.addEventListener('input', function () {
         queuePlantPanelAutosave();
@@ -2052,7 +2079,7 @@ if (changeListEl) {
         var target = event.target;
         if (!target || !target.classList) return;
         var id = target.getAttribute('data-id');
-        if (!id) return;
+        if (!id || !canEdit()) return;
 
         if (target.classList.contains('remove-tree')) {
             removeUserItem(id);
@@ -2074,6 +2101,7 @@ document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
         closeChangesModal();
         closeYieldModal();
+        setMenuOpen(false);
         return;
     }
 
@@ -2134,33 +2162,45 @@ if (toggleWaterFilterBtn) {
 var togglePlacementBtn = document.getElementById('toggle-placement');
 if (togglePlacementBtn) {
     togglePlacementBtn.addEventListener('click', function () {
-        placementEnabled = !placementEnabled;
+        setPlacementEnabled(!placementEnabled);
+    });
+}
+
+function setPlacementEnabled(enabled) {
+    placementEnabled = !!enabled && canEdit();
+    if (togglePlacementBtn) {
         togglePlacementBtn.textContent = placementEnabled ? '✅ Postavljanje stabala uključeno' : '🔒 Postavljanje stabala zaključano';
         togglePlacementBtn.classList.toggle('placement-active', placementEnabled);
         togglePlacementBtn.classList.toggle('placement-locked', !placementEnabled);
-    });
+    }
 }
 
 var toggleDragBtn = document.getElementById('toggle-drag');
 if (toggleDragBtn) {
     toggleDragBtn.addEventListener('click', function () {
-        dragEnabled = !dragEnabled;
-        Object.keys(allMarkersById).forEach(function (id) {
+        setDragEnabled(!dragEnabled);
+    });
+}
+
+function setDragEnabled(enabled) {
+    dragEnabled = !!enabled && canEdit();
+    Object.keys(allMarkersById).forEach(function (id) {
             var marker = allMarkersById[id];
             if (!marker.dragging) return;
             if (dragEnabled) marker.dragging.enable();
             else marker.dragging.disable();
         });
 
+    if (toggleDragBtn) {
         toggleDragBtn.textContent = dragEnabled ? '✏️ Uređivanje uključeno' : '🔒 Markeri zaključani';
         toggleDragBtn.classList.toggle('drag-active', dragEnabled);
         toggleDragBtn.classList.toggle('drag-locked', !dragEnabled);
-    });
+    }
 }
 
 // Klik na mapu: dodaj novo stablo
 map.on('click', function (e) {
-    if (!placementEnabled) return;
+    if (!placementEnabled || !canEdit()) return;
 
     var coords = e.latlng;
     var treeTypeEl = document.getElementById('tree-type');
@@ -2188,3 +2228,145 @@ map.on('click', function (e) {
     createMarker(newItem, { isUserItem: true });
     renderChangeList();
 });
+
+// ---------------------------------------------------------------------------
+// Izbornik (☰)
+// ---------------------------------------------------------------------------
+var toggleMenuBtn = document.getElementById('toggle-menu');
+var sideMenuEl = document.getElementById('side-menu');
+
+function setMenuOpen(open) {
+    if (!sideMenuEl || !toggleMenuBtn) return;
+    sideMenuEl.classList.toggle('hidden', !open);
+    toggleMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+if (toggleMenuBtn && sideMenuEl) {
+    toggleMenuBtn.addEventListener('click', function () {
+        setMenuOpen(sideMenuEl.classList.contains('hidden'));
+    });
+    ['open-weather', 'open-yield-table', 'toggle-changes'].forEach(function (id) {
+        var btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', function () { setMenuOpen(false); });
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Admin prijava
+// ---------------------------------------------------------------------------
+function fetchAdminStatus() {
+    return fetch(AUTH_API_URL, { cache: 'no-store' })
+        .then(function (response) {
+            var contentType = response.headers.get('content-type') || '';
+            if (!response.ok || contentType.indexOf('application/json') === -1) return false;
+            return response.json().then(function (body) { return !!(body && body.admin); });
+        })
+        .catch(function () { return false; });
+}
+
+function updatePlantFormEditable() {
+    var editable = canEdit();
+    ['status-orezano', 'status-gnojeno'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.disabled = !editable;
+    });
+    var spray = document.getElementById('status-spricano');
+    if (spray) {
+        spray.readOnly = !editable;
+        spray.placeholder = editable ? 'Primjer: da, modro ulje 4.3.2025' : '';
+    }
+    var note = document.getElementById('status-napomena');
+    if (note) {
+        note.setAttribute('readonly', 'readonly');
+        note.placeholder = editable ? 'Klikni ovdje za unos napomene' : '';
+    }
+}
+
+function setAdminMode(admin) {
+    isAdminUser = !!admin;
+    document.body.classList.toggle('is-admin', canEdit());
+
+    var form = document.getElementById('login-form');
+    var toggle = document.getElementById('login-toggle');
+    var status = document.getElementById('login-status');
+    if (toggle) toggle.classList.toggle('hidden', isAdminUser);
+    if (status) status.classList.toggle('hidden', !isAdminUser);
+    if (form && isAdminUser) {
+        form.classList.add('hidden');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    if (!canEdit()) {
+        setPlacementEnabled(false);
+        setDragEnabled(false);
+    }
+    updatePlantFormEditable();
+}
+
+var loginToggleBtn = document.getElementById('login-toggle');
+var loginFormEl = document.getElementById('login-form');
+var loginErrorEl = document.getElementById('login-error');
+var logoutBtn = document.getElementById('logout-btn');
+
+function showLoginError(message) {
+    if (!loginErrorEl) return;
+    loginErrorEl.textContent = message || '';
+    loginErrorEl.classList.toggle('hidden', !message);
+}
+
+if (loginToggleBtn && loginFormEl) {
+    loginToggleBtn.addEventListener('click', function () {
+        var open = loginFormEl.classList.contains('hidden');
+        loginFormEl.classList.toggle('hidden', !open);
+        loginToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        showLoginError('');
+        if (open) document.getElementById('login-username').focus();
+    });
+
+    loginFormEl.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var submitBtn = document.getElementById('login-submit');
+        var passwordEl = document.getElementById('login-password');
+        showLoginError('');
+        if (submitBtn) submitBtn.disabled = true;
+
+        fetch(AUTH_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: document.getElementById('login-username').value,
+                password: passwordEl.value
+            })
+        })
+            .then(function (response) {
+                return response.json().catch(function () { return {}; }).then(function (body) {
+                    if (!response.ok) throw new Error(body.error || 'Prijava nije uspjela.');
+                    return body;
+                });
+            })
+            .then(function () {
+                passwordEl.value = '';
+                setAdminMode(true);
+                setSyncStatus('ok');
+            })
+            .catch(function (error) {
+                showLoginError(error.message);
+            })
+            .then(function () {
+                if (submitBtn) submitBtn.disabled = false;
+            });
+    });
+}
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', function () {
+        if (hasUnsavedChanges()) {
+            flushServerSync(false);
+            alert('Još se spremaju izmjene, pokušaj odjavu za par sekundi.');
+            return;
+        }
+        fetch(AUTH_API_URL, { method: 'DELETE' })
+            .catch(function () {})
+            .then(function () { setAdminMode(false); });
+    });
+}

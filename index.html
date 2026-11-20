@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventar Stabala</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261116a">
+    <link rel="stylesheet" href="style.css?v=20261120a">
 </head>
 <body>
     <div id="map"></div>
@@ -49,9 +49,9 @@
       </div>
     </aside>
     <div class="map-controls">
-      <button id="zoom-in">+</button>
-      <button id="zoom-out">-</button>
-      <button id="open-weather" type="button">Prognoza</button>
+      <button id="toggle-menu" type="button" title="Izbornik" aria-expanded="false" aria-controls="side-menu">☰</button>
+      <button id="zoom-in" type="button">+</button>
+      <button id="zoom-out" type="button">-</button>
     </div>
     <!-- icon-picker privremeno sakriven
     <div id="icon-picker">
@@ -62,67 +62,89 @@
       <img src="icons/download.png" class="icon-option" data-icon="icons/download.png" title="Ostalo">
     </div>
     -->
-    <div id="tree-type-picker">
-      <label for="tree-type">Vrsta stabla:</label>
-      <select id="tree-type">
-        <option value="jabuka">Jabuka 🍎</option>
-        <option value="kruska">Kruška 🍐</option>
-        <option value="sljiva">Šljiva 🍇</option>
-        <option value="smokva">Smokva 🫠</option>
-        <option value="breskva">Breskva 🍑</option>
-        <option value="tresnja">Trešnja 🍒</option>
-        <option value="visnja">Višnja 🍒</option>
-        <option value="glog">Glog 🌳</option>
-        <option value="drenak">Drenak 🌳</option>
-        <option value="kupina">Kupina 🫐</option>
-        <option value="ribizl">Ribizl 🍓</option>
-        <option value="dud2">Dud 🌳</option>
-        <option value="vinova_loza">Vinova loza 🍇</option>
-      </select>
-      <button id="export-json" type="button">Preuzmi JSON</button>
-      <button id="toggle-changes" type="button">Prikazi izmjene podataka</button>
-      <button id="toggle-placement" type="button" class="placement-locked">🔒 Postavljanje stabala zaključano</button>
-      <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
-      <button id="toggle-water-filter" type="button" class="water-filter-inactive">💧 Prikaz zalijevanja</button>
-      <button id="export-backup" type="button" title="Preuzmi sve izmjene (nova stabla, napomene, status, pozicije)">Backup izmjena</button>
-      <button id="import-backup" type="button" class="hidden" title="Uvezi backup izmjena na server">Uvezi backup</button>
-      <input id="import-backup-file" type="file" accept="application/json,.json" hidden>
-      <small id="sync-status">Učitavanje podataka...</small>
-    </div>
-    <div id="plant-panel">
-      <div class="plant-panel-header">
-        <b>Podaci o biljci</b>
-        <button id="toggle-plant-panel" type="button" title="Minimiziraj panel">x</button>
+    <nav id="side-menu" class="hidden" aria-label="Izbornik">
+      <button id="open-weather" type="button" class="menu-view">🌦️ Prognoza</button>
+      <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
+      <div class="admin-only menu-admin">
+        <label for="tree-type">Vrsta stabla:</label>
+        <select id="tree-type">
+          <option value="jabuka">Jabuka 🍎</option>
+          <option value="kruska">Kruška 🍐</option>
+          <option value="sljiva">Šljiva 🍇</option>
+          <option value="smokva">Smokva 🫠</option>
+          <option value="breskva">Breskva 🍑</option>
+          <option value="tresnja">Trešnja 🍒</option>
+          <option value="visnja">Višnja 🍒</option>
+          <option value="glog">Glog 🌳</option>
+          <option value="drenak">Drenak 🌳</option>
+          <option value="kupina">Kupina 🫐</option>
+          <option value="ribizl">Ribizl 🍓</option>
+          <option value="dud2">Dud 🌳</option>
+          <option value="vinova_loza">Vinova loza 🍇</option>
+        </select>
+        <button id="toggle-placement" type="button" class="placement-locked">🔒 Postavljanje stabala zaključano</button>
+        <button id="toggle-drag" type="button" class="drag-locked">🔒 Markeri zaključani</button>
+        <button id="toggle-changes" type="button">Prikaži izmjene podataka</button>
+        <button id="export-json" type="button">Preuzmi JSON</button>
+        <small id="sync-status">Učitavanje podataka...</small>
       </div>
-      <div id="plant-empty">Klikni marker za otvaranje podataka.</div>
-      <div id="plant-form" class="hidden">
-        <div class="plant-meta"><span>ID:</span><strong id="plant-id">-</strong></div>
-        <div class="plant-meta"><span>Vrsta:</span><strong id="plant-type">-</strong></div>
-        <div class="plant-meta"><span>Visina:</span><strong id="plant-height">-</strong></div>
-        <div class="plant-meta"><span>Zalijevanje:</span><strong id="plant-water">-</strong></div>
-        <div class="plant-meta"><span>Koordinate:</span><strong id="plant-coords">-</strong></div>
+      <!-- Sakriveno: prikaz zalijevanja, backup i uvoz izmjena -->
+      <div class="hidden">
+        <button id="toggle-water-filter" type="button" class="water-filter-inactive">💧 Prikaz zalijevanja</button>
+        <button id="export-backup" type="button">Backup izmjena</button>
+        <button id="import-backup" type="button">Uvezi backup</button>
+        <input id="import-backup-file" type="file" accept="application/json,.json" hidden>
+      </div>
+    </nav>
+    <div id="right-stack">
+      <div id="login-panel" class="hidden">
+        <button id="login-toggle" type="button" aria-expanded="false" aria-controls="login-form"><b>Prijava</b><span class="login-arrow"></span></button>
+        <form id="login-form" class="hidden" autocomplete="on">
+          <input id="login-username" name="username" type="text" autocomplete="username" placeholder="Korisničko ime" required>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Lozinka" required>
+          <button id="login-submit" type="submit">Prijavi se</button>
+          <div id="login-error" class="login-error hidden" role="alert"></div>
+        </form>
+        <div id="login-status" class="hidden">
+          <span>👤 Prijavljen: <b>admin</b></span>
+          <button id="logout-btn" type="button">Odjava</button>
+        </div>
+      </div>
+      <div id="plant-panel">
+        <div class="plant-panel-header">
+          <b>Podaci o biljci</b>
+          <button id="toggle-plant-panel" type="button" title="Minimiziraj panel">x</button>
+        </div>
+        <div id="plant-empty">Klikni marker za otvaranje podataka.</div>
+        <div id="plant-form" class="hidden">
+          <div class="plant-meta"><span>ID:</span><strong id="plant-id">-</strong></div>
+          <div class="plant-meta"><span>Vrsta:</span><strong id="plant-type">-</strong></div>
+          <div class="plant-meta"><span>Visina:</span><strong id="plant-height">-</strong></div>
+          <div class="plant-meta"><span>Zalijevanje:</span><strong id="plant-water">-</strong></div>
+          <div class="plant-meta"><span>Koordinate:</span><strong id="plant-coords">-</strong></div>
 
-        <label for="status-orezano">Orezano</label>
-        <select id="status-orezano">
-          <option value="nepoznato">Nepoznato</option>
-          <option value="da">Da</option>
-          <option value="ne">Ne</option>
-        </select>
+          <label for="status-orezano">Orezano</label>
+          <select id="status-orezano">
+            <option value="nepoznato">Nepoznato</option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
 
-        <label for="status-gnojeno">Gnojeno</label>
-        <select id="status-gnojeno">
-          <option value="nepoznato">Nepoznato</option>
-          <option value="da">Da</option>
-          <option value="ne">Ne</option>
-        </select>
+          <label for="status-gnojeno">Gnojeno</label>
+          <select id="status-gnojeno">
+            <option value="nepoznato">Nepoznato</option>
+            <option value="da">Da</option>
+            <option value="ne">Ne</option>
+          </select>
 
-        <label for="status-spricano">Spricano (komentari)</label>
-        <textarea id="status-spricano" rows="4" placeholder="Primjer: da, modro ulje 4.3.2025"></textarea>
+          <label for="status-spricano">Spricano (komentari)</label>
+          <textarea id="status-spricano" rows="4" placeholder="Primjer: da, modro ulje 4.3.2025"></textarea>
 
-        <label for="status-napomena">Napomena</label>
-        <input id="status-napomena" type="text" readonly placeholder="Klikni ovdje za unos napomene" />
+          <label for="status-napomena">Napomena</label>
+          <input id="status-napomena" type="text" readonly placeholder="Klikni ovdje za unos napomene" />
 
-        <button id="save-plant-status" type="button">Spremi podatke biljke</button>
+          <button id="save-plant-status" type="button" class="admin-only">Spremi podatke biljke</button>
+        </div>
       </div>
     </div>
 
@@ -136,7 +158,6 @@
       </div>
     </div>
 
-    <button id="open-yield-table" type="button" class="yield-link">Prikazi tablicu</button>
 
     <div id="yield-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Procjena uroda">
       <div class="yield-modal-card">
@@ -160,6 +181,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261116a"></script>
+    <script src="script.js?v=20261120a"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
 //   change_log    - povijest svih spremanja (za svaki slučaj)
 
 import { neon } from '@neondatabase/serverless';
+import { isAdmin } from '../lib/auth.js';
 
 const DATABASE_URL = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 const sql = DATABASE_URL ? neon(DATABASE_URL) : null;
@@ -183,6 +184,10 @@ export default async function handler(req, res) {
         }
 
         if (req.method === 'POST') {
+            if (!isAdmin(req)) {
+                res.status(403).json({ error: 'Samo admin može spremati izmjene.' });
+                return;
+            }
             const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
             if (body.action === 'seed') {
                 res.status(200).json(await seed(body));

@@ -34,13 +34,20 @@ body {
     font-weight: bold;
 }
 
-#open-weather {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    padding: 0 12px;
+#toggle-menu {
+    font-size: 18px;
+    line-height: 1;
+}
+
+#toggle-menu[aria-expanded="true"] {
+    background: #4f8f4f;
+    border-color: #356b35;
+    color: #fff;
+}
+
+/* Elementi samo za admina (skriveni dok nisi prijavljen) */
+body:not(.is-admin) .admin-only {
+    display: none !important;
 }
 
 #icon-picker {
@@ -71,10 +78,16 @@ body {
     border: 2px solid #007bff;
 }
 
-#tree-type-picker {
+#side-menu {
     position: absolute;
-    top: 100px;
+    top: 62px;
     left: 10px;
+    z-index: 1100 !important;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    min-width: 210px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
     z-index: 1000;
     background: rgba(255,255,255,0.95);
     border: 1px solid #ccc;
@@ -86,14 +99,36 @@ body {
     gap: 4px;
 }
 
-#tree-type-picker select {
+#side-menu .menu-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid #ddd;
+}
+
+#side-menu button.menu-view {
+    background: #fff;
+    color: #083b75;
+    border: 1px solid #0a4e9b;
+    font-weight: 700;
+    text-align: left;
+}
+
+#side-menu button.menu-view:hover {
+    background: #0a4e9b;
+    color: #fff;
+}
+
+#side-menu select {
     padding: 4px;
     border-radius: 4px;
     border: 1px solid #aaa;
     font-size: 13px;
 }
 
-#tree-type-picker button {
+#side-menu button {
     margin-top: 6px;
     padding: 6px 8px;
     border-radius: 4px;
@@ -104,7 +139,7 @@ body {
     cursor: pointer;
 }
 
-#tree-type-picker button:hover {
+#side-menu button:hover {
     background: #417941;
 }
 
@@ -160,30 +195,137 @@ body {
     filter: brightness(0.93);
 }
 
-#tree-type-picker small {
+#side-menu small {
     color: #555;
     font-size: 11px;
 }
 
-#tree-type-picker small[data-state="error"] {
+#side-menu small[data-state="error"] {
     color: #b3261e;
     font-weight: 600;
 }
 
-#plant-panel {
+#right-stack {
     position: fixed;
     top: 10px;
     right: 10px;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    max-height: calc(100vh - 20px);
+    width: 290px;
+    max-width: calc(100vw - 150px);
+}
+
+#login-panel {
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+#login-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.login-arrow {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid #666;
+    transition: transform 0.15s ease;
+}
+
+#login-toggle[aria-expanded="true"] .login-arrow {
+    transform: rotate(90deg);
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 6px 0 4px;
+}
+
+#login-form.hidden {
+    display: none;
+}
+
+#login-form input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+#login-submit,
+#logout-btn {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #356b35;
+    background: #4f8f4f;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#login-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+#logout-btn {
+    border-color: #666;
+    background: #888;
+}
+
+#login-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 2px 0;
+}
+
+#login-status.hidden {
+    display: none;
+}
+
+.login-error {
+    color: #b3261e;
+    font-size: 12px;
+}
+
+#plant-panel {
+    position: relative;
+    min-height: 0;
     background: rgba(255,255,255,0.95);
     border: 1px solid #ccc;
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 12px;
-    max-height: 80vh;
     overflow-y: auto;
-    min-width: 260px;
-    max-width: 320px;
+}
+
+#plant-form select:disabled,
+#plant-form textarea[readonly] {
+    background: #f3f3f3;
+    color: #333;
 }
 
 .plant-panel-header {
@@ -733,6 +875,12 @@ body {
 }
 
 @media (max-width: 600px) {
+    #right-stack {
+        width: auto;
+        left: 140px;
+        max-width: none;
+    }
+
     #weather-panel {
         right: 6px;
         bottom: 6px;

@@ -55,7 +55,9 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {}, ttask: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {}, ttask: {}, ctask: {} };
+var customTasks = {}; // vlastiti zadaci: id -> { id, naslov, opis, mjeseci, godina?, prioritet, kategorija, vrste }
+var tasksBaseZadaci = null;
 var treeTaskStates = {}; // stanje zadatka po stablu: id -> { ključZadatka: { status: 'postponed'|'skipped', to?, from? } }
 var plantLogs = {}; // dnevnik po stablu: id -> [{ id, date, type, text, taskKey? }]
 var plantHarvests = {}; // berba po stablu: id -> { godina: { kg, note } }
@@ -313,6 +315,7 @@ function applyServerState(state) {
     plantLogs = asPlainObject(state.plantLogs);
     plantHarvests = asPlainObject(state.plantHarvests);
     treeTaskStates = asPlainObject(state.treeTaskStates);
+    customTasks = asPlainObject(state.customTasks);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
@@ -324,7 +327,8 @@ function applyServerState(state) {
         task: buildSnapshotFromMap(taskDone),
         log: buildSnapshotFromMap(plantLogs),
         harvest: buildSnapshotFromMap(plantHarvests),
-        ttask: buildSnapshotFromMap(treeTaskStates)
+        ttask: buildSnapshotFromMap(treeTaskStates),
+        ctask: buildSnapshotFromMap(customTasks)
     };
     pendingChanges = {};
 }
@@ -2166,6 +2170,7 @@ document.addEventListener('keydown', function (e) {
         closeEncyclopedia();
         closeTasks();
         closeFilterPanel();
+        closeWallet();
         setPlacementEnabled(false);
         return;
     }
@@ -2900,7 +2905,7 @@ if (plantEncyclopediaBtn) {
 // ---------------------------------------------------------------------------
 var MONTH_NAMES = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
 var MONTH_NAMES_GEN = ['siječnja', 'veljače', 'ožujka', 'travnja', 'svibnja', 'lipnja', 'srpnja', 'kolovoza', 'rujna', 'listopada', 'studenog', 'prosinca'];
-var CATEGORY_ICONS = { orezivanje: '✂️', 'zaštita': '🧴', gnojidba: '🌱', berba: '🧺', voda: '💧', higijena: '🧹', vrijeme: '🌡️', ostalo: '📝' };
+var CATEGORY_ICONS = { orezivanje: '✂️', 'zaštita': '🧴', gnojidba: '🌱', berba: '🧺', voda: '💧', higijena: '🧹', vrijeme: '🌡️', ostalo: '📝', vlastito: '📌' };
 var tasksModal = document.getElementById('tasks-modal');
 var tasksData = null;
 var tasksLoading = null;
@@ -2920,6 +2925,8 @@ function loadTasks() {
         tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261121a'), loadEncyclopedia().catch(function () { return null; })])
             .then(function (results) {
                 tasksData = results[0];
+                tasksBaseZadaci = tasksData.zadaci.slice();
+                mergeCustomTasks();
                 return tasksData;
             })
             .catch(function (error) {
@@ -3005,6 +3012,7 @@ function tasksForView() {
 
     tasksData.zadaci.forEach(function (task) {
         if ((task.mjeseci || []).indexOf(month) === -1) return;
+        if (task.godina && task.godina !== year) return; // jednokratni vlastiti zadatak
         var key = taskKey(task, year, month);
         var row = buildTaskRow(task, key, counts, month, false);
         if (!row) return;
@@ -3064,6 +3072,7 @@ function taskActionsHtml(r, editable) {
 function taskRowHtml(r, editable) {
     var t = r.task;
     var badges = '';
+    if (t.custom) badges += '<span class="task-badge custom">📌 vlastiti</span>';
     if (r.movedHere && r.state && r.state.from) {
         badges += '<span class="task-badge moved">↪ odgođeno iz ' + escapeHtml(MONTH_NAMES_GEN[r.state.from.month - 1]) + '</span>';
     } else if (r.movedHere) {
@@ -3086,6 +3095,7 @@ function taskRowHtml(r, editable) {
         (chips ? '<div class="task-chips">' + chips + '</div>' : '') +
         taskProgressHtml(r) +
         taskActionsHtml(r, editable) +
+        (t.custom && editable ? '<div class="task-actions"><button type="button" class="task-act" data-act="custom-del" data-key="' + escapeHtml(t.id) + '">🗑️ Obriši vlastiti zadatak</button></div>' : '') +
         '</div></li>';
 }
 
@@ -3274,6 +3284,11 @@ if (tasksModal) {
             setTaskState(key, { status: 'skipped', at: at });
         } else if (act === 'undo') {
             setTaskState(key, null);
+        } else if (act === 'custom-del') {
+            var ct = customTasks[key];
+            askConfirm('Obrisati zadatak?', 'Obrisati vlastiti zadatak "' + (ct ? ct.naslov : key) + '"?', '🗑️ Obriši').then(function (ok) {
+                if (ok) removeCustomTask(key);
+            });
         }
     });
 }
@@ -4315,9 +4330,11 @@ function renderPlantUpcoming(item) {
     var groups = [];
     for (var i = 1; i <= 12; i++) {
         var m = ((month - 1 + i) % 12) + 1;
+        var yy = now.getFullYear() + Math.floor((month - 1 + i) / 12);
         var tasks = tasksData.zadaci.filter(function (z) {
             if ((z.vrste || []).indexOf(type) === -1) return false;
             if ((z.mjeseci || []).indexOf(m) === -1) return false;
+            if (z.godina && z.godina !== yy) return false;
             // zadatak koji traje i ovaj mjesec ne ponavljaj u idućem
             var prev = m === 1 ? 12 : m - 1;
             return i === 1 ? z.mjeseci.indexOf(month) === -1 : z.mjeseci.indexOf(prev) === -1;
@@ -4361,3 +4378,308 @@ function taskProgressHtml(r) {
 
 // Izbornik lijevo je na računalu otvoren prema zadanim postavkama (na mobitelu zatvoren, da ne pokriva kartu)
 if (window.innerWidth >= 700) setMenuOpen(true);
+
+// ---------------------------------------------------------------------------
+// Vlastiti zadaci u rasporedu (npr. sanirati pješčanik, pospremiti trampolin)
+// ---------------------------------------------------------------------------
+function mergeCustomTasks() {
+    if (!tasksData || !tasksBaseZadaci) return;
+    var custom = Object.keys(customTasks).map(function (id) {
+        return Object.assign({ kategorija: 'vlastito', vrste: [], prioritet: 2 }, customTasks[id], { id: id, custom: true });
+    });
+    tasksData.zadaci = tasksBaseZadaci.concat(custom);
+}
+
+function saveCustomTasks() {
+    if (storageMode === 'server') queueServerSync('ctask', customTasks);
+    mergeCustomTasks();
+    renderTasks();
+    onTasksChanged();
+}
+
+function addCustomTask(task) {
+    if (!canEdit()) return;
+    var id = 'c-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    customTasks[id] = task;
+    saveCustomTasks();
+}
+
+function removeCustomTask(id) {
+    if (!canEdit()) return;
+    delete customTasks[id];
+    saveCustomTasks();
+}
+
+function customTaskFormHtml() {
+    var y = tasksView.year;
+    var m = tasksView.month;
+    var counts = countTreesByType();
+    var speciesOpts = Object.keys(counts).sort(function (a, b) { return speciesName(a).localeCompare(speciesName(b), 'hr'); })
+        .map(function (t) { return '<option value="' + escapeHtml(t) + '">' + escapeHtml(speciesName(t)) + '</option>'; }).join('');
+    return '<form id="custom-task-form" class="custom-task-form" autocomplete="off">' +
+        '<b>📌 Novi vlastiti zadatak</b>' +
+        '<input id="ct-title" type="text" maxlength="100" placeholder="Naziv (npr. Sanirati pješčanik)">' +
+        '<input id="ct-desc" type="text" maxlength="300" placeholder="Opis (nije obavezno)">' +
+        '<div class="ct-row">' +
+        '<label>Mjesec <select id="ct-month">' + MONTH_NAMES.map(function (n, i) {
+            return '<option value="' + (i + 1) + '"' + (i + 1 === m ? ' selected' : '') + '>' + n + '</option>';
+        }).join('') + '</select></label>' +
+        '<label>Godina <select id="ct-year"><option value="' + y + '">Samo ' + y + '.</option><option value="' + (y + 1) + '">Samo ' + (y + 1) + '.</option><option value="0">Svake godine</option></select></label>' +
+        '</div><div class="ct-row">' +
+        '<label>Prioritet <select id="ct-prio"><option value="1">🔴 Važno</option><option value="2" selected>🟠 Redovno</option><option value="3">🟢 Kad stigneš</option></select></label>' +
+        '<label>Vrsta <select id="ct-species"><option value="">Bez vrste (općenito)</option>' + speciesOpts + '</select></label>' +
+        '</div>' +
+        '<div id="ct-error" class="add-tree-error hidden" role="alert"></div>' +
+        '<div class="ct-actions"><button type="button" id="ct-cancel" class="btn-secondary">Odustani</button><button type="submit" class="btn-primary">Dodaj zadatak</button></div>' +
+        '</form>';
+}
+
+var addCustomTaskBtn = document.getElementById('add-custom-task');
+if (addCustomTaskBtn) {
+    addCustomTaskBtn.addEventListener('click', function () {
+        if (!canEdit() || !tasksView) return;
+        var listEl = document.getElementById('tasks-list');
+        if (document.getElementById('custom-task-form')) return;
+        listEl.insertAdjacentHTML('afterbegin', customTaskFormHtml());
+        syncCustomTaskYear();
+        document.getElementById('ct-title').focus();
+    });
+}
+
+// Ako je odabrani mjesec ove godine već prošao, predloži sljedeću godinu
+function syncCustomTaskYear() {
+    var monthEl = document.getElementById('ct-month');
+    var yearEl = document.getElementById('ct-year');
+    if (!monthEl || !yearEl) return;
+    var now = new Date();
+    var m = Number(monthEl.value);
+    var firstYear = Number(yearEl.options[0].value);
+    if (yearEl.value === '0') return;
+    var wanted = (firstYear === now.getFullYear() && m < now.getMonth() + 1) ? firstYear + 1 : firstYear;
+    yearEl.value = String(wanted);
+}
+
+document.addEventListener('change', function (event) {
+    if (event.target && event.target.id === 'ct-month') syncCustomTaskYear();
+});
+
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.id === 'ct-cancel') {
+        var f = document.getElementById('custom-task-form');
+        if (f) f.remove();
+    }
+});
+
+document.addEventListener('submit', function (event) {
+    if (!event.target || event.target.id !== 'custom-task-form') return;
+    event.preventDefault();
+    var title = document.getElementById('ct-title').value.trim();
+    var errEl = document.getElementById('ct-error');
+    if (!title) {
+        errEl.textContent = 'Upiši naziv zadatka.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+    var month = Number(document.getElementById('ct-month').value);
+    var year = Number(document.getElementById('ct-year').value);
+    var species = document.getElementById('ct-species').value;
+    var task = {
+        naslov: title,
+        opis: document.getElementById('ct-desc').value.trim(),
+        mjeseci: [month],
+        prioritet: Number(document.getElementById('ct-prio').value),
+        kategorija: 'vlastito',
+        vrste: species ? [species] : [],
+        at: new Date().toISOString()
+    };
+    if (year) task.godina = year;
+    addCustomTask(task);
+    // prikaži mjesec u koji je zadatak dodan
+    tasksView = { year: year || tasksView.year, month: month };
+    renderTasks();
+});
+
+// ---------------------------------------------------------------------------
+// Novčanik: troškovi i prihodi (samo admin, zasebni API /api/wallet)
+// ---------------------------------------------------------------------------
+var WALLET_API_URL = 'api/wallet';
+var WALLET_CATEGORIES = {
+    trosak: [
+        ['sadnice', '🌱 Sadnice i sjeme'],
+        ['zastita', '🧴 Zaštita (sredstva)'],
+        ['gnojivo', '🌿 Gnojivo / kompost'],
+        ['alat', '🛠️ Alat i oprema'],
+        ['voda', '💧 Voda'],
+        ['rad', '👷 Rad i usluge'],
+        ['ostalo', '📦 Ostalo']
+    ],
+    prihod: [
+        ['voce', '🍎 Prodaja voća'],
+        ['povrce', '🥕 Prodaja povrća'],
+        ['preradevine', '🍯 Prerađevine (sok, rakija, pekmez)'],
+        ['poticaji', '🏛️ Poticaji'],
+        ['ostalo', '📦 Ostalo']
+    ]
+};
+var walletModal = document.getElementById('wallet-modal');
+var walletEntries = null;
+var walletYear = new Date().getFullYear();
+
+function formatEur(n) {
+    return Number(n || 0).toLocaleString('hr-HR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+}
+
+function walletCategoryLabel(kind, cat) {
+    var list = WALLET_CATEGORIES[kind] || [];
+    var found = list.find(function (c) { return c[0] === cat; });
+    return found ? found[1] : '📦 ' + (cat || 'Ostalo');
+}
+
+function walletRequest(method, body) {
+    return fetch(WALLET_API_URL, {
+        method: method,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+        cache: 'no-store'
+    }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (data) {
+            if (!r.ok) throw new Error(data.error || 'HTTP ' + r.status);
+            return data;
+        });
+    });
+}
+
+function fillWalletCategories() {
+    var kind = (document.querySelector('input[name="wallet-kind"]:checked') || {}).value || 'trosak';
+    var sel = document.getElementById('wallet-category');
+    sel.innerHTML = WALLET_CATEGORIES[kind].map(function (c) {
+        return '<option value="' + c[0] + '">' + c[1] + '</option>';
+    }).join('');
+}
+
+function renderWallet() {
+    document.getElementById('wallet-year').textContent = String(walletYear);
+    var listEl = document.getElementById('wallet-list');
+    var sumEl = document.getElementById('wallet-summary');
+    var brEl = document.getElementById('wallet-breakdown');
+    if (!walletEntries) {
+        listEl.innerHTML = '<li class="pp-muted">Učitavanje…</li>';
+        sumEl.innerHTML = '';
+        brEl.innerHTML = '';
+        return;
+    }
+    var entries = walletEntries.filter(function (e) { return String(e.date).slice(0, 4) === String(walletYear); });
+    var income = 0;
+    var cost = 0;
+    var byCat = {};
+    entries.forEach(function (e) {
+        if (e.kind === 'prihod') income += e.amount; else cost += e.amount;
+        var k = e.kind + '|' + e.category;
+        byCat[k] = (byCat[k] || 0) + e.amount;
+    });
+    var balance = income - cost;
+    sumEl.innerHTML =
+        '<div class="ws-card income"><span>Prihodi</span><b>' + formatEur(income) + '</b></div>' +
+        '<div class="ws-card cost"><span>Troškovi</span><b>' + formatEur(cost) + '</b></div>' +
+        '<div class="ws-card ' + (balance >= 0 ? 'profit' : 'loss') + '"><span>' + (balance >= 0 ? 'Dobit' : 'Gubitak') + '</span><b>' +
+        (balance >= 0 ? '+' : '−') + formatEur(Math.abs(balance)) + '</b></div>';
+
+    var keys = Object.keys(byCat).sort(function (a, b) { return byCat[b] - byCat[a]; });
+    var max = keys.reduce(function (mx, k) { return Math.max(mx, byCat[k]); }, 0);
+    brEl.innerHTML = keys.length ? '<h4 class="pp-h">Po kategorijama</h4><ul class="wallet-bars">' + keys.map(function (k) {
+        var parts = k.split('|');
+        return '<li><span class="wb-label">' + escapeHtml(walletCategoryLabel(parts[0], parts[1])) + '</span>' +
+            '<span class="wb-bar"><i class="' + parts[0] + '" style="width:' + Math.max(3, Math.round(byCat[k] / max * 100)) + '%"></i></span>' +
+            '<span class="wb-val ' + parts[0] + '">' + (parts[0] === 'prihod' ? '+' : '−') + formatEur(byCat[k]) + '</span></li>';
+    }).join('') + '</ul>' : '';
+
+    if (!entries.length) {
+        listEl.innerHTML = '<li class="pp-muted">Za ' + walletYear + '. još nema zapisa.</li>';
+        return;
+    }
+    listEl.innerHTML = entries.map(function (e) {
+        return '<li class="' + e.kind + '"><div class="wl-main"><div><b>' + escapeHtml(walletCategoryLabel(e.kind, e.category)) + '</b> <small>' +
+            escapeHtml(formatHrDate(e.date)) + '</small></div>' + (e.note ? '<div class="pp-log-text">' + escapeHtml(e.note) + '</div>' : '') + '</div>' +
+            '<span class="wl-amount ' + e.kind + '">' + (e.kind === 'prihod' ? '+' : '−') + formatEur(e.amount) + '</span>' +
+            '<button type="button" class="pp-x" data-act="wallet-del" data-id="' + escapeHtml(e.id) + '" title="Obriši">✕</button></li>';
+    }).join('');
+}
+
+function loadWallet() {
+    walletEntries = null;
+    renderWallet();
+    return walletRequest('GET').then(function (data) {
+        walletEntries = data.entries || [];
+        renderWallet();
+    }).catch(function (error) {
+        document.getElementById('wallet-list').innerHTML = '<li class="pp-muted">⚠️ ' + escapeHtml(error.message) + '</li>';
+    });
+}
+
+function openWallet() {
+    if (!walletModal || !isAdminUser) return;
+    setMenuOpen(false);
+    walletYear = new Date().getFullYear();
+    document.getElementById('wallet-date').value = todayIso();
+    fillWalletCategories();
+    walletModal.classList.remove('hidden');
+    loadWallet();
+}
+
+function closeWallet() {
+    if (walletModal) walletModal.classList.add('hidden');
+}
+
+if (walletModal) {
+    document.getElementById('open-wallet').addEventListener('click', openWallet);
+    document.getElementById('close-wallet').addEventListener('click', closeWallet);
+    walletModal.addEventListener('click', function (event) { if (event.target === walletModal) closeWallet(); });
+    document.getElementById('wallet-prev').addEventListener('click', function () { walletYear--; renderWallet(); });
+    document.getElementById('wallet-next').addEventListener('click', function () { walletYear++; renderWallet(); });
+    document.querySelectorAll('input[name="wallet-kind"]').forEach(function (r) { r.addEventListener('change', fillWalletCategories); });
+
+    document.getElementById('wallet-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var errEl = document.getElementById('wallet-error');
+        errEl.classList.add('hidden');
+        var amount = Number(document.getElementById('wallet-amount').value);
+        if (!isFinite(amount) || amount <= 0) {
+            errEl.textContent = 'Upiši iznos veći od 0.';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        var entry = {
+            id: 'w-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+            date: document.getElementById('wallet-date').value || todayIso(),
+            kind: document.querySelector('input[name="wallet-kind"]:checked').value,
+            amount: amount,
+            category: document.getElementById('wallet-category').value,
+            note: document.getElementById('wallet-note').value.trim()
+        };
+        var submitBtn = event.target.querySelector('button[type=submit]');
+        submitBtn.disabled = true;
+        walletRequest('POST', { action: 'add', entry: entry }).then(function (data) {
+            walletEntries = [data.entry].concat(walletEntries || []).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+            walletYear = Number(String(entry.date).slice(0, 4));
+            document.getElementById('wallet-amount').value = '';
+            document.getElementById('wallet-note').value = '';
+            renderWallet();
+        }).catch(function (error) {
+            errEl.textContent = 'Spremanje nije uspjelo: ' + error.message;
+            errEl.classList.remove('hidden');
+        }).then(function () { submitBtn.disabled = false; });
+    });
+
+    document.getElementById('wallet-list').addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-act="wallet-del"]');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        askConfirm('Obrisati zapis?', 'Zapis će biti trajno obrisan iz novčanika.', 'Obriši').then(function (ok) {
+            if (!ok) return;
+            walletRequest('POST', { action: 'delete', id: id }).then(function () {
+                walletEntries = (walletEntries || []).filter(function (e) { return e.id !== id; });
+                renderWallet();
+            }).catch(function (error) { alert('Brisanje nije uspjelo: ' + error.message); });
+        });
+    });
+}

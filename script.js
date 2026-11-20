@@ -4586,8 +4586,8 @@ function renderWallet() {
     });
     var balance = income - cost;
     sumEl.innerHTML =
-        '<div class="ws-card income"><span>Prihodi</span><b>' + formatEur(income) + '</b></div>' +
         '<div class="ws-card cost"><span>Troškovi</span><b>' + formatEur(cost) + '</b></div>' +
+        '<div class="ws-card income"><span>Prihodi</span><b>' + formatEur(income) + '</b></div>' +
         '<div class="ws-card ' + (balance >= 0 ? 'profit' : 'loss') + '"><span>' + (balance >= 0 ? 'Dobit' : 'Gubitak') + '</span><b>' +
         (balance >= 0 ? '+' : '−') + formatEur(Math.abs(balance)) + '</b></div>';
     var after = balance + plannedIncome - plannedCost;

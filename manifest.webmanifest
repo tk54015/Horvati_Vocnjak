@@ -1,0 +1,18 @@
+{
+  "name": "Horvati voćnjak",
+  "short_name": "Voćnjak",
+  "description": "Karta voćnjaka, podaci o biljkama, raspored radova i prognoza.",
+  "lang": "hr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#e6f4dc",
+  "theme_color": "#4f8f4f",
+  "icons": [
+    { "src": "/icons/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/app/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

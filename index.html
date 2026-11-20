@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventar Stabala</title>
+    <title>Horvati voćnjak</title>
+    <meta name="description" content="Karta voćnjaka, podaci o biljkama, raspored radova i prognoza.">
+    <meta name="theme-color" content="#4f8f4f">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/app/tree.svg" type="image/svg+xml">
+    <link rel="icon" href="icons/app/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="icons/app/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261120g">
+    <link rel="stylesheet" href="style.css?v=20261120h">
 </head>
 <body>
     <div id="map"></div>
@@ -67,6 +76,7 @@
       <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
       <button id="open-encyclopedia" type="button" class="menu-view">📖 Enciklopedija</button>
       <button id="open-tasks" type="button" class="menu-view">🗓️ Raspored radova</button>
+      <button id="install-app" type="button" class="menu-view hidden">📲 Instaliraj aplikaciju</button>
       <div class="admin-only menu-admin">
         <button id="open-add-tree" type="button" class="menu-view">➕🌳 Dodaj stablo</button>
         <button id="toggle-drag" type="button" class="menu-view" aria-pressed="false">✋ Premjesti stablo</button>
@@ -264,6 +274,10 @@
       <span id="placement-hint-text">Klikni na kartu gdje želiš postaviti stablo</span>
       <button id="cancel-placement" type="button">Odustani (Esc)</button>
     </div>
+    <div id="offline-banner" class="hidden" role="status">
+      <span id="offline-text">📴 Offline: prikazani su zadnji spremljeni podaci, uređivanje nije moguće.</span>
+      <button id="offline-reload" type="button" class="hidden">Osvježi</button>
+    </div>
     <div id="cursor-tree" class="hidden" aria-hidden="true"></div>
 
     <div id="changes-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Izmjene podataka">
@@ -299,6 +313,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261120g"></script>
+    <script src="script.js?v=20261120h"></script>
 </body>
 </html>

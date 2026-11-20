@@ -233,11 +233,18 @@ document.addEventListener('visibilitychange', function () {
 });
 
 // Vraća stanje sa servera, ili null ako server ne postoji (stari način rada).
+var isOfflineData = false; // podaci su iz spremnika na uređaju (nema interneta)
+
 function fetchServerState() {
     return fetch(STATE_API_URL, { cache: 'no-store' })
-        .catch(function () { return null; })
+        .catch(function () {
+            // Bez interneta i bez spremljenih podataka: ne prelazi na stari lokalni način rada.
+            if (navigator.onLine === false) throw new Error('Nema interneta, a podaci još nisu spremljeni na ovaj uređaj.');
+            return null;
+        })
         .then(function (response) {
             if (!response) return null;
+            if (response.headers.get('X-Offline-Cache')) isOfflineData = true;
             if (response.status === 401) {
                 window.location.reload();
                 throw new Error('Nisi prijavljen');
@@ -1617,7 +1624,14 @@ function loadInventory() {
             storageMode = 'server';
             var loginPanel = document.getElementById('login-panel');
             if (loginPanel) loginPanel.classList.remove('hidden');
-            setAdminMode(results[1]);
+            if (isOfflineData) {
+                // Offline: samo pregled, da se izmjene ne izgube
+                if (loginPanel) loginPanel.classList.add('hidden');
+                setAdminMode(false);
+                showOfflineBanner();
+            } else {
+                setAdminMode(results[1]);
+            }
 
             return ensureServerSeeded(state).then(function (seededState) {
                 applyServerState(seededState);
@@ -3215,6 +3229,84 @@ if (tasksModal) {
             setTaskState(key, { status: 'skipped', at: at });
         } else if (act === 'undo') {
             setTaskState(key, null);
+        }
+    });
+}
+
+// ---------------------------------------------------------------------------
+// PWA: service worker, instalacija aplikacije, offline prikaz
+// ---------------------------------------------------------------------------
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function () { return navigator.serviceWorker.ready; })
+            .then(function () {
+                // Unaprijed dohvati enciklopediju i raspored, da rade i bez interneta.
+                if (navigator.onLine === false) return;
+                setTimeout(function () {
+                    loadEncyclopedia().catch(function () {});
+                    loadTasks().catch(function () {});
+                }, 2000);
+            })
+            .catch(function (error) {
+                console.error('Service worker nije registriran:', error);
+            });
+    });
+}
+
+function showOfflineBanner() {
+    var banner = document.getElementById('offline-banner');
+    if (banner) banner.classList.remove('hidden');
+}
+
+window.addEventListener('online', function () {
+    if (!isOfflineData) return;
+    var text = document.getElementById('offline-text');
+    var reload = document.getElementById('offline-reload');
+    if (text) text.textContent = '📶 Opet si online.';
+    if (reload) reload.classList.remove('hidden');
+});
+
+var offlineReloadBtn = document.getElementById('offline-reload');
+if (offlineReloadBtn) {
+    offlineReloadBtn.addEventListener('click', function () { window.location.reload(); });
+}
+
+var deferredInstallPrompt = null;
+var installAppBtn = document.getElementById('install-app');
+var isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+// Android / Chrome / Edge: preglednik javi da se aplikacija može instalirati
+window.addEventListener('beforeinstallprompt', function (event) {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    if (installAppBtn) installAppBtn.classList.remove('hidden');
+});
+
+window.addEventListener('appinstalled', function () {
+    deferredInstallPrompt = null;
+    if (installAppBtn) installAppBtn.classList.add('hidden');
+});
+
+// iPhone / iPad nema automatski prozor za instalaciju: prikaži upute
+if (installAppBtn && isIos && !isStandalone) {
+    installAppBtn.classList.remove('hidden');
+}
+
+if (installAppBtn) {
+    installAppBtn.addEventListener('click', function () {
+        setMenuOpen(false);
+        if (deferredInstallPrompt) {
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then(function () {
+                deferredInstallPrompt = null;
+                installAppBtn.classList.add('hidden');
+            });
+            return;
+        }
+        if (isIos) {
+            alert('Instalacija na iPhone/iPad:\n\n1. Otvori stranicu u Safariju\n2. Dodirni gumb Dijeli (kvadrat sa strelicom)\n3. Odaberi "Dodaj na početni zaslon"');
         }
     });
 }

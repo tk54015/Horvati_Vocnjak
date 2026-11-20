@@ -1,0 +1,54 @@
+name: Tjedni backup podataka
+
+on:
+  schedule:
+    # Svake nedjelje u 03:00 UTC (04:00 zimi / 05:00 ljeti po našem vremenu).
+    # Ne preklapa se s ažuriranjem vremena (0, 6, 12, 18 h UTC).
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzmi repozitorij
+        uses: actions/checkout@v4
+
+      - name: Preuzmi stanje iz aplikacije
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 3 --retry-delay 10 https://horvati-vocnjak.vercel.app/api/state -o /tmp/stanje.json
+          # Provjera da je odgovor ispravan i nije prazan, prije nego išta spremimo
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/stanje.json'))
+          assert d.get('seeded') is True, 'baza nije inicijalizirana'
+          assert len(d['stabla']['items']) > 0, 'nema stabala u odgovoru'
+          print('stabla:', len(d['stabla']['items']), '| loza:', len(d['loza']['items']),
+                '| dodana:', len(d['userItems']), '| zadaci:', len(d.get('taskDone', {})))
+          PY
+
+      - name: Spremi backup (čuva se zadnjih 12 tjedana)
+        run: |
+          set -euo pipefail
+          mkdir -p data/backup
+          DATE=$(date -u +%Y-%m-%d)
+          python3 -m json.tool --indent 1 /tmp/stanje.json > "data/backup/stanje-$DATE.json"
+          # Starije od zadnjih 12 obriši (ostaju u git povijesti)
+          ls -1 data/backup/stanje-*.json | sort | head -n -12 | xargs -r rm -f --
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/backup
+          if git diff --cached --quiet; then
+            echo "Nema promjena."
+            exit 0
+          fi
+          git commit -m "Tjedni backup podataka"
+          git pull --rebase origin main
+          git push

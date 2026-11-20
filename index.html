@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261123e">
+    <link rel="stylesheet" href="style.css?v=20261123g">
 </head>
 <body>
     <div id="map"></div>
@@ -83,6 +83,7 @@
       <div class="admin-only menu-admin">
         <button id="open-add-tree" type="button" class="menu-view">➕🌳 Dodaj stablo</button>
         <button id="toggle-drag" type="button" class="menu-view" aria-pressed="false">✋ Premjesti stablo</button>
+        <button id="open-add-bed" type="button" class="menu-view">🥕 Dodaj gredicu</button>
       </div>
       <!-- Sakriveno: prikaz zalijevanja, backup i uvoz izmjena -->
       <div class="hidden">
@@ -214,6 +215,43 @@
           <div class="pp-footer">
             <small>📍 <span id="plant-coords">-</span></small>
             <button id="delete-tree" type="button" class="admin-only">🗑️ Izbriši stablo</button>
+          </div>
+        </div>
+        <div id="bed-form" class="hidden">
+          <header class="pp-head">
+            <div class="pp-icon bed-icon" aria-hidden="true"><span>🟫</span></div>
+            <div class="pp-title">
+              <h2 id="bed-name">-</h2>
+              <div class="pp-sub" id="bed-size"></div>
+            </div>
+          </header>
+          <h4 class="pp-h">🌱 Ove godine (<span id="bed-year"></span>)</h4>
+          <ul id="bed-plantings" class="pp-log"></ul>
+          <form id="bed-plant-form" class="pp-form admin-only" autocomplete="off">
+            <div class="pp-form-row">
+              <select id="bed-veg" aria-label="Povrće"></select>
+              <input id="bed-date" type="date" aria-label="Datum sadnje">
+            </div>
+            <div class="pp-form-row">
+              <select id="bed-amount-kind" aria-label="Koliko">
+                <option value="cijela">Cijela gredica</option>
+                <option value="redovi">Broj redova</option>
+                <option value="dio">Dio gredice (m)</option>
+              </select>
+              <input id="bed-amount" type="number" min="0" step="0.5" inputmode="decimal" placeholder="koliko" class="hidden" aria-label="Iznos">
+            </div>
+            <div id="bed-veg-info" class="bed-veg-info"></div>
+            <div id="bed-warning" class="bed-warning hidden" role="alert"></div>
+            <div class="pp-form-row">
+              <input id="bed-note" type="text" maxlength="200" placeholder="Sorta / napomena">
+              <button type="submit" class="btn-primary">Dodaj</button>
+            </div>
+          </form>
+          <h4 class="pp-h">🕘 Prijašnje godine (plodored)</h4>
+          <ul id="bed-history" class="pp-harvest"></ul>
+          <div class="pp-footer admin-only">
+            <button type="button" class="pp-act" data-act="bed-move">📍 Premjesti</button>
+            <button type="button" class="bed-del" data-act="bed-delete">🗑️ Izbriši gredicu</button>
           </div>
         </div>
       </div>
@@ -417,6 +455,34 @@
       </div>
     </div>
 
+    <div id="add-bed-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="add-bed-title">
+      <form id="add-bed-form" class="add-tree-card" novalidate>
+        <div class="add-tree-header">
+          <b id="add-bed-title">🥕 Nova gredica</b>
+          <button id="close-add-bed" type="button" title="Zatvori">x</button>
+        </div>
+        <div class="add-tree-body">
+          <label for="bed-new-name">Naziv</label>
+          <input id="bed-new-name" type="text" maxlength="60">
+          <div class="ct-row">
+            <label>Širina (m)<input id="bed-new-width" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="npr. 1"></label>
+            <label>Dužina (m)<input id="bed-new-length" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="npr. 5"></label>
+          </div>
+          <label for="bed-new-dir">Dužina ide u smjeru</label>
+          <select id="bed-new-dir">
+            <option value="ns">Sjever – jug (okomito na karti)</option>
+            <option value="ew">Istok – zapad (vodoravno na karti)</option>
+          </select>
+          <p class="pp-muted">Gredica se crta u stvarnom mjerilu (izračunato iz GPS koordinata parcele).</p>
+          <div id="add-bed-error" class="add-tree-error hidden" role="alert"></div>
+        </div>
+        <div class="add-tree-footer">
+          <button id="cancel-add-bed" type="button" class="btn-secondary">Odustani</button>
+          <button type="submit" class="btn-primary">🟫 Postavi na kartu</button>
+        </div>
+      </form>
+    </div>
+
     <div id="placement-hint" class="hidden" role="status">
       <span id="placement-hint-text">Klikni na kartu gdje želiš postaviti stablo</span>
       <button id="cancel-placement" type="button">Odustani (Esc)</button>
@@ -465,6 +531,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261123e"></script>
+    <script src="script.js?v=20261123g"></script>
 </body>
 </html>

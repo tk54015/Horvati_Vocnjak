@@ -55,7 +55,7 @@ var selectedPlant = null;
 // ---------------------------------------------------------------------------
 var STATE_API_URL = 'api/state';
 var storageMode = 'local'; // 'server' kad je API dostupan
-var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {}, ttask: {}, ctask: {} };
+var syncSnapshot = { user: {}, note: {}, details: {}, position: {}, deleted: {}, task: {}, log: {}, harvest: {}, ttask: {}, ctask: {}, bed: {} };
 var customTasks = {}; // vlastiti zadaci: id -> { id, naslov, opis, mjeseci, godina?, prioritet, kategorija, vrste }
 var tasksBaseZadaci = null;
 var treeTaskStates = {}; // stanje zadatka po stablu: id -> { ključZadatka: { status: 'postponed'|'skipped', to?, from? } }
@@ -326,6 +326,7 @@ function applyServerState(state) {
     plantHarvests = asPlainObject(state.plantHarvests);
     treeTaskStates = asPlainObject(state.treeTaskStates);
     customTasks = asPlainObject(state.customTasks);
+    beds = asPlainObject(state.beds);
     serverUserItemsRaw = Array.isArray(state.userItems) ? state.userItems : [];
 
     syncSnapshot = {
@@ -338,7 +339,8 @@ function applyServerState(state) {
         log: buildSnapshotFromMap(plantLogs),
         harvest: buildSnapshotFromMap(plantHarvests),
         ttask: buildSnapshotFromMap(treeTaskStates),
-        ctask: buildSnapshotFromMap(customTasks)
+        ctask: buildSnapshotFromMap(customTasks),
+        bed: buildSnapshotFromMap(beds)
     };
     pendingChanges = {};
 }
@@ -1414,6 +1416,8 @@ function openPlantPanel(item, isUserItem) {
     var formEl = document.getElementById('plant-form');
     if (emptyEl) emptyEl.classList.add('hidden');
     if (formEl) formEl.classList.remove('hidden');
+    if (typeof selectedBedId !== 'undefined' && selectedBedId) closeBedPanel();
+    if (emptyEl) emptyEl.classList.add('hidden');
 
     document.getElementById('plant-id').textContent = item.id || '-';
     document.getElementById('plant-height').textContent = formatMeters(item.heightM);
@@ -1703,6 +1707,7 @@ function loadInventory() {
                 renderChangeList();
                 if (!hasUnsavedChanges()) setSyncStatus('ok');
                 loadTasks().then(scheduleMapRefresh).catch(function () {});
+                loadVegetables().then(renderBeds).catch(renderBeds);
             });
         })
         .catch(function (error) {
@@ -5231,7 +5236,8 @@ function demoMaps() {
         plantLogs: plantLogs,
         plantHarvests: plantHarvests,
         treeTaskStates: treeTaskStates,
-        customTasks: customTasks
+        customTasks: customTasks,
+        beds: beds
     };
 }
 
@@ -5346,4 +5352,368 @@ window.addEventListener('pagehide', function () {
         clearTimeout(demoSaveTimer);
         try { localStorage.setItem(DEMO_STATE_KEY, JSON.stringify(demoMaps())); } catch (e) { /* ništa */ }
     }
+});
+
+// ---------------------------------------------------------------------------
+// Gredice i povrće
+// Mjerilo karte izračunato iz stvarnih GPS koordinata parcele (kml_source/Horvati_sluzbeno.kml):
+// karta nije zarotirana, ali je rastegnuta – 1 jedinica istok–zapad = 0,0725 m, sjever–jug = 0,1039 m.
+// ---------------------------------------------------------------------------
+var METERS_PER_LNG = 0.072519;
+var METERS_PER_LAT = 0.103927;
+var VEG_FAMILY = {
+    rajcica: 'pomoćnice', paprika: 'pomoćnice', patlidzan: 'pomoćnice', krumpir: 'pomoćnice',
+    krastavac: 'tikvenjače', tikvica: 'tikvenjače', bundeva: 'tikvenjače', lubenica: 'tikvenjače',
+    kupus: 'kupusnjače', rotkvica: 'kupusnjače',
+    luk: 'lukovi', cesnjak: 'lukovi', poriluk: 'lukovi',
+    mrkva: 'štitarke', persin: 'štitarke',
+    grah: 'mahunarke', grasak: 'mahunarke',
+    cikla: 'lobode', blitva: 'lobode', spinat: 'lobode',
+    salata: 'glavočike', kukuruz: 'trave'
+};
+var beds = {}; // id -> { id, naziv, lat, lng, sirina, duzina, smjer: 'ns'|'ew', napomena, sadnje: [...] }
+var bedLayers = {}; // id -> { rect, label }
+var bedLayerGroup = L.layerGroup().addTo(map);
+var selectedBedId = null;
+var bedPlacement = null; // { mode: 'new'|'move', bed }
+var bedPreview = null;
+
+function bedSpan(bed) {
+    var ew = bed.smjer === 'ew' ? bed.duzina : bed.sirina; // istok–zapad u metrima
+    var ns = bed.smjer === 'ew' ? bed.sirina : bed.duzina; // sjever–jug u metrima
+    return { lng: ew / METERS_PER_LNG, lat: ns / METERS_PER_LAT };
+}
+
+function bedBounds(bed, lat, lng) {
+    var span = bedSpan(bed);
+    var cLat = lat !== undefined ? lat : bed.lat;
+    var cLng = lng !== undefined ? lng : bed.lng;
+    return [[cLat - span.lat / 2, cLng - span.lng / 2], [cLat + span.lat / 2, cLng + span.lng / 2]];
+}
+
+function vegById(id) {
+    return vegData ? vegData.vrste.find(function (v) { return v.id === id; }) : null;
+}
+
+function bedYearPlantings(bed, year) {
+    return (bed.sadnje || []).filter(function (s) { return String(s.datum || '').slice(0, 4) === String(year); });
+}
+
+function fmtMeters(n) {
+    return String(Math.round(Number(n) * 100) / 100).replace('.', ',');
+}
+
+function bedLabelHtml(bed) {
+    var year = new Date().getFullYear();
+    var emojis = [];
+    bedYearPlantings(bed, year).forEach(function (s) {
+        var v = vegById(s.povrce);
+        var e = v ? v.emoji : '🌱';
+        if (emojis.indexOf(e) === -1) emojis.push(e);
+    });
+    return '<div class="bed-label' + (bed.id === selectedBedId ? ' selected' : '') + '">' +
+        (emojis.length ? '<span class="bed-emojis">' + emojis.slice(0, 4).join('') + '</span>' : '') +
+        '<span class="bed-name">' + escapeHtml(bed.naziv) + '</span></div>';
+}
+
+function drawBed(bed) {
+    var old = bedLayers[bed.id];
+    if (old) { bedLayerGroup.removeLayer(old.rect); bedLayerGroup.removeLayer(old.label); }
+    var rect = L.rectangle(bedBounds(bed), {
+        color: bed.id === selectedBedId ? '#1e88e5' : '#4e2f12',
+        weight: bed.id === selectedBedId ? 3 : 1.5,
+        fillColor: '#8b5a2b',
+        fillOpacity: 0.55,
+        bubblingMouseEvents: false
+    });
+    rect.on('click', function () { openBedPanel(bed.id); });
+    var span = bedSpan(bed);
+    var label = L.marker([bed.lat + span.lat / 2, bed.lng], { // natpis iznad gredice, da je ne prekriva
+        icon: L.divIcon({ className: 'bed-label-wrap', html: bedLabelHtml(bed), iconSize: null }),
+        zIndexOffset: -500,
+        keyboard: false
+    });
+    label.on('click', function () { openBedPanel(bed.id); });
+    rect.addTo(bedLayerGroup);
+    label.addTo(bedLayerGroup);
+    bedLayers[bed.id] = { rect: rect, label: label };
+}
+
+function renderBeds() {
+    bedLayerGroup.clearLayers();
+    bedLayers = {};
+    Object.keys(beds).forEach(function (id) { drawBed(beds[id]); });
+}
+
+function saveBeds() {
+    if (storageMode === 'server') queueServerSync('bed', beds);
+}
+
+function nextBedName() {
+    var n = Object.keys(beds).length + 1;
+    var names = Object.keys(beds).map(function (id) { return beds[id].naziv; });
+    while (names.indexOf('Gredica ' + n) !== -1) n++;
+    return 'Gredica ' + n;
+}
+
+// ----- dodavanje i premještanje gredice ---------------------------------------
+var addBedModal = document.getElementById('add-bed-modal');
+
+function openAddBedModal() {
+    if (!canEdit() || !addBedModal) return;
+    setMenuOpen(false);
+    setPlacementEnabled(false);
+    setDragEnabled(false);
+    document.getElementById('add-bed-form').reset();
+    document.getElementById('bed-new-name').value = nextBedName();
+    document.getElementById('add-bed-error').classList.add('hidden');
+    addBedModal.classList.remove('hidden');
+    document.getElementById('bed-new-width').focus();
+}
+
+function closeAddBedModal() {
+    if (addBedModal) addBedModal.classList.add('hidden');
+}
+
+function startBedPlacement(mode, bed) {
+    bedPlacement = { mode: mode, bed: bed };
+    document.body.classList.add('placing-tree');
+    var hint = document.getElementById('placement-hint');
+    var hintText = document.getElementById('placement-hint-text');
+    if (hintText) hintText.textContent = '🟫 ' + (mode === 'move' ? 'Klikni novo mjesto za: ' : 'Klikni na kartu gdje je: ') + bed.naziv +
+        ' (' + fmtMeters(bed.sirina) + ' × ' + fmtMeters(bed.duzina) + ' m)';
+    if (hint) hint.classList.remove('hidden');
+    if (bedPreview) map.removeLayer(bedPreview);
+    bedPreview = L.rectangle(bedBounds(bed, -9999, -9999), { color: '#1e88e5', weight: 2, dashArray: '4 4', fillColor: '#8b5a2b', fillOpacity: 0.35, interactive: false }).addTo(map);
+}
+
+function stopBedPlacement() {
+    if (!bedPlacement) return;
+    bedPlacement = null;
+    if (bedPreview) { map.removeLayer(bedPreview); bedPreview = null; }
+    document.body.classList.remove('placing-tree');
+    var hint = document.getElementById('placement-hint');
+    if (hint && !placementEnabled) hint.classList.add('hidden');
+}
+
+map.on('mousemove', function (e) {
+    if (!bedPlacement || !bedPreview) return;
+    bedPreview.setBounds(bedBounds(bedPlacement.bed, e.latlng.lat, e.latlng.lng));
+});
+
+map.on('click', function (e) {
+    if (bedPlacement) {
+        var bed = bedPlacement.bed;
+        bed.lat = e.latlng.lat;
+        bed.lng = e.latlng.lng;
+        beds[bed.id] = bed;
+        stopBedPlacement();
+        saveBeds();
+        drawBed(bed);
+        openBedPanel(bed.id);
+        return;
+    }
+    if (selectedBedId) closeBedPanel();
+});
+
+if (addBedModal) {
+    document.getElementById('open-add-bed').addEventListener('click', openAddBedModal);
+    document.getElementById('close-add-bed').addEventListener('click', closeAddBedModal);
+    document.getElementById('cancel-add-bed').addEventListener('click', closeAddBedModal);
+    addBedModal.addEventListener('click', function (event) { if (event.target === addBedModal) closeAddBedModal(); });
+    document.getElementById('add-bed-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var w = Number(String(document.getElementById('bed-new-width').value).replace(',', '.'));
+        var l = Number(String(document.getElementById('bed-new-length').value).replace(',', '.'));
+        var errEl = document.getElementById('add-bed-error');
+        if (!(w > 0 && w <= 50) || !(l > 0 && l <= 100)) {
+            errEl.textContent = 'Upiši širinu i dužinu u metrima (npr. 1 i 5).';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        var bed = {
+            id: 'bed-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+            naziv: document.getElementById('bed-new-name').value.trim() || nextBedName(),
+            sirina: w,
+            duzina: l,
+            smjer: document.getElementById('bed-new-dir').value,
+            napomena: '',
+            sadnje: [],
+            at: new Date().toISOString()
+        };
+        closeAddBedModal();
+        startBedPlacement('new', bed);
+    });
+}
+
+// ----- panel gredice ----------------------------------------------------------
+var bedFormEl = document.getElementById('bed-form');
+
+function openBedPanel(id) {
+    var bed = beds[id];
+    if (!bed || !bedFormEl) return;
+    if (selectedPlant) closePlantPanelSelection();
+    var prev = selectedBedId;
+    selectedBedId = id;
+    if (prev && beds[prev]) drawBed(beds[prev]);
+    drawBed(bed);
+    if (plantPanelEl && plantPanelEl.classList.contains('minimized')) togglePlantPanelBtn.click();
+    document.getElementById('plant-empty').classList.add('hidden');
+    document.getElementById('plant-form').classList.add('hidden');
+    bedFormEl.classList.remove('hidden');
+    var dateEl = document.getElementById('bed-date');
+    if (dateEl && !dateEl.value) dateEl.value = todayIso();
+    loadVegetables().then(function () { renderBedPanel(); }).catch(function () { renderBedPanel(); });
+}
+
+function closeBedPanel() {
+    var prev = selectedBedId;
+    selectedBedId = null;
+    if (prev && beds[prev]) drawBed(beds[prev]);
+    if (bedFormEl) bedFormEl.classList.add('hidden');
+    if (!selectedPlant) document.getElementById('plant-empty').classList.remove('hidden');
+}
+
+function plantingText(s) {
+    var v = vegById(s.povrce);
+    var amount = s.kolicina === 'redovi' && s.iznos ? s.iznos + (Number(s.iznos) === 1 ? ' red' : (Number(s.iznos) < 5 ? ' reda' : ' redova'))
+        : s.kolicina === 'dio' && s.iznos ? fmtMeters(s.iznos) + ' m gredice'
+        : 'cijela gredica';
+    return { emoji: v ? v.emoji : '🌱', naziv: v ? v.naziv : s.povrce, amount: amount };
+}
+
+function rotationWarning(bed, vegId, year) {
+    var fam = VEG_FAMILY[vegId];
+    if (!fam) return '';
+    var hits = (bed.sadnje || []).filter(function (s) {
+        var y = Number(String(s.datum || '').slice(0, 4));
+        return VEG_FAMILY[s.povrce] === fam && y < year && y >= year - 3;
+    });
+    if (!hits.length) return '';
+    var h = hits.sort(function (a, b) { return String(b.datum).localeCompare(String(a.datum)); })[0];
+    var v = vegById(h.povrce);
+    return '⚠️ Plodored: ' + (v ? v.naziv : h.povrce) + ' je ovdje bio ' + String(h.datum).slice(0, 4) + '. – ista porodica (' + fam +
+        '). Preporuka je 3–4 godine razmaka.';
+}
+
+function updateBedVegInfo() {
+    var bed = beds[selectedBedId];
+    var sel = document.getElementById('bed-veg');
+    var info = document.getElementById('bed-veg-info');
+    var warn = document.getElementById('bed-warning');
+    if (!bed || !sel || !info) return;
+    var v = vegById(sel.value);
+    var month = function (arr) { return (arr || []).length ? arr.map(function (m) { return MONTH_NAMES[m - 1].slice(0, 3).toLowerCase(); }).join(', ') : '–'; };
+    info.innerHTML = v ? (v.unutra && v.unutra.length ? '🟦 Presadnice: ' + month(v.unutra) + ' · ' : '') + '🟩 Sadnja: ' + month(v.sadnja) + ' · 🟨 Berba: ' + month(v.berba) : '';
+    var year = Number(String(document.getElementById('bed-date').value || todayIso()).slice(0, 4));
+    var w = rotationWarning(bed, sel.value, year);
+    warn.textContent = w;
+    warn.classList.toggle('hidden', !w);
+    var amountKind = document.getElementById('bed-amount-kind').value;
+    document.getElementById('bed-amount').classList.toggle('hidden', amountKind === 'cijela');
+}
+
+function renderBedPanel() {
+    var bed = beds[selectedBedId];
+    if (!bed) return;
+    var editable = canEdit();
+    document.getElementById('bed-name').textContent = bed.naziv;
+    var area = bed.sirina * bed.duzina;
+    document.getElementById('bed-size').textContent = fmtMeters(bed.sirina) + ' × ' + fmtMeters(bed.duzina) + ' m · ' + fmtMeters(area) + ' m² · dužina ' + (bed.smjer === 'ew' ? 'istok–zapad' : 'sjever–jug');
+    var year = new Date().getFullYear();
+    document.getElementById('bed-year').textContent = String(year);
+
+    var current = bedYearPlantings(bed, year).sort(function (a, b) { return String(a.datum).localeCompare(String(b.datum)); });
+    var ul = document.getElementById('bed-plantings');
+    ul.innerHTML = current.length ? current.map(function (s) {
+        var t = plantingText(s);
+        return '<li><span class="pp-log-icon">' + t.emoji + '</span><div class="pp-log-main"><div><b>' + escapeHtml(t.naziv) + '</b> <small>' +
+            escapeHtml(t.amount) + ' · ' + escapeHtml(formatHrDate(s.datum)) + '</small></div>' +
+            (s.napomena ? '<div class="pp-log-text">' + escapeHtml(s.napomena) + '</div>' : '') + '</div>' +
+            (editable ? '<button type="button" class="pp-x" data-act="bed-plant-del" data-id="' + escapeHtml(s.id) + '" title="Obriši">✕</button>' : '') + '</li>';
+    }).join('') : '<li class="pp-muted">Ove godine još ništa nije posađeno.</li>';
+
+    var older = (bed.sadnje || []).filter(function (s) { return String(s.datum || '').slice(0, 4) < String(year); });
+    var byYear = {};
+    older.forEach(function (s) { (byYear[String(s.datum).slice(0, 4)] = byYear[String(s.datum).slice(0, 4)] || []).push(s); });
+    var years = Object.keys(byYear).sort().reverse();
+    document.getElementById('bed-history').innerHTML = years.length ? years.map(function (y) {
+        return '<li><b class="pp-year">' + y + '</b><span>' + byYear[y].map(function (s) {
+            var t = plantingText(s);
+            return t.emoji + ' ' + escapeHtml(t.naziv) + ' <small>(' + escapeHtml(t.amount) + ')</small>';
+        }).join(', ') + '</span></li>';
+    }).join('') : '<li class="pp-muted">Nema zapisa iz prijašnjih godina.</li>';
+
+    var sel = document.getElementById('bed-veg');
+    if (sel && vegData && sel.options.length < 2) {
+        sel.innerHTML = sortByName(vegData.vrste).map(function (v) {
+            return '<option value="' + escapeHtml(v.id) + '">' + escapeHtml(v.emoji + ' ' + v.naziv) + '</option>';
+        }).join('');
+    }
+    updateBedVegInfo();
+}
+
+if (bedFormEl) {
+    ['bed-veg', 'bed-date', 'bed-amount-kind'].forEach(function (id) {
+        document.getElementById(id).addEventListener('change', updateBedVegInfo);
+    });
+    document.getElementById('bed-plant-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var bed = beds[selectedBedId];
+        if (!bed || !canEdit()) return;
+        var kind = document.getElementById('bed-amount-kind').value;
+        var amount = Number(String(document.getElementById('bed-amount').value).replace(',', '.'));
+        if (kind !== 'cijela' && !(amount > 0)) {
+            alert(kind === 'redovi' ? 'Upiši broj redova.' : 'Upiši koliko metara gredice.');
+            return;
+        }
+        bed.sadnje = (bed.sadnje || []).concat([{
+            id: 's-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+            povrce: document.getElementById('bed-veg').value,
+            datum: document.getElementById('bed-date').value || todayIso(),
+            kolicina: kind,
+            iznos: kind === 'cijela' ? null : amount,
+            napomena: document.getElementById('bed-note').value.trim()
+        }]);
+        document.getElementById('bed-note').value = '';
+        document.getElementById('bed-amount').value = '';
+        saveBeds();
+        drawBed(bed);
+        renderBedPanel();
+    });
+    bedFormEl.addEventListener('click', function (event) {
+        var btn = event.target.closest('[data-act]');
+        if (!btn) return;
+        var bed = beds[selectedBedId];
+        if (!bed || !canEdit()) return;
+        var act = btn.getAttribute('data-act');
+        if (act === 'bed-plant-del') {
+            var sid = btn.getAttribute('data-id');
+            askConfirm('Obrisati sadnju?', 'Zapis će biti uklonjen iz gredice.', 'Obriši').then(function (ok) {
+                if (!ok) return;
+                bed.sadnje = (bed.sadnje || []).filter(function (s) { return s.id !== sid; });
+                saveBeds();
+                drawBed(bed);
+                renderBedPanel();
+            });
+        } else if (act === 'bed-move') {
+            startBedPlacement('move', bed);
+        } else if (act === 'bed-delete') {
+            askConfirm('Izbrisati gredicu?', 'Izbrisati "' + bed.naziv + '" zajedno s povijesti sadnje?', '🗑️ Izbriši').then(function (ok) {
+                if (!ok) return;
+                var layers = bedLayers[bed.id];
+                if (layers) { bedLayerGroup.removeLayer(layers.rect); bedLayerGroup.removeLayer(layers.label); }
+                delete bedLayers[bed.id];
+                delete beds[bed.id];
+                saveBeds();
+                closeBedPanel();
+            });
+        }
+    });
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    stopBedPlacement();
+    closeAddBedModal();
 });

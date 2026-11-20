@@ -726,6 +726,70 @@
       "berba": "Rujan–listopad, kad zelena ljuska pukne i orasi počnu padati. Skupljati redovito i odmah sušiti na prozračnom mjestu."
     },
     {
+      "id": "kivi",
+      "naziv": "Kivi",
+      "latinski": "Actinidia deliciosa / Actinidia arguta",
+      "emoji": "🥝",
+      "opis": "Bujna listopadna penjačica kojoj treba čvrsta konstrukcija (pergola ili T-nosači sa žicom). Većina sorti je dvodomna: za plodove trebaju ženske biljke i barem jedna muška kao oprašivač (orijentacijski 1 muška na 6–8 ženskih, u blizini); postoje i samooplodne sorte. Krupni kivi (A. deliciosa) osjetljiv je na kasne proljetne mrazeve (mladi izboji) i jake zimske mrazeve, pa traži toplo, zaštićeno mjesto. Mini kivi (A. arguta) puno je otporniji na hladnoću, a sitni plodovi jedu se s korom. Rod počinje obično 3–5 godina nakon sadnje.",
+      "voda": "Visoka potreba ljeti: veliki listovi i plitko korijenje, pa u suši brzo vene. Malčirati i redovito zalijevati u ljetnim sušama, posebno mlade biljke. Istodobno ne podnosi zadržavanje vode oko korijena (trulež korijena). Na glinastom tlu voda se dugo zadržava: prije zalijevanja provjeriti vlagu na 10–20 cm i ne prelijevati.",
+      "orezivanje": {
+        "kada": "Zimska rezidba u mirovanju (siječanj–veljača), prije kretanja sokova, jer kasnije jako curi sok. Ljetna rezidba lipanj–kolovoz. Muške biljke orezati odmah nakon cvatnje.",
+        "kako": "Plodovi rastu na ovogodišnjim izbojima koji izbijaju iz prošlogodišnjeg drva. Zimi na kordonima ostaviti dobro razvijene jednogodišnje rodne izboje (orijentacijski skraćene na 8–12 pupova), a izboje koji su već rodili ukloniti ili zamijeniti novima. Ljeti rodne izboje prikratiti nekoliko listova iza zadnjeg ploda i uklanjati prebujne, isprepletene izboje da krošnja ostane prozračna."
+      },
+      "gnojidba": "Voli tlo bogato organskom tvari, blago kiselo. Osnova je kompost ili zreli stajski gnoj u proljeće; mineralno gnojivo samo ako biljka slabo raste ili lišće žuti (na vapnenastom tlu moguća je kloroza).",
+      "bolesti": [
+        {
+          "naziv": "Bakterijski rak kivija",
+          "opis": "Smeđe pjege sa žutim rubom na listu, sušenje izboja i cvjetova, a na kori rane iz kojih curi crvenkasti ili bjelkasti iscjedak. Ozbiljna bolest: sumnju prijaviti savjetodavnoj službi, zaražene dijelove izrezati po suhom vremenu i dezinficirati alat."
+        },
+        {
+          "naziv": "Trulež korijena",
+          "opis": "Biljka vene i žuti unatoč vlažnom tlu. Nastaje na teškom, mokrom tlu bez odvodnje; sprječava se sadnjom na ocjedito mjesto ili blago povišenu gredicu."
+        },
+        {
+          "naziv": "Siva plijesan",
+          "opis": "Trulež cvjetova i plodova u kišnom vremenu i kasnije u skladištu. Pomaže prozračna krošnja i čuvanje samo zdravih plodova."
+        }
+      ],
+      "stetnici": [
+        {
+          "naziv": "Mramorasta stjenica",
+          "opis": "Sisanjem oštećuje plodove (udubljenja i plutasta mjesta ispod kore). Pratiti od ljeta, ručno uklanjati."
+        },
+        {
+          "naziv": "Štitaste uši",
+          "opis": "Povremeno na granama; manje kolonije ostrugati."
+        },
+        {
+          "naziv": "Mačke",
+          "opis": "Mlade biljke kivija privlače mačke koje grizu i grebu izboje i koru; mlade sadnice zaštititi mrežom."
+        }
+      ],
+      "zastita": [
+        {
+          "kada": "Mirovanje",
+          "sto": "Zimska rezidba; pregledati koru na rane i iscjedak (bakterijski rak), alat dezinficirati."
+        },
+        {
+          "kada": "Kretanje vegetacije (travanj–svibanj)",
+          "sto": "Mlade izboje zaštititi agrotekstilom kad je najavljen kasni mraz."
+        },
+        {
+          "kada": "Proljeće",
+          "sto": "Bakreni tretman samo ako je bilo pjega i rak-rana od bakterijskog raka."
+        },
+        {
+          "kada": "Ljeto",
+          "sto": "Redovito zalijevanje u suši, ljetna rezidba, pregled plodova na stjenice."
+        },
+        {
+          "kada": "Kasna jesen",
+          "sto": "Deblo mladih biljaka omotati (zaštita od mraza)."
+        }
+      ],
+      "berba": "Krupni kivi: listopad–studeni, prije jačih mrazeva. Bere se još tvrd kad sjemenke potamne, a dozrijeva u skladištu (brže uz jabuke). Mini kivi: rujan–listopad, kad plodovi omekšaju, i jedu se odmah."
+    },
+    {
       "id": "ostalo",
       "naziv": "Ostalo (stablo, grm…)",
       "latinski": "",

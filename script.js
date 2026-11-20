@@ -450,6 +450,7 @@ function getTypeWithEmoji(typeOrItem) {
         ribizl: '🍓',
         dud2: '🌳',
         vinova_loza: '🍇',
+        kivi: '🥝',
         ostalo: '🌳'
     };
     return type + (emojis[type] ? ' ' + emojis[type] : '');
@@ -483,6 +484,7 @@ function getEmojiForType(item) {
         ribizl: '🍓',
         dud2: '🌳',
         vinova_loza: '🍇',
+        kivi: '🥝',
         ostalo: '🌳'
     };
     return emojis[type] || '🌿';
@@ -498,6 +500,8 @@ var ALWAYS_VISIBLE_VINE_IDS = {
     vinova_loza218: true
 };
 var FULL_ICON_SIZE = 30;
+// Vrste koje se na karti prikazuju emojijem dok nemaju vlastitu sliku u icons/
+var EMOJI_MARKERS = { ostalo: '🌳', kivi: '🥝' };
 var VINE_DOT_SIZE = 4;
 var VINE_DOT_HIT_MULTIPLIER = 4;
 var AVG_YIELD_KG_BY_TYPE = {
@@ -514,6 +518,7 @@ var AVG_YIELD_KG_BY_TYPE = {
     ribizl: 3.5,
     vinova_loza: 1.5,
     dud2: 15,
+    kivi: 30,
     _default: 10
 };
 
@@ -531,6 +536,7 @@ var REFERENCE_YIELD_BY_TYPE = {
     ribizl: { adultHeightM: 1.5, minKg: 3, maxKg: 4 },
     kupina: { adultHeightM: 2.0, minKg: 2, maxKg: 6 },
     vinova_loza: { adultHeightM: 2.0, minKg: 2, maxKg: 8 },
+    kivi: { adultHeightM: 2.5, minKg: 20, maxKg: 50 },
     dud2: { adultHeightM: 6.0, minKg: 10, maxKg: 20 }
 };
 
@@ -566,6 +572,7 @@ var WATER_NEED_LEVEL = {
     visnja: 3,
     ribizl: 2,
     vinova_loza: 2,
+    kivi: 4,
     _default: 2
 };
 
@@ -585,6 +592,7 @@ function normalizeType(typeText) {
         .replace(/č/g, 'c')
         .replace(/ć/g, 'c')
         .replace(/ž/g, 'z');
+    if (t.indexOf('kivi') !== -1 || t.indexOf('kiwi') !== -1) return 'kivi';
     if (t.indexOf('jabuk') !== -1) return 'jabuka';
     if (t.indexOf('ribiz') !== -1) return 'ribizl';
     if (t.indexOf('kru') !== -1) return 'kruska';
@@ -855,11 +863,12 @@ function buildMarkerIcon(item, isUserItem) {
         return buildWaterIcon(item);
     }
 
-    if (normalizedType === 'ostalo') {
-        // Ostalo (stablo, grm...): obični emoji stabla
+    var markerEmoji = EMOJI_MARKERS[normalizedType];
+    if (markerEmoji && !iconByType(item.treeType)) {
+        // Vrste bez vlastite slike: emoji (Ostalo = stablo, Kivi = kivi)
         return L.divIcon({
             className: 'emoji-marker',
-            html: '<span>🌳</span>',
+            html: '<span>' + markerEmoji + '</span>',
             iconSize: [FULL_ICON_SIZE, FULL_ICON_SIZE],
             iconAnchor: [Math.round(FULL_ICON_SIZE / 2), FULL_ICON_SIZE],
             popupAnchor: [0, -FULL_ICON_SIZE]
@@ -2682,7 +2691,7 @@ var encyclopediaSelectedId = null;
 function loadEncyclopedia() {
     if (encyclopediaData) return Promise.resolve(encyclopediaData);
     if (!encyclopediaLoading) {
-        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261120g')
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261121a')
             .then(function (data) {
                 encyclopediaData = data;
                 return data;
@@ -2875,7 +2884,7 @@ function seasonName(month) {
 function loadTasks() {
     if (tasksData) return Promise.resolve(tasksData);
     if (!tasksLoading) {
-        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120g'), loadEncyclopedia().catch(function () { return null; })])
+        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261121a'), loadEncyclopedia().catch(function () { return null; })])
             .then(function (results) {
                 tasksData = results[0];
                 return tasksData;

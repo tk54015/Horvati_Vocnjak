@@ -8,7 +8,7 @@ const enc = JSON.parse(fs.readFileSync(path.join(root, 'data/enciklopedija.json'
 const ras = JSON.parse(fs.readFileSync(path.join(root, 'data/raspored.json'), 'utf8'));
 
 const MONTHS = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
-const WATER = { jabuka: 3, kruska: 3, breskva: 4, smokva: 1, kupina: 3, glog: 1, dunja: 2, sljiva: 3, tresnja: 3, visnja: 3, ribizl: 2, vinova_loza: 2 };
+const WATER = { jabuka: 3, kruska: 3, breskva: 4, smokva: 1, kupina: 3, glog: 1, dunja: 2, sljiva: 3, tresnja: 3, visnja: 3, ribizl: 2, vinova_loza: 2, kivi: 4 };
 const names = Object.fromEntries(enc.vrste.map(v => [v.id, v.naziv]));
 const L = [];
 

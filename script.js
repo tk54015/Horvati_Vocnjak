@@ -2730,7 +2730,7 @@ var encyclopediaSelectedId = null;
 function loadEncyclopedia() {
     if (encyclopediaData) return Promise.resolve(encyclopediaData);
     if (!encyclopediaLoading) {
-        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261123a')
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261123c')
             .then(function (data) {
                 encyclopediaData = data;
                 return data;
@@ -2774,7 +2774,8 @@ function renderEncyclopediaList() {
     if (encyclopediaMode === 'povrce') { renderVegList(); return; }
     if (!encyclopediaData || !encyclopediaListEl) return;
     var counts = countTreesByType();
-    encyclopediaListEl.innerHTML = sortedFruitEntries().map(function (entry) {
+    var sprayActive = encyclopediaSelectedId === SPRAY_PAGE_ID;
+    encyclopediaListEl.innerHTML = '<button type="button" class="enc-item enc-special' + (sprayActive ? ' active' : '') + '" data-id="' + SPRAY_PAGE_ID + '"' + (sprayActive ? ' aria-current="true"' : '') + '><span class="enc-emoji" style="font-size:18px">🧴</span><span class="enc-item-name">Špricanje i pripravci</span></button>' + sortedFruitEntries().map(function (entry) {
         var count = counts[entry.id] || 0;
         var active = entry.id === encyclopediaSelectedId;
         return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
@@ -2801,6 +2802,7 @@ function listHtml(items, icon) {
 function renderEncyclopediaArticle() {
     if (encyclopediaMode === 'povrce') { renderVegArticle(); return; }
     if (!encyclopediaData || !encyclopediaArticleEl) return;
+    if (encyclopediaSelectedId === SPRAY_PAGE_ID) { renderSprayPage(); return; }
     var entry = encyclopediaData.vrste.find(function (v) { return v.id === encyclopediaSelectedId; });
     if (!entry) {
         encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Odaberi vrstu s popisa.</p>';
@@ -2867,7 +2869,7 @@ function openEncyclopedia(typeId) {
     loadEncyclopedia()
         .then(function (data) {
             var wanted = typeId ? normalizeType(typeId) : encyclopediaSelectedId;
-            var exists = data.vrste.some(function (v) { return v.id === wanted; });
+            var exists = wanted === SPRAY_PAGE_ID || data.vrste.some(function (v) { return v.id === wanted; });
             selectEncyclopediaEntry(exists ? wanted : sortedFruitEntries()[0].id);
             var active = encyclopediaListEl && encyclopediaListEl.querySelector('.enc-item.active');
             if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
@@ -4749,4 +4751,101 @@ function sortedFruitEntries() {
     var list = sortByName(encyclopediaData ? encyclopediaData.vrste : []);
     var other = list.filter(function (v) { return v.id === 'ostalo'; });
     return list.filter(function (v) { return v.id !== 'ostalo'; }).concat(other);
+}
+
+// ---------------------------------------------------------------------------
+// Enciklopedija: "Špricanje i pripravci" – koji pripravci trebaju za vrste u voćnjaku
+// ---------------------------------------------------------------------------
+var SPRAY_PAGE_ID = 'spricanje';
+
+function sprayProblems() {
+    // Svi problemi vrsta koje su na karti (ako je karta prazna: sve vrste)
+    var counts = countTreesByType();
+    var species = encyclopediaData.vrste.filter(function (v) { return v.id !== 'ostalo' && counts[v.id] > 0; });
+    if (!species.length) species = encyclopediaData.vrste.filter(function (v) { return v.id !== 'ostalo'; });
+    var list = [];
+    species.forEach(function (v) {
+        (v.bolesti || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'bolesti' }); });
+        (v.stetnici || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'stetnici' }); });
+    });
+    return { species: species, problems: list.filter(function (p) { return p.problem.naziv !== 'Rijetko'; }) };
+}
+
+function matchesPrep(prep, p) {
+    var text = (p.problem.rjesenje || '');
+    if (!new RegExp(prep.kljuc, 'i').test(text)) return false;
+    if (prep.iskljuci && new RegExp(prep.iskljuci, 'i').test(text)) return false;
+    if (prep.tip === 'bolesti' && p.tip !== 'bolesti' && prep.id !== 'bakar' && prep.id !== 'sumpor') return false;
+    if (prep.tip === 'stetnici' && p.tip !== 'stetnici') return false;
+    return true;
+}
+
+function renderSprayPage() {
+    var cfg = encyclopediaData.meta && encyclopediaData.meta.pripravci;
+    if (!cfg) {
+        encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Nema podataka o pripravcima.</p>';
+        return;
+    }
+    var data = sprayProblems();
+    var total = data.problems.length;
+    var sprayRe = new RegExp(cfg.prskanjeKljuc, 'i');
+    var noSpray = data.problems.filter(function (p) { return !sprayRe.test(p.problem.rjesenje || ''); });
+
+    var preps = cfg.popis.map(function (prep) {
+        var hits = data.problems.filter(function (p) { return matchesPrep(prep, p); });
+        return { prep: prep, hits: hits };
+    });
+    var basic = preps.filter(function (x) { return x.prep.osnovni; });
+    var basicHits = data.problems.filter(function (p) { return basic.some(function (x) { return x.hits.indexOf(p) !== -1; }); }).length;
+
+    var pct = function (n) { return total ? Math.round(n / total * 100) : 0; };
+    var html = '<header class="enc-head"><span class="enc-emoji" style="font-size:38px">🧴</span>' +
+        '<div><h2>Špricanje i pripravci</h2><div class="enc-onmap">Za ' + data.species.length + ' vrsta u tvom voćnjaku · ' + total + ' mogućih problema</div></div></header>';
+
+    html += '<div class="spray-summary">' +
+        '<div class="spray-big"><b>' + basic.length + '</b><span>osnovna pripravka</span></div>' +
+        '<div class="spray-big"><b>' + pct(basicHits) + ' %</b><span>problema pokrivaju bakar, ulje i sumpor (' + basicHits + ' od ' + total + ')</span></div>' +
+        '<div class="spray-big ok"><b>' + pct(noSpray.length) + ' %</b><span>problema rješava se bez prskanja (' + noSpray.length + ')</span></div>' +
+        '</div>';
+    html += '<p class="spray-intro">' + escapeHtml(cfg.uvod) + '</p>';
+
+    preps.forEach(function (x) {
+        var prep = x.prep;
+        // grupiraj pogođene probleme po vrsti
+        var bySpecies = {};
+        x.hits.forEach(function (p) {
+            (bySpecies[p.species.id] = bySpecies[p.species.id] || { species: p.species, names: [] }).names.push(p.problem.naziv);
+        });
+        var groups = Object.keys(bySpecies).map(function (k) { return bySpecies[k]; })
+            .sort(function (a, b) { return a.species.naziv.localeCompare(b.species.naziv, 'hr'); });
+        html += '<section class="spray-card' + (prep.osnovni ? ' basic' : '') + '">' +
+            '<div class="spray-head"><span class="spray-emoji">' + prep.emoji + '</span><div><h3>' + escapeHtml(prep.naziv) +
+            (prep.osnovni ? ' <span class="task-badge first">osnovni</span>' : ' <span class="task-badge cond">po potrebi</span>') + '</h3>' +
+            (prep.id !== 'pomagala' || x.hits.length
+                ? '<div class="spray-cover"><span class="spray-bar"><i style="width:' + Math.max(2, pct(x.hits.length)) + '%"></i></span>' +
+                  (prep.id === 'pomagala' ? 'koristi se kod ' : 'pomaže kod ') + x.hits.length + ' od ' + total + ' problema (' + pct(x.hits.length) + ' %)</div>'
+                : '') +
+            '</div></div>' +
+            '<div class="enc-problem-row"><span class="enc-tag see">Što je</span><p>' + escapeHtml(prep.stoJe) + '</p></div>' +
+            '<div class="enc-problem-row"><span class="enc-tag fix">Kada</span><p>' + escapeHtml(prep.kada) + '</p></div>' +
+            '<div class="enc-problem-row"><span class="enc-tag warn">Pazi</span><p>' + escapeHtml(prep.pazi) + '</p></div>' +
+            (groups.length
+                ? '<details class="spray-list"><summary>Kod kojih problema (' + x.hits.length + ')</summary><ul>' + groups.map(function (g) {
+                    return '<li>' + encyclopediaIconHtml(g.species, 16) + ' <b>' + escapeHtml(g.species.naziv) + ':</b> ' + escapeHtml(g.names.join(', ')) + '</li>';
+                }).join('') + '</ul></details>'
+                : '') +
+            '</section>';
+    });
+
+    if (noSpray.length) {
+        html += '<section class="spray-card ok"><div class="spray-head"><span class="spray-emoji">✂️</span><div><h3>Bez prskanja</h3>' +
+            '<div class="spray-cover">rezidba, čišćenje lišća i mumija, ručno uklanjanje, dobar uzgoj</div></div></div>' +
+            '<details class="spray-list"><summary>Problemi koji se rješavaju bez pripravaka (' + noSpray.length + ')</summary><ul>' +
+            noSpray.map(function (p) {
+                return '<li>' + encyclopediaIconHtml(p.species, 16) + ' <b>' + escapeHtml(p.species.naziv) + ':</b> ' + escapeHtml(p.problem.naziv) + '</li>';
+            }).join('') + '</ul></details></section>';
+    }
+
+    encyclopediaArticleEl.innerHTML = html;
+    encyclopediaArticleEl.scrollTop = 0;
 }

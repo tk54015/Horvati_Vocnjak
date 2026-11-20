@@ -1918,3 +1918,149 @@ body.placing-tree .leaflet-container {
         animation: none;
     }
 }
+
+/* ---------- Enciklopedija: kartice Voće / Povrće ---------- */
+:root {
+    --veg-unutra: #cfe6fb;
+    --veg-sadnja: #bfe8b8;
+    --veg-berba: #fff0a6;
+    --veg-now: #1e88e5;
+}
+
+.enc-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 8px 14px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.enc-tab {
+    padding: 7px 14px;
+    border: 1px solid #ddd;
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    background: #f4f4f4;
+    color: #444;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+.enc-tab.active {
+    background: #fff;
+    color: #2f5d2f;
+    border-color: #ddd;
+    border-bottom: 1px solid #fff;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------- Kalendar povrća ---------- */
+.veg-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 8px 0 10px;
+    font-size: 12px;
+    color: #444;
+}
+
+.veg-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.veg-legend i {
+    display: inline-block;
+    width: 16px;
+    height: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+}
+
+.veg-legend i.now-swatch {
+    background: #fff;
+    border: 2px solid var(--veg-now);
+}
+
+.veg-table-wrap {
+    overflow-x: auto;
+    margin: 4px 0 8px;
+}
+
+.veg-table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    width: 100%;
+    font-size: 11px;
+}
+
+.veg-table th {
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    padding: 2px 0;
+    min-width: 30px;
+}
+
+.veg-table thead th.now {
+    color: var(--veg-now);
+}
+
+.veg-table .veg-name-col {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+    text-align: left;
+    white-space: nowrap;
+    padding-right: 6px;
+    min-width: 0;
+}
+
+.veg-cell {
+    height: 22px;
+    min-width: 30px;
+    border-radius: 4px;
+    background: #f3f3f3;
+}
+
+.veg-table-one .veg-cell {
+    height: 30px;
+}
+
+.veg-cell.now {
+    box-shadow: inset 0 0 0 2px var(--veg-now);
+}
+
+.veg-link {
+    border: 0;
+    background: transparent;
+    padding: 2px 0;
+    font: inherit;
+    font-size: 12px;
+    color: #234;
+    cursor: pointer;
+    text-align: left;
+}
+
+.veg-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .veg-table th,
+    .veg-cell {
+        min-width: 26px;
+    }
+}

@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261121b">
+    <link rel="stylesheet" href="style.css?v=20261121c">
 </head>
 <body>
     <div id="map"></div>
@@ -231,6 +231,10 @@
           <b id="encyclopedia-title">📖 Enciklopedija</b>
           <button id="close-encyclopedia" type="button" title="Zatvori">x</button>
         </div>
+        <div class="enc-tabs" role="tablist" aria-label="Vrsta">
+          <button type="button" class="enc-tab active" role="tab" aria-selected="true" data-mode="voce">🍎 Voće</button>
+          <button type="button" class="enc-tab" role="tab" aria-selected="false" data-mode="povrce">🥕 Povrće</button>
+        </div>
         <div class="encyclopedia-body">
           <nav id="encyclopedia-list" aria-label="Vrste"></nav>
           <article id="encyclopedia-article" tabindex="-1">
@@ -314,6 +318,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261121b"></script>
+    <script src="script.js?v=20261121f"></script>
 </body>
 </html>

@@ -2743,6 +2743,7 @@ function waterDropsHtml(typeId) {
 }
 
 function renderEncyclopediaList() {
+    if (encyclopediaMode === 'povrce') { renderVegList(); return; }
     if (!encyclopediaData || !encyclopediaListEl) return;
     var counts = countTreesByType();
     encyclopediaListEl.innerHTML = encyclopediaData.vrste.map(function (entry) {
@@ -2765,6 +2766,7 @@ function listHtml(items) {
 }
 
 function renderEncyclopediaArticle() {
+    if (encyclopediaMode === 'povrce') { renderVegArticle(); return; }
     if (!encyclopediaData || !encyclopediaArticleEl) return;
     var entry = encyclopediaData.vrste.find(function (v) { return v.id === encyclopediaSelectedId; });
     if (!entry) {
@@ -2814,7 +2816,8 @@ function renderEncyclopediaArticle() {
 }
 
 function selectEncyclopediaEntry(id) {
-    encyclopediaSelectedId = id;
+    if (encyclopediaMode === 'povrce') vegSelectedId = id;
+    else encyclopediaSelectedId = id;
     renderEncyclopediaList();
     renderEncyclopediaArticle();
 }
@@ -2822,6 +2825,9 @@ function selectEncyclopediaEntry(id) {
 function openEncyclopedia(typeId) {
     if (!encyclopediaModal) return;
     encyclopediaModal.classList.remove('hidden');
+    // S određenom vrstom (npr. "O vrsti") uvijek kartica Voće; inače zadnja korištena kartica.
+    if (typeId || encyclopediaMode === 'voce') setEncyclopediaMode('voce');
+    else { setEncyclopediaMode('povrce'); return; }
     if (encyclopediaArticleEl && !encyclopediaData) {
         encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Učitavanje...</p>';
     }
@@ -3266,6 +3272,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
                 setTimeout(function () {
                     loadEncyclopedia().catch(function () {});
                     loadTasks().catch(function () {});
+                    loadVegetables().catch(function () {});
                 }, 2000);
             })
             .catch(function (error) {
@@ -3356,4 +3363,162 @@ function highlightSelectedMarker() {
     if (el) el.classList.add('marker-selected');
     marker.setZIndexOffset(1000); // ispred susjednih ikona
     highlightedMarkerId = wantedId;
+}
+
+// ---------------------------------------------------------------------------
+// Enciklopedija: kartica "Povrće" (podaci u data/povrce.json)
+// Kalendar: plavo = sjetva u zatvorenom, zeleno = sadnja/sjetva vani, žuto = berba
+// ---------------------------------------------------------------------------
+var encyclopediaMode = 'voce'; // 'voce' | 'povrce'
+var vegData = null;
+var vegLoading = null;
+var vegSelectedId = 'kalendar';
+var MONTH_ABBR = ['Sij', 'Vel', 'Ožu', 'Tra', 'Svi', 'Lip', 'Srp', 'Kol', 'Ruj', 'Lis', 'Stu', 'Pro'];
+var VEG_COLORS = { unutra: 'var(--veg-unutra)', sadnja: 'var(--veg-sadnja)', berba: 'var(--veg-berba)' };
+
+function loadVegetables() {
+    if (vegData) return Promise.resolve(vegData);
+    if (!vegLoading) {
+        vegLoading = fetchJsonFile('data/povrce.json?v=20261121f')
+            .then(function (data) {
+                vegData = data;
+                return data;
+            })
+            .catch(function (error) {
+                vegLoading = null;
+                throw error;
+            });
+    }
+    return vegLoading;
+}
+
+function vegCellHtml(entry, month) {
+    var kinds = ['unutra', 'sadnja', 'berba'].filter(function (k) {
+        return (entry[k] || []).indexOf(month) !== -1;
+    });
+    var style = '';
+    if (kinds.length === 1) {
+        style = 'background:' + VEG_COLORS[kinds[0]];
+    } else if (kinds.length > 1) {
+        // Više stvari u istom mjesecu: dijagonalno podijeljena ćelija
+        var step = 100 / kinds.length;
+        style = 'background:linear-gradient(135deg,' + kinds.map(function (k, i) {
+            return VEG_COLORS[k] + ' ' + (i * step) + '%,' + VEG_COLORS[k] + ' ' + ((i + 1) * step) + '%';
+        }).join(',') + ')';
+    }
+    var legend = vegData.meta.legenda;
+    var title = MONTH_NAMES[month - 1] + (kinds.length ? ': ' + kinds.map(function (k) { return legend[k]; }).join(', ') : '');
+    var isNow = month === new Date().getMonth() + 1;
+    return '<td class="veg-cell' + (isNow ? ' now' : '') + '" style="' + style + '" title="' + escapeHtml(title) + '">' +
+        '<span class="sr-only">' + escapeHtml(kinds.map(function (k) { return legend[k]; }).join(', ')) + '</span></td>';
+}
+
+function vegMonthHeaderHtml(firstCol) {
+    var nowMonth = new Date().getMonth() + 1;
+    return '<thead><tr>' + (firstCol ? '<th scope="col" class="veg-name-col">' + firstCol + '</th>' : '') +
+        MONTH_ABBR.map(function (m, i) {
+            return '<th scope="col"' + (i + 1 === nowMonth ? ' class="now"' : '') + '>' + m + '</th>';
+        }).join('') + '</tr></thead>';
+}
+
+function vegLegendHtml() {
+    var l = vegData.meta.legenda;
+    return '<div class="veg-legend">' +
+        '<span><i style="background:' + VEG_COLORS.unutra + '"></i>' + escapeHtml(l.unutra) + '</span>' +
+        '<span><i style="background:' + VEG_COLORS.sadnja + '"></i>' + escapeHtml(l.sadnja) + '</span>' +
+        '<span><i style="background:' + VEG_COLORS.berba + '"></i>' + escapeHtml(l.berba) + '</span>' +
+        '<span><i class="now-swatch"></i>Ovaj mjesec</span>' +
+        '</div>';
+}
+
+function renderVegList() {
+    if (!vegData || !encyclopediaListEl) return;
+    var items = [{ id: 'kalendar', naziv: 'Kalendar (sve)', emoji: '📅' }].concat(vegData.vrste);
+    encyclopediaListEl.innerHTML = items.map(function (entry) {
+        var active = entry.id === vegSelectedId;
+        return '<button type="button" class="enc-item' + (active ? ' active' : '') + '" data-id="' + escapeHtml(entry.id) + '"' +
+            (active ? ' aria-current="true"' : '') + '>' +
+            '<span class="enc-emoji" style="font-size:18px">' + escapeHtml(entry.emoji) + '</span>' +
+            '<span class="enc-item-name">' + escapeHtml(entry.naziv) + '</span></button>';
+    }).join('');
+}
+
+function renderVegArticle() {
+    if (!vegData || !encyclopediaArticleEl) return;
+    var html = '';
+
+    if (vegSelectedId === 'kalendar') {
+        html += '<header class="enc-head"><span class="enc-emoji" style="font-size:36px">📅</span>' +
+            '<div><h2>Kalendar sjetve i berbe</h2><div class="enc-onmap">Klikni povrće za detalje</div></div></header>';
+        html += vegLegendHtml();
+        html += '<div class="veg-table-wrap"><table class="veg-table veg-table-all">' + vegMonthHeaderHtml('Povrće') + '<tbody>' +
+            vegData.vrste.map(function (v) {
+                return '<tr><th scope="row" class="veg-name-col"><button type="button" class="veg-link" data-id="' + escapeHtml(v.id) + '">' +
+                    escapeHtml(v.emoji) + ' ' + escapeHtml(v.naziv) + '</button></th>' +
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(function (m) { return vegCellHtml(v, m); }).join('') + '</tr>';
+            }).join('') + '</tbody></table></div>';
+    } else {
+        var v = vegData.vrste.find(function (x) { return x.id === vegSelectedId; });
+        if (!v) {
+            encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Odaberi povrće s popisa.</p>';
+            return;
+        }
+        html += '<header class="enc-head"><span class="enc-emoji" style="font-size:40px">' + escapeHtml(v.emoji) + '</span>' +
+            '<div><h2>' + escapeHtml(v.naziv) + '</h2>' +
+            (v.latinski ? '<i class="enc-latin">' + escapeHtml(v.latinski) + '</i>' : '') + '</div></header>';
+        html += '<div class="veg-table-wrap"><table class="veg-table veg-table-one">' + vegMonthHeaderHtml('') + '<tbody><tr>' +
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(function (m) { return vegCellHtml(v, m); }).join('') +
+            '</tr></tbody></table></div>';
+        html += vegLegendHtml();
+        html += '<p>' + escapeHtml(v.opis) + '</p>';
+        html += '<section><h3>🌱 Sjetva / sadnja</h3><p>' + escapeHtml(v.sjetva) + '</p></section>';
+        html += '<section><h3>☀️ Položaj</h3><p>' + escapeHtml(v.polozaj) + '</p></section>';
+        html += '<section><h3>💧 Voda</h3><p>' + escapeHtml(v.voda) + '</p></section>';
+        html += '<section><h3>🧑‍🌾 Njega</h3><p>' + escapeHtml(v.njega) + '</p></section>';
+        html += '<section><h3>🐛 Česti problemi</h3><p>' + escapeHtml(v.problemi) + '</p></section>';
+        if (v.dobriSusjedi || v.losiSusjedi) {
+            html += '<section><h3>🤝 Susjedi u vrtu</h3>' +
+                (v.dobriSusjedi ? '<p><b>Dobro uz:</b> ' + escapeHtml(v.dobriSusjedi) + '</p>' : '') +
+                (v.losiSusjedi ? '<p><b>Ne saditi uz:</b> ' + escapeHtml(v.losiSusjedi) + '</p>' : '') + '</section>';
+        }
+        html += '<section><h3>🧺 Berba</h3><p>' + escapeHtml(v.berbaOpis) + '</p></section>';
+    }
+
+    if (vegData.meta.napomena) html += '<p class="enc-note">ℹ️ ' + escapeHtml(vegData.meta.napomena) + '</p>';
+    encyclopediaArticleEl.innerHTML = html;
+    encyclopediaArticleEl.scrollTop = 0;
+}
+
+function setEncyclopediaMode(mode) {
+    encyclopediaMode = mode === 'povrce' ? 'povrce' : 'voce';
+    document.querySelectorAll('.enc-tab').forEach(function (tab) {
+        var on = tab.getAttribute('data-mode') === encyclopediaMode;
+        tab.classList.toggle('active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    var card = document.querySelector('.encyclopedia-card');
+    if (card) card.classList.toggle('mode-povrce', encyclopediaMode === 'povrce');
+    var loader = encyclopediaMode === 'povrce' ? loadVegetables() : loadEncyclopedia();
+    if (encyclopediaArticleEl && !(encyclopediaMode === 'povrce' ? vegData : encyclopediaData)) {
+        encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Učitavanje...</p>';
+    }
+    return loader.then(function (data) {
+        if (encyclopediaMode === 'voce' && !encyclopediaSelectedId) encyclopediaSelectedId = data.vrste[0].id;
+        renderEncyclopediaList();
+        renderEncyclopediaArticle();
+    }).catch(function (error) {
+        console.error(error);
+        if (encyclopediaArticleEl) encyclopediaArticleEl.innerHTML = '<p class="encyclopedia-empty">Ne mogu učitati podatke.</p>';
+    });
+}
+
+document.querySelectorAll('.enc-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () { setEncyclopediaMode(tab.getAttribute('data-mode')); });
+});
+
+if (encyclopediaArticleEl) {
+    encyclopediaArticleEl.addEventListener('click', function (event) {
+        var link = event.target.closest('.veg-link');
+        if (link) selectEncyclopediaEntry(link.getAttribute('data-id'));
+    });
 }

@@ -13,7 +13,7 @@ const names = Object.fromEntries(enc.vrste.map(v => [v.id, v.naziv]));
 const L = [];
 
 L.push('# Horvati voćnjak – sadržaj za provjeru', '');
-L.push('Ovo je sav stručni sadržaj aplikacije: **enciklopedija vrsta** i **raspored radova po mjesecima**.');
+L.push('Ovo je sav stručni sadržaj aplikacije: **enciklopedija voća**, **raspored radova po mjesecima** i **povrće s kalendarom sjetve i berbe**.');
 L.push('Voćnjak je hobi voćnjak u kontinentalnoj Hrvatskoj (okolica Zagreba), gnoji se uglavnom kompostom.', '');
 L.push('## Prijedlog upute za provjeru', '');
 L.push('> Provjeri stručnu točnost ovog sadržaja za hobi voćnjak u kontinentalnoj Hrvatskoj (okolica Zagreba). ' +
@@ -61,6 +61,20 @@ for (let m = 1; m <= 12; m++) {
   });
   L.push('');
 }
+
+// Dio 3 – povrće
+const pov = JSON.parse(fs.readFileSync(path.join(root, 'data/povrce.json'), 'utf8'));
+const mj = (arr) => (arr && arr.length ? arr.map(m => MONTHS[m - 1].slice(0, 3)).join(', ') : '–');
+L.push('---', '', '# Dio 3 – Povrće', '', '_' + pov.meta.napomena + '_', '');
+L.push('| Povrće | Sjetva u zatvorenom | Sadnja / sjetva vani | Berba |', '|---|---|---|---|');
+pov.vrste.forEach(v => L.push('| ' + v.naziv + ' (`' + v.id + '`) | ' + mj(v.unutra) + ' | ' + mj(v.sadnja) + ' | ' + mj(v.berba) + ' |'));
+L.push('');
+pov.vrste.forEach(v => {
+  L.push('## ' + v.naziv + (v.latinski ? ' (*' + v.latinski + '*)' : ''), '', v.opis, '');
+  [['Sjetva / sadnja', v.sjetva], ['Položaj', v.polozaj], ['Voda', v.voda], ['Njega', v.njega], ['Česti problemi', v.problemi],
+   ['Dobri susjedi', v.dobriSusjedi], ['Loši susjedi', v.losiSusjedi], ['Berba', v.berbaOpis]]
+    .filter(x => x[1]).forEach(x => L.push('**' + x[0] + ':** ' + x[1], ''));
+});
 
 fs.writeFileSync(out, L.join('\n'));
 console.log('ok', out, L.length, 'redova');

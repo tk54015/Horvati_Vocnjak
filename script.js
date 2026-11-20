@@ -2668,7 +2668,7 @@ var encyclopediaSelectedId = null;
 function loadEncyclopedia() {
     if (encyclopediaData) return Promise.resolve(encyclopediaData);
     if (!encyclopediaLoading) {
-        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261120d')
+        encyclopediaLoading = fetchJsonFile('data/enciklopedija.json?v=20261120g')
             .then(function (data) {
                 encyclopediaData = data;
                 return data;
@@ -2861,7 +2861,7 @@ function seasonName(month) {
 function loadTasks() {
     if (tasksData) return Promise.resolve(tasksData);
     if (!tasksLoading) {
-        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120f'), loadEncyclopedia().catch(function () { return null; })])
+        tasksLoading = Promise.all([fetchJsonFile('data/raspored.json?v=20261120g'), loadEncyclopedia().catch(function () { return null; })])
             .then(function (results) {
                 tasksData = results[0];
                 return tasksData;
@@ -3014,6 +3014,7 @@ function taskRowHtml(r, editable) {
         badges += '<span class="task-badge moved">↪ odgođeno</span>';
     }
     if (r.isLast && !r.done) badges += '<span class="task-badge last">⏳ zadnji mjesec</span>';
+    if (t.poPotrebi && !r.done) badges += '<span class="task-badge cond" title="Napraviti samo ako je problem prisutan ili je rizik velik">🔎 po potrebi</span>';
     if (r.isFirst && !r.done) badges += '<span class="task-badge first">počinje</span>';
     var counts = countTreesByType();
     var chips = r.species.map(function (v) {

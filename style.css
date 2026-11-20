@@ -1849,3 +1849,8 @@ body.placing-tree .leaflet-container {
 .away-group .task-title {
     color: #666;
 }
+
+.task-badge.cond {
+    background: #f1ecfb;
+    color: #5b3f99;
+}

@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Voćnjak">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=20261123i">
+    <link rel="stylesheet" href="style.css?v=20261121r">
 </head>
 <body>
     <div id="map"></div>
@@ -76,6 +76,7 @@
       <button id="open-yield-table" type="button" class="menu-view">📊 Prikaži tablicu</button>
       <button id="open-encyclopedia" type="button" class="menu-view">📖 Enciklopedija</button>
       <button id="open-filter" type="button" class="menu-view">🔍 Filter i pretraga</button>
+      <button id="open-ruler" type="button" class="menu-view">📏 Ravnalo</button>
       <button id="open-tasks" type="button" class="menu-view">🗓️ Raspored radova</button>
       <button id="open-report" type="button" class="menu-view">📊 Godišnji izvještaj</button>
       <button id="open-wallet" type="button" class="menu-view admin-only">💰 Novčanik</button>
@@ -497,6 +498,10 @@
       <button id="demo-reset" type="button" title="Odbaci probne promjene i kreni od stvarnog stanja">↺ Vrati stvarno stanje</button>
       <button id="demo-exit" type="button">Izađi</button>
     </div>
+    <div id="ruler-bar" class="hidden" role="status">
+      <span id="ruler-text">📏 Klikni prvu točku</span>
+      <button id="ruler-close" type="button">Zatvori (Esc)</button>
+    </div>
     <div id="cursor-tree" class="hidden" aria-hidden="true"></div>
 
     <div id="changes-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Izmjene podataka">
@@ -532,6 +537,6 @@
       </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=20261123i"></script>
+    <script src="script.js?v=20261121r"></script>
 </body>
 </html>

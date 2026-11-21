@@ -3934,3 +3934,68 @@ body.is-admin .demo-start {
     cursor: move;
     font-size: 16px;
 }
+
+/* ---------- Ravnalo ---------- */
+body.ruler-mode #map,
+body.ruler-mode .leaflet-container {
+    cursor: crosshair;
+}
+
+/* klik prolazi kroz stabla i gredice do karte */
+body.ruler-mode .leaflet-marker-icon,
+body.ruler-mode .leaflet-interactive {
+    pointer-events: none !important;
+}
+
+#ruler-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 16px;
+    margin: 0 auto;
+    width: fit-content;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px 8px 14px;
+    border: 2px solid #d32f2f;
+    border-radius: 16px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+#ruler-bar.hidden {
+    display: none;
+}
+
+#ruler-close {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 999px;
+    background: #f4f4f4;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.ruler-label-wrap {
+    background: transparent;
+    border: 0;
+}
+
+.ruler-label {
+    transform: translate(-50%, -130%);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}

@@ -68,6 +68,7 @@ var syncInFlight = false;
 var syncRetryTimer = null;
 var syncFlushTimer = null;
 var isAdminUser = false;
+var rulerActive = false;
 // Probni admin način: sve admin opcije, ali spremanje samo u localStorage ovog preglednika
 var DEMO_FLAG_KEY = 'horvati_demo_mode';
 var DEMO_STATE_KEY = 'horvati_demo_state_v1';
@@ -2195,6 +2196,7 @@ document.addEventListener('keydown', function (e) {
         closeFilterPanel();
         closeWallet();
         closeReport();
+        stopRuler();
         setPlacementEnabled(false);
         return;
     }
@@ -2464,6 +2466,7 @@ function setDragEnabled(enabled) {
 
 // Klik na mapu: postavi stablo iz prozora "Dodaj stablo"
 map.on('click', function (e) {
+    if (rulerActive) return;
     if (!placementEnabled || !canEdit() || !pendingNewTree) {
         // Klik na prazan dio karte poništava odabir stabla
         if (selectedPlant) {
@@ -5622,6 +5625,7 @@ map.on('mousemove', function (e) {
 });
 
 map.on('click', function (e) {
+    if (rulerActive) return;
     if (bedPlacement) {
         var bed = bedPlacement.bed;
         bed.lat = e.latlng.lat;
@@ -5840,3 +5844,105 @@ document.addEventListener('keydown', function (e) {
     stopBedPlacement();
     closeAddBedModal();
 });
+
+// ---------------------------------------------------------------------------
+// Ravnalo: klik na prvu i drugu točku -> točna udaljenost u metrima
+// (isto mjerilo kao gredice, izračunato iz GPS koordinata parcele)
+// ---------------------------------------------------------------------------
+var rulerLayer = L.layerGroup().addTo(map);
+var rulerA = null;
+var rulerDone = false;
+var rulerLine = null;
+var rulerLabel = null;
+
+function distanceMeters(a, b) {
+    var dx = (b.lng - a.lng) * METERS_PER_LNG;
+    var dy = (b.lat - a.lat) * METERS_PER_LAT;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function formatDistance(m) {
+    if (m < 1) return Math.round(m * 100) + ' cm';
+    return (Math.round(m * 100) / 100).toFixed(2).replace('.', ',') + ' m';
+}
+
+function rulerPoint(ll) {
+    return L.circleMarker(ll, { radius: 5, color: '#fff', weight: 2, fillColor: '#d32f2f', fillOpacity: 1, interactive: false });
+}
+
+function setRulerText(text) {
+    var el = document.getElementById('ruler-text');
+    if (el) el.textContent = text;
+}
+
+function drawRulerLine(a, b, final) {
+    var d = distanceMeters(a, b);
+    if (!rulerLine) {
+        rulerLine = L.polyline([a, b], { color: '#d32f2f', weight: 3, dashArray: final ? null : '6 6', interactive: false }).addTo(rulerLayer);
+    } else {
+        rulerLine.setLatLngs([a, b]);
+        rulerLine.setStyle({ dashArray: final ? null : '6 6' });
+    }
+    var mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+    var html = '<div class="ruler-label">' + formatDistance(d) + '</div>';
+    if (!rulerLabel) {
+        rulerLabel = L.marker(mid, { icon: L.divIcon({ className: 'ruler-label-wrap', html: html, iconSize: null }), interactive: false, keyboard: false, zIndexOffset: 3000 }).addTo(rulerLayer);
+    } else {
+        rulerLabel.setLatLng(mid);
+        rulerLabel.setIcon(L.divIcon({ className: 'ruler-label-wrap', html: html, iconSize: null }));
+    }
+    return d;
+}
+
+function resetRulerMeasure() {
+    rulerLayer.clearLayers();
+    rulerA = null;
+    rulerDone = false;
+    rulerLine = null;
+    rulerLabel = null;
+}
+
+function startRuler() {
+    setMenuOpen(false);
+    setPlacementEnabled(false);
+    if (typeof stopBedPlacement === 'function') stopBedPlacement();
+    rulerActive = true;
+    resetRulerMeasure();
+    document.body.classList.add('ruler-mode');
+    document.getElementById('ruler-bar').classList.remove('hidden');
+    setRulerText('📏 Klikni prvu točku');
+}
+
+function stopRuler() {
+    if (!rulerActive) return;
+    rulerActive = false;
+    resetRulerMeasure();
+    document.body.classList.remove('ruler-mode');
+    document.getElementById('ruler-bar').classList.add('hidden');
+}
+
+map.on('click', function (e) {
+    if (!rulerActive) return;
+    if (!rulerA || rulerDone) {
+        resetRulerMeasure();
+        rulerA = e.latlng;
+        rulerPoint(rulerA).addTo(rulerLayer);
+        setRulerText('📏 Klikni drugu točku');
+        return;
+    }
+    rulerPoint(e.latlng).addTo(rulerLayer);
+    var d = drawRulerLine(rulerA, e.latlng, true);
+    rulerDone = true;
+    var dx = Math.abs((e.latlng.lng - rulerA.lng) * METERS_PER_LNG);
+    var dy = Math.abs((e.latlng.lat - rulerA.lat) * METERS_PER_LAT);
+    setRulerText('📏 Udaljenost: ' + formatDistance(d) + '  (I–Z ' + formatDistance(dx) + ', S–J ' + formatDistance(dy) + ') · klik za novo mjerenje');
+});
+
+map.on('mousemove', function (e) {
+    if (!rulerActive || !rulerA || rulerDone) return;
+    var d = drawRulerLine(rulerA, e.latlng, false);
+    setRulerText('📏 ' + formatDistance(d) + ' – klikni drugu točku');
+});
+
+document.getElementById('open-ruler').addEventListener('click', startRuler);
+document.getElementById('ruler-close').addEventListener('click', stopRuler);

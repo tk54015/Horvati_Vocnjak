@@ -4781,16 +4781,24 @@ function sortedFruitEntries() {
 var SPRAY_PAGE_ID = 'spricanje';
 
 function sprayProblems() {
-    // Svi problemi vrsta koje su na karti (ako je karta prazna: sve vrste)
+    // Problemi vrsta na karti; svaki problem nosi težinu = broj stabala te vrste.
+    // Ako je karta prazna: sve vrste, težina 1.
     var counts = countTreesByType();
     var species = encyclopediaData.vrste.filter(function (v) { return v.id !== 'ostalo' && counts[v.id] > 0; });
-    if (!species.length) species = encyclopediaData.vrste.filter(function (v) { return v.id !== 'ostalo'; });
+    var weighted = species.length > 0;
+    if (!weighted) species = encyclopediaData.vrste.filter(function (v) { return v.id !== 'ostalo'; });
     var list = [];
     species.forEach(function (v) {
-        (v.bolesti || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'bolesti' }); });
-        (v.stetnici || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'stetnici' }); });
+        var w = weighted ? counts[v.id] : 1;
+        (v.bolesti || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'bolesti', w: w }); });
+        (v.stetnici || []).forEach(function (b) { list.push({ species: v, problem: b, tip: 'stetnici', w: w }); });
     });
-    return { species: species, problems: list.filter(function (p) { return p.problem.naziv !== 'Rijetko'; }) };
+    return {
+        species: species,
+        weighted: weighted,
+        trees: species.reduce(function (sum, v) { return sum + (weighted ? counts[v.id] : 0); }, 0),
+        problems: list.filter(function (p) { return p.problem.naziv !== 'Rijetko'; })
+    };
 }
 
 function matchesPrep(prep, p) {
@@ -4802,6 +4810,15 @@ function matchesPrep(prep, p) {
     return true;
 }
 
+function hrPlural(n, one, few, many) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+}
+function stablaText(n) { return n + ' ' + hrPlural(n, 'stablo', 'stabla', 'stabala'); }
+function problemaText(n) { return n + ' ' + hrPlural(n, 'problem', 'problema', 'problema'); }
+
 function renderSprayPage() {
     var cfg = encyclopediaData.meta && encyclopediaData.meta.pripravci;
     if (!cfg) {
@@ -4809,63 +4826,86 @@ function renderSprayPage() {
         return;
     }
     var data = sprayProblems();
-    var total = data.problems.length;
     var sprayRe = new RegExp(cfg.prskanjeKljuc, 'i');
+    // u statistiku ulaze samo problemi koji traže prskanje, svaki puta broj stabala te vrste
+    var sprayList = data.problems.filter(function (p) { return sprayRe.test(p.problem.rjesenje || ''); });
     var noSpray = data.problems.filter(function (p) { return !sprayRe.test(p.problem.rjesenje || ''); });
+    var weight = function (arr) { return arr.reduce(function (sum, p) { return sum + p.w; }, 0); };
+    var treesOf = function (arr) {
+        var seen = {}, n = 0;
+        arr.forEach(function (p) { if (!seen[p.species.id]) { seen[p.species.id] = true; n += p.w; } });
+        return n;
+    };
+    var total = weight(sprayList);
+    var pct = function (n) { return total ? Math.round(n / total * 100) : 0; };
 
     var preps = cfg.popis.map(function (prep) {
-        var hits = data.problems.filter(function (p) { return matchesPrep(prep, p); });
-        return { prep: prep, hits: hits };
+        return { prep: prep, hits: data.problems.filter(function (p) { return matchesPrep(prep, p); }) };
     });
     var basic = preps.filter(function (x) { return x.prep.osnovni; });
-    var basicHits = data.problems.filter(function (p) { return basic.some(function (x) { return x.hits.indexOf(p) !== -1; }); }).length;
+    var basicW = weight(sprayList.filter(function (p) { return basic.some(function (x) { return x.hits.indexOf(p) !== -1; }); }));
 
-    var pct = function (n) { return total ? Math.round(n / total * 100) : 0; };
+    var groupHtml = function (arr) {
+        var by = {};
+        arr.forEach(function (p) {
+            (by[p.species.id] = by[p.species.id] || { species: p.species, w: p.w, names: [] }).names.push(p.problem.naziv);
+        });
+        return Object.keys(by).map(function (k) { return by[k]; })
+            .sort(function (a, b) { return (b.w - a.w) || a.species.naziv.localeCompare(b.species.naziv, 'hr'); })
+            .map(function (g) {
+                return '<li>' + encyclopediaIconHtml(g.species, 16) + ' <b>' + escapeHtml(g.species.naziv) +
+                    (data.weighted ? ' (' + stablaText(g.w) + ')' : '') + ':</b> ' + escapeHtml(g.names.join(', ')) + '</li>';
+            }).join('');
+    };
+
     var html = '<header class="enc-head"><span class="enc-emoji" style="font-size:38px">🧴</span>' +
-        '<div><h2>Špricanje i pripravci</h2><div class="enc-onmap">Za ' + data.species.length + ' vrsta u tvom voćnjaku · ' + total + ' mogućih problema</div></div></header>';
+        '<div><h2>Špricanje i pripravci</h2><div class="enc-onmap">' +
+        (data.weighted
+            ? stablaText(data.trees) + ' u tvom voćnjaku (' + data.species.length + ' ' + hrPlural(data.species.length, 'vrsta', 'vrste', 'vrsta') + ') · ' + problemaText(sprayList.length) + ' za prskanje'
+            : 'Karta je prazna – prikaz za sve vrste, bez broja stabala') +
+        '</div></div></header>';
 
     html += '<div class="spray-summary">' +
         '<div class="spray-big"><b>' + basic.length + '</b><span>osnovna pripravka</span></div>' +
-        '<div class="spray-big"><b>' + pct(basicHits) + ' %</b><span>problema pokrivaju bakar, ulje i sumpor (' + basicHits + ' od ' + total + ')</span></div>' +
-        '<div class="spray-big ok"><b>' + pct(noSpray.length) + ' %</b><span>problema rješava se bez prskanja (' + noSpray.length + ')</span></div>' +
+        '<div class="spray-big"><b>' + pct(basicW) + ' %</b><span>potreba za prskanjem pokrivaju bakar, ulje i sumpor</span></div>' +
+        '<div class="spray-big ok"><b>' + noSpray.length + '</b><span>' + hrPlural(noSpray.length, 'problem se rješava', 'problema se rješavaju', 'problema se rješava') + ' bez prskanja (nisu u postocima)</span></div>' +
         '</div>';
     html += '<p class="spray-intro">' + escapeHtml(cfg.uvod) + '</p>';
+    html += '<p class="spray-intro"><small>' + (data.weighted
+        ? 'Postoci su računati po broju stabala: problem jabuke na 20 stabala broji se 20 puta, problem višnje na jednom stablu jednom. Problemi koji se rješavaju bez prskanja (ptice, rezidba, ručno skupljanje…) ne ulaze u postotke.'
+        : 'Kad na karti budu stabla, postoci će se računati po broju stabala. Problemi koji se rješavaju bez prskanja ne ulaze u postotke.') + '</small></p>';
 
     preps.forEach(function (x) {
         var prep = x.prep;
-        // grupiraj pogođene probleme po vrsti
-        var bySpecies = {};
-        x.hits.forEach(function (p) {
-            (bySpecies[p.species.id] = bySpecies[p.species.id] || { species: p.species, names: [] }).names.push(p.problem.naziv);
-        });
-        var groups = Object.keys(bySpecies).map(function (k) { return bySpecies[k]; })
-            .sort(function (a, b) { return a.species.naziv.localeCompare(b.species.naziv, 'hr'); });
+        var isTool = prep.id === 'pomagala';
+        var cover = '';
+        if (isTool) {
+            if (x.hits.length) cover = '<div class="spray-cover">koristi se kod ' + problemaText(x.hits.length) +
+                (data.weighted ? ' na ' + stablaText(treesOf(x.hits)) : '') + '</div>';
+        } else {
+            var w = weight(x.hits);
+            cover = '<div class="spray-cover"><span class="spray-bar"><i style="width:' + Math.max(2, pct(w)) + '%"></i></span>' +
+                '<b>' + pct(w) + ' %</b>&nbsp;potreba za prskanjem · ' + problemaText(x.hits.length) +
+                (data.weighted ? ' na ' + stablaText(treesOf(x.hits)) : '') + '</div>';
+        }
         html += '<section class="spray-card' + (prep.osnovni ? ' basic' : '') + '">' +
             '<div class="spray-head"><span class="spray-emoji">' + prep.emoji + '</span><div><h3>' + escapeHtml(prep.naziv) +
             (prep.osnovni ? ' <span class="task-badge first">osnovni</span>' : ' <span class="task-badge cond">po potrebi</span>') + '</h3>' +
-            (prep.id !== 'pomagala' || x.hits.length
-                ? '<div class="spray-cover"><span class="spray-bar"><i style="width:' + Math.max(2, pct(x.hits.length)) + '%"></i></span>' +
-                  (prep.id === 'pomagala' ? 'koristi se kod ' : 'pomaže kod ') + x.hits.length + ' od ' + total + ' problema (' + pct(x.hits.length) + ' %)</div>'
-                : '') +
-            '</div></div>' +
+            cover + '</div></div>' +
             '<div class="enc-problem-row"><span class="enc-tag see">Što je</span><p>' + escapeHtml(prep.stoJe) + '</p></div>' +
             '<div class="enc-problem-row"><span class="enc-tag fix">Kada</span><p>' + escapeHtml(prep.kada) + '</p></div>' +
             '<div class="enc-problem-row"><span class="enc-tag warn">Pazi</span><p>' + escapeHtml(prep.pazi) + '</p></div>' +
-            (groups.length
-                ? '<details class="spray-list"><summary>Kod kojih problema (' + x.hits.length + ')</summary><ul>' + groups.map(function (g) {
-                    return '<li>' + encyclopediaIconHtml(g.species, 16) + ' <b>' + escapeHtml(g.species.naziv) + ':</b> ' + escapeHtml(g.names.join(', ')) + '</li>';
-                }).join('') + '</ul></details>'
+            (x.hits.length
+                ? '<details class="spray-list"><summary>Kod kojih problema (' + x.hits.length + ')</summary><ul>' + groupHtml(x.hits) + '</ul></details>'
                 : '') +
             '</section>';
     });
 
     if (noSpray.length) {
         html += '<section class="spray-card ok"><div class="spray-head"><span class="spray-emoji">✂️</span><div><h3>Bez prskanja</h3>' +
-            '<div class="spray-cover">rezidba, čišćenje lišća i mumija, ručno uklanjanje, dobar uzgoj</div></div></div>' +
+            '<div class="spray-cover">rezidba, čišćenje lišća i mumija, ručno uklanjanje, mreže, dobar uzgoj – ne ulazi u postotke</div></div></div>' +
             '<details class="spray-list"><summary>Problemi koji se rješavaju bez pripravaka (' + noSpray.length + ')</summary><ul>' +
-            noSpray.map(function (p) {
-                return '<li>' + encyclopediaIconHtml(p.species, 16) + ' <b>' + escapeHtml(p.species.naziv) + ':</b> ' + escapeHtml(p.problem.naziv) + '</li>';
-            }).join('') + '</ul></details></section>';
+            groupHtml(noSpray) + '</ul></details></section>';
     }
 
     encyclopediaArticleEl.innerHTML = html;
